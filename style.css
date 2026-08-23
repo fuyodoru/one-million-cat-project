@@ -2081,9 +2081,12 @@ textarea {
     background: #205a73;
 
 }
-
 /* =========================================================
    MOBILE RESPONSIVE DESIGN
+========================================================= */
+
+/* =========================================================
+   MOBILE RESPONSIVE DESIGN — FINAL
 ========================================================= */
 
 @media (max-width: 600px) {
@@ -2092,12 +2095,13 @@ textarea {
     body {
         width: 100%;
         min-width: 0;
+        margin: 0;
+        padding: 0;
         overflow-x: hidden;
     }
 
     body {
-        margin: 0;
-        padding: 0;
+        background: #061525;
     }
 
 
@@ -2106,129 +2110,19 @@ textarea {
     ===================================================== */
 
     .tracker-frame {
-        width: calc(100% - 20px);
-        margin: 10px auto 0;
-        min-height: 0;
-        height: auto;
-        border-radius: 20px;
-        overflow: hidden;
-    }
+        position: relative !important;
 
+        width: calc(100vw - 20px) !important;
 
-    /* =====================================================
-       TOP AREA
-    ===================================================== */
+        height: 720px !important;
+        min-height: 720px !important;
 
-    .tracker-logo {
-        position: relative;
-        top: auto;
-        left: auto;
-        transform: none;
+        margin: 10px auto 0 !important;
 
-        width: calc(100% - 120px);
-        max-width: none;
+        border-width: 5px !important;
+        border-radius: 18px 18px 12px 12px !important;
 
-        margin: 12px auto 0;
-        padding: 12px 8px;
-
-        box-sizing: border-box;
-
-        font-size: 10px;
-        line-height: 1.2;
-
-        z-index: 20;
-    }
-
-    .tracker-logo .logo-mini-cat {
-        width: 20px;
-        height: 20px;
-    }
-
-    .logo-subtitle {
-        font-size: 6px;
-        margin-top: 5px;
-    }
-
-
-    /* =====================================================
-       TOP LEFT CAT BUTTON
-    ===================================================== */
-
-    .cat-menu-button {
-        position: absolute;
-
-        top: 18px;
-        left: 14px;
-
-        width: 58px;
-        height: 58px;
-
-        z-index: 50;
-    }
-
-    .cat-menu-button img {
-        max-width: 38px;
-        max-height: 38px;
-    }
-
-
-    /* =====================================================
-       TOP RIGHT MAP BUTTON
-    ===================================================== */
-
-    .top-right-button {
-        position: absolute;
-
-        top: 18px;
-        right: 14px;
-
-        width: 58px;
-        height: 58px;
-
-        z-index: 50;
-    }
-
-    .top-right-button img {
-        max-width: 38px;
-        max-height: 38px;
-    }
-
-
-    /* =====================================================
-       NAVIGATION
-    ===================================================== */
-
-    .navigation-panel {
-        position: absolute;
-
-        top: 82px;
-        left: 14px;
-
-        width: calc(100% - 28px);
-        max-width: none;
-
-        z-index: 100;
-
-        box-sizing: border-box;
-    }
-
-
-    /* =====================================================
-       REPORT CAT
-    ===================================================== */
-
-    .report-cat-button {
-        position: absolute;
-
-        top: 88px;
-        right: 14px;
-
-        z-index: 60;
-
-        padding: 10px 14px;
-
-        font-size: 8px;
-        white-space: nowrap;
+        overflow: hidden !important;
     }
 
 
@@ -2237,75 +2131,246 @@ textarea {
     ===================================================== */
 
     .map-wrapper {
-        position: relative;
+        position: absolute !important;
 
-        width: calc(100% - 20px);
-        margin: 8px auto 0;
+        top: 105px !important;
+        left: 10px !important;
+        right: 10px !important;
+        bottom: 65px !important;
 
-        height: 520px;
+        width: auto !important;
+        height: auto !important;
 
-        box-sizing: border-box;
+        margin: 0 !important;
+
+        border-width: 3px !important;
+        border-radius: 9px !important;
+
+        overflow: hidden !important;
     }
 
     #map {
-        width: 100%;
-        height: 100%;
+        width: 100% !important;
+        height: 100% !important;
     }
 
 
     /* =====================================================
-       MAP POPUPS
+       LEFT CAT BUTTON
+    ===================================================== */
+
+    .cat-menu-button {
+        position: absolute !important;
+
+        top: 12px !important;
+        left: 12px !important;
+
+        width: 58px !important;
+        height: 58px !important;
+
+        padding: 6px !important;
+
+        z-index: 5000 !important;
+
+        border-width: 3px !important;
+        border-radius: 11px !important;
+    }
+
+    .cat-menu-button img {
+        width: 100% !important;
+        height: 100% !important;
+        max-width: none !important;
+        max-height: none !important;
+    }
+
+
+    /* =====================================================
+       RIGHT PAW BUTTON
+    ===================================================== */
+
+    .top-right-button {
+        position: absolute !important;
+
+        top: 12px !important;
+        right: 12px !important;
+
+        width: 58px !important;
+        height: 58px !important;
+
+        z-index: 5000 !important;
+
+        border-width: 3px !important;
+        border-radius: 11px !important;
+    }
+
+    .top-right-button img {
+        width: 34px !important;
+        height: 34px !important;
+    }
+
+
+    /* =====================================================
+       CENTER LOGO
+    ===================================================== */
+
+    .tracker-logo {
+        position: absolute !important;
+
+        top: 14px !important;
+        left: 50% !important;
+
+        transform: translateX(-50%) !important;
+
+        width: calc(100% - 150px) !important;
+        min-width: 0 !important;
+        max-width: 250px !important;
+
+        height: 48px !important;
+
+        padding: 5px 6px !important;
+
+        z-index: 4500 !important;
+
+        border-width: 3px !important;
+        border-radius: 10px !important;
+
+        font-size: 9px !important;
+        letter-spacing: 1px !important;
+
+        white-space: nowrap !important;
+
+        overflow: visible !important;
+    }
+
+    .logo-mini-cat {
+        width: 20px !important;
+        height: 20px !important;
+    }
+
+    .logo-subtitle {
+        bottom: -14px !important;
+
+        font-size: 5px !important;
+        letter-spacing: 1.5px !important;
+    }
+
+
+    /* =====================================================
+       REPORT CAT BUTTON
+    ===================================================== */
+
+    #reportCatButton {
+        position: absolute !important;
+
+        top: 72px !important;
+        right: 12px !important;
+
+        width: auto !important;
+        height: auto !important;
+
+        padding: 8px 11px !important;
+
+        z-index: 4500 !important;
+
+        font-size: 6px !important;
+
+        border-width: 2px !important;
+        border-radius: 8px !important;
+    }
+
+    .report-cat-button span {
+        font-size: 11px !important;
+    }
+
+
+    /* =====================================================
+       NAVIGATION
+    ===================================================== */
+
+    .navigation-panel {
+        position: absolute !important;
+
+        top: 75px !important;
+        left: 10px !important;
+
+        width: calc(100% - 20px) !important;
+
+        z-index: 6000 !important;
+
+        box-sizing: border-box !important;
+    }
+
+
+    /* =====================================================
+       MAP POPUP
     ===================================================== */
 
     .leaflet-popup {
-        max-width: 220px !important;
+        max-width: 210px !important;
+    }
+
+    .leaflet-popup-content-wrapper {
+        max-width: 210px !important;
     }
 
     .leaflet-popup-content {
-        max-width: 180px;
-        font-size: 11px;
+        max-width: 170px !important;
+
+        margin: 9px !important;
+
+        font-size: 9px !important;
     }
 
 
     /* =====================================================
-       STATISTICS
+       MAP STATS
     ===================================================== */
 
     .map-stats {
-        position: absolute;
+        position: absolute !important;
 
-        left: 10px;
-        right: 10px;
-        bottom: 10px;
+        left: 8px !important;
+        right: 8px !important;
+        bottom: 8px !important;
 
-        display: grid;
+        width: auto !important;
+        max-width: none !important;
 
-        grid-template-columns: repeat(2, 1fr);
+        display: grid !important;
 
-        gap: 6px;
+        grid-template-columns:
+            repeat(4, minmax(0, 1fr)) !important;
 
-        z-index: 20;
+        gap: 4px !important;
+
+        z-index: 3000 !important;
+
+        overflow: visible !important;
     }
 
     .stat-card {
-        min-width: 0;
-        width: auto;
+        min-width: 0 !important;
+        width: 100% !important;
 
-        padding: 7px 6px;
+        padding: 6px 3px !important;
 
-        box-sizing: border-box;
+        box-sizing: border-box !important;
+
+        text-align: center !important;
     }
 
     .stat-label {
-        font-size: 6px;
+        font-size: 4px !important;
+        letter-spacing: 0.5px !important;
     }
 
     .stat-value {
-        font-size: 11px;
+        font-size: 8px !important;
     }
 
     .progress-card {
-        grid-column: span 2;
+        min-width: 0 !important;
+        grid-column: auto !important;
     }
 
 
@@ -2314,55 +2379,80 @@ textarea {
     ===================================================== */
 
     .mascot {
-        position: absolute;
+        position: absolute !important;
 
-        left: 18px;
-        bottom: 78px;
+        left: 4px !important;
+        bottom: 42px !important;
 
-        z-index: 30;
+        width: 75px !important;
+
+        z-index: 4000 !important;
     }
 
     .mascot img {
-        width: 65px;
-        height: auto;
+        width: 75px !important;
+        height: auto !important;
     }
 
 
     /* =====================================================
-       TRACKER BAR
+       BOTTOM TRACKER BAR
     ===================================================== */
 
     .tracker-bar {
-        display: flex;
+        position: absolute !important;
 
-        width: calc(100% - 20px);
+        left: 0 !important;
+        right: 0 !important;
+        bottom: 0 !important;
 
-        margin: 8px auto;
+        width: 100% !important;
+        height: 65px !important;
 
-        min-height: 55px;
+        margin: 0 !important;
 
-        box-sizing: border-box;
+        z-index: 3500 !important;
+
+        padding: 0 8px !important;
+
+        box-sizing: border-box !important;
+
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
     }
 
     .tracker-message {
-        min-width: 0;
+        flex: 1 !important;
 
-        flex: 1;
+        min-width: 0 !important;
 
-        overflow: hidden;
+        width: auto !important;
 
-        white-space: nowrap;
+        height: 38px !important;
 
-        font-size: 7px;
+        padding: 0 8px !important;
 
-        text-overflow: ellipsis;
+        font-size: 6px !important;
+
+        letter-spacing: 0.5px !important;
+
+        overflow: hidden !important;
+
+        white-space: nowrap !important;
+
+        text-overflow: ellipsis !important;
     }
 
     .sound-button {
-        flex: 0 0 48px;
+        flex: 0 0 42px !important;
 
-        width: 48px;
-        height: 48px;
+        width: 42px !important;
+        height: 38px !important;
+
+        margin-left: 6px !important;
+
+        padding: 0 !important;
     }
 
 
@@ -2371,42 +2461,44 @@ textarea {
     ===================================================== */
 
     .credits-area {
-        width: 100%;
+        width: calc(100vw - 20px) !important;
 
-        box-sizing: border-box;
+        min-height: 150px !important;
 
-        padding: 25px 15px;
+        margin: 0 auto !important;
 
-        text-align: center;
+        padding: 22px 12px !important;
+
+        box-sizing: border-box !important;
     }
 
     .project-name {
-        font-size: 9px;
+        font-size: 9px !important;
+        letter-spacing: 1.5px !important;
     }
 
     .project-description {
-        font-size: 7px;
+        max-width: 280px !important;
 
-        max-width: 280px;
+        font-size: 6px !important;
 
-        margin: 8px auto;
+        line-height: 1.5 !important;
     }
 
     .credits-links {
-        display: flex;
+        display: flex !important;
 
-        flex-wrap: wrap;
+        flex-wrap: wrap !important;
 
-        justify-content: center;
+        justify-content: center !important;
 
-        gap: 6px;
+        gap: 5px !important;
 
-        font-size: 6px;
+        font-size: 6px !important;
     }
 
     .copyright {
-        font-size: 6px;
-        margin-top: 12px;
+        font-size: 5px !important;
     }
 
 
@@ -2415,47 +2507,64 @@ textarea {
     ===================================================== */
 
     .report-modal {
-        padding: 12px;
+        position: fixed !important;
 
-        box-sizing: border-box;
+        inset: 0 !important;
+
+        padding: 12px !important;
+
+        box-sizing: border-box !important;
+
+        z-index: 10000 !important;
     }
 
     .report-modal-box {
-        width: 100%;
-        max-width: 360px;
+        width: 100% !important;
+        max-width: 350px !important;
 
-        max-height: calc(100vh - 30px);
+        max-height: calc(100vh - 24px) !important;
 
-        overflow-y: auto;
+        padding: 22px !important;
 
-        box-sizing: border-box;
+        overflow-y: auto !important;
+
+        box-sizing: border-box !important;
     }
 
     .report-modal-title {
-        font-size: 15px;
+        font-size: 15px !important;
     }
 
     .report-modal-subtitle {
-        font-size: 7px;
+        font-size: 6px !important;
     }
 
-    .report-modal-box input {
-        width: 100%;
+    #reportCatForm input {
+        width: 100% !important;
 
-        box-sizing: border-box;
+        box-sizing: border-box !important;
+
+        font-size: 8px !important;
+    }
+
+    .report-modal-actions {
+        display: flex !important;
+
+        justify-content: flex-end !important;
+
+        gap: 8px !important;
     }
 
 
     /* =====================================================
-       LEAFLET CONTROLS
+       LEAFLET
     ===================================================== */
 
     .leaflet-control-zoom {
-        display: none;
+        display: none !important;
     }
 
     .leaflet-control-attribution {
-        font-size: 7px !important;
+        font-size: 6px !important;
     }
-
 }
