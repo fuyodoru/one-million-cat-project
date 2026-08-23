@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>One Million Cat Project</title>
+
+
+    <!-- =========================================
+         PIXEL FONT
+    ========================================== -->
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&display=swap"
+        rel="stylesheet"
+    >
+
+
+    <!-- =========================================
+         LEAFLET
+    ========================================== -->
+
+    <link
+        rel="stylesheet"
+        href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    >
+
+
+    <!-- =========================================
+         OUR CSS
+    ========================================== -->
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
+</head>
+
+
+<body>
+
+
+    <!-- =================================================
+         MAIN TRACKER FRAME
+    ================================================== -->
+
+    <div class="tracker-frame">
+
+
+        <!-- =================================================
+             TOP LEFT — CAT MENU BUTTON
+        ================================================== -->
+
+        <button
+            id="catMenuButton"
+            class="cat-menu-button"
+            aria-label="Open navigation"
+        >
+
+            <img
+                src="assets/cats/logo-face-1.png"
+                id="menuCat"
+                alt=""
+            >
+
+        </button>
+
+
+
+        <!-- =================================================
+             CENTER LOGO
+        ================================================== -->
+
+        <div class="tracker-logo">
+
+            <span>
+                ONE MILLION
+            </span>
+
+
+            <img
+                src="assets/cats/logo-face-1.png"
+                id="logoCat"
+                class="logo-mini-cat"
+                alt=""
+            >
+
+
+            <span>
+                CAT TRACKER
+            </span>
+
+
+            <div class="logo-subtitle">
+                EVERY CAT COUNTS
+            </div>
+
+        </div>
+
+
+
+        <!-- =================================================
+             TOP RIGHT — MAP CONTROL
+        ================================================== -->
+
+        <button
+            class="top-right-button"
+            id="mapControlButton"
+            aria-label="Center map"
+        >
+
+            <img
+                src="assets/cats/paw-marker.png"
+                alt=""
+            >
+
+        </button>
+<button
+    class="report-cat-button"
+    id="reportCatButton"
+    type="button"
+    aria-label="Report a cat"
+>
+
+    <span>+</span>
+
+    REPORT CAT
+
+</button>
+
+<!-- =================================================
+     REPORT CAT MODAL
+================================================== -->
+
+<div
+    id="reportCatModal"
+    class="report-modal hidden"
+>
+
+    <div class="report-modal-box">
+
+        <button
+            id="closeReportModal"
+            class="report-modal-close"
+            type="button"
+        >
+            ×
+        </button>
+
+        <div class="report-modal-title">
+            REPORT A CAT
+        </div>
+
+        <div class="report-modal-subtitle">
+            ADD A NEW CAT SIGHTING
+        </div>
+
+
+        <form id="reportCatForm">
+
+            <label for="catCount">
+                HOW MANY CATS?
+            </label>
+
+            <input
+                id="catCount"
+                type="number"
+                min="1"
+                max="50"
+                value="1"
+                required
+            >
+
+
+            <label for="reportCity">
+                CITY
+            </label>
+
+            <input
+                id="reportCity"
+                type="text"
+                placeholder="e.g. Milan"
+                maxlength="100"
+            >
+
+
+            <label for="reportCountry">
+                COUNTRY
+            </label>
+
+            <input
+                id="reportCountry"
+                type="text"
+                placeholder="e.g. Italy"
+                maxlength="100"
+            >
+
+
+            <label for="catPhoto">
+                PHOTO <span>(OPTIONAL)</span>
+            </label>
+
+            <input
+                id="catPhoto"
+                type="file"
+                accept="image/jpeg,image/png,image/webp"
+            >
+
+            <div
+                id="photoMessage"
+                class="photo-message"
+            ></div>
+
+
+            <div
+                id="reportLocationMessage"
+                class="report-location-message"
+            >
+                LOCATION WILL BE DETERMINED FROM CITY AND COUNTRY
+            </div>
+
+
+            <div
+                id="reportMessage"
+                class="report-message"
+            ></div>
+
+
+            <div class="report-modal-actions">
+
+                <button
+                    id="cancelReport"
+                    type="button"
+                    class="report-cancel-button"
+                >
+                    CANCEL
+                </button>
+
+                <button
+                    type="submit"
+                    class="report-submit-button"
+                >
+                    SUBMIT
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+        <!-- =================================================
+             NAVIGATION
+        ================================================== -->
+
+        <nav
+            id="navigationPanel"
+            class="navigation-panel"
+        >
+
+            <div class="navigation-title">
+                NAVIGATION
+            </div>
+
+
+            <button
+                class="navigation-item active"
+            >
+                CAT TRACKER
+            </button>
+
+
+            <button
+                class="navigation-item"
+            >
+                CATDEX
+            </button>
+
+
+            <button
+                class="navigation-item"
+            >
+                STATISTICS
+            </button>
+
+
+            <button
+                class="navigation-item"
+            >
+                LEADERBOARD
+            </button>
+
+
+            <button
+                class="navigation-item"
+            >
+                ABOUT
+            </button>
+
+        </nav>
+
+<!-- =================================================
+     REPORT CAT MODAL
+================================================== -->
+
+<div
+    id="reportCatModal"
+    class="report-modal hidden"
+>
+
+    <div class="report-modal-box">
+
+        <button
+            id="closeReportModal"
+            class="report-modal-close"
+            type="button"
+        >
+            ×
+        </button>
+
+        <div class="report-modal-title">
+            REPORT A CAT
+        </div>
+
+        <div class="report-modal-subtitle">
+            ADD A NEW CAT SIGHTING
+        </div>
+
+
+        <form id="reportCatForm">
+
+            <label for="reportCatCount">
+                HOW MANY CATS?
+            </label>
+
+            <input
+                id="reportCatCount"
+                type="number"
+                min="1"
+                max="100"
+                value="1"
+                required
+            >
+
+
+            <label for="reportCity">
+                CITY
+            </label>
+
+            <input
+                id="reportCity"
+                type="text"
+                placeholder="e.g. Istanbul"
+                required
+            >
+
+
+            <label for="reportCountry">
+                COUNTRY
+            </label>
+
+            <input
+                id="reportCountry"
+                type="text"
+                placeholder="e.g. Turkey"
+                required
+            >
+
+
+            <label for="reportPhoto">
+                PHOTO
+                <span>(OPTIONAL)</span>
+            </label>
+
+            <input
+                id="reportPhoto"
+                type="file"
+                accept="image/jpeg,image/png,image/webp"
+            >
+
+
+            <div class="report-modal-actions">
+
+                <button
+                    type="button"
+                    id="cancelReport"
+                >
+                    CANCEL
+                </button>
+
+                <button
+                    type="submit"
+                    id="submitReport"
+                >
+                    SUBMIT
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+        <!-- =================================================
+             MAP
+        ================================================== -->
+
+        <!-- =================================================
+     MAP
+================================================== -->
+
+<main class="map-wrapper">
+
+    <div id="map"></div>
+
+
+    <!-- =============================================
+         LIVE STATISTICS
+    ============================================== -->
+
+    <div class="map-stats">
+
+        <div class="stat-card">
+
+            <span class="stat-label">
+                CATS
+            </span>
+
+            <strong
+                id="statCats"
+                class="stat-value"
+            >
+                0
+            </strong>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <span class="stat-label">
+                SIGHTINGS
+            </span>
+
+            <strong
+                id="statSightings"
+                class="stat-value"
+            >
+                0
+            </strong>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <span class="stat-label">
+                COUNTRIES
+            </span>
+
+            <strong
+                id="statCountries"
+                class="stat-value"
+            >
+                0
+            </strong>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <span class="stat-label">
+                TODAY
+            </span>
+
+            <strong
+                id="statToday"
+                class="stat-value"
+            >
+                0
+            </strong>
+
+        </div>
+
+
+        <div class="stat-card progress-card">
+
+            <span class="stat-label">
+                MISSION
+            </span>
+
+            <strong
+                id="statProgress"
+                class="stat-value"
+            >
+                0.000%
+            </strong>
+
+        </div>
+
+    </div>
+
+</main>
+
+
+
+        <!-- =================================================
+             FULL BODY MASCOT
+        ================================================== -->
+
+        <div class="mascot">
+
+            <img
+                src="assets/cats/mascot-full-1.png"
+                id="mascotCat"
+                alt=""
+            >
+
+        </div>
+
+
+
+        <!-- =================================================
+             BOTTOM TRACKER BAR
+        ================================================== -->
+
+        <div class="tracker-bar">
+
+
+            <div class="tracker-message">
+
+                <span
+                    class="message-text"
+                    id="trackerCount"
+                >
+                    1,250 CATS LOGGED
+                </span>
+
+
+                <span class="separator">
+                    •
+                </span>
+
+
+                <span>
+                    HELP US REACH ONE MILLION
+                </span>
+
+
+                <span class="separator">
+                    •
+                </span>
+
+
+                <span>
+                    EVERY CAT COUNTS
+                </span>
+
+            </div>
+
+
+
+            <button
+                class="sound-button"
+                id="soundButton"
+                aria-label="Toggle sound"
+            >
+                ◀
+            </button>
+
+
+        </div>
+
+
+    </div>
+
+
+
+    <!-- =================================================
+         CREDITS / FOOTER
+    ================================================== -->
+
+    <section class="credits-area">
+
+
+        <div class="project-name">
+            ONE MILLION CAT PROJECT
+        </div>
+
+
+        <div class="project-description">
+            A community project to count the cats of the world.
+        </div>
+
+
+        <div class="credits-links">
+
+            <a href="#">
+                PRIVACY POLICY
+            </a>
+
+            <span>•</span>
+
+            <a href="#">
+                TERMS OF USE
+            </a>
+
+            <span>•</span>
+
+            <a href="#">
+                COOKIE PREFERENCES
+            </a>
+
+            <span>•</span>
+
+            <a href="#">
+                CREDITS
+            </a>
+
+        </div>
+
+
+        <div class="copyright">
+            © 2026 ONE MILLION CAT PROJECT
+        </div>
+
+
+    </section>
+
+
+
+    <!-- =================================================
+         LEAFLET
+    ================================================== -->
+
+    <script
+        src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    ></script>
+
+
+    <!-- =================================================
+         OUR JAVASCRIPT
+    ================================================== -->
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="app.js"></script>
+
+
+</body>
+
+</html>

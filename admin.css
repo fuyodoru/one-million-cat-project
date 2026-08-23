@@ -1,0 +1,1180 @@
+/* =========================================================
+   ONE MILLION CAT PROJECT
+   ADMIN PANEL
+   PIXEL ART UI
+   ========================================================= */
+
+
+/* =========================================================
+   ROOT
+   ========================================================= */
+
+:root {
+
+    --bg-deep: #071521;
+    --bg-main: #0a1d2b;
+    --bg-panel: #0d2637;
+    --bg-panel-dark: #081a28;
+
+    --blue-dark: #12394d;
+    --blue: #1e6079;
+    --blue-light: #318aaa;
+    --cyan: #72c5d9;
+
+    --text: #c9dce1;
+    --text-dim: #7193a0;
+
+    --yellow: #d7c477;
+    --green: #79bd9a;
+    --red: #d97979;
+
+    --border: #23647d;
+
+}
+
+
+/* =========================================================
+   GLOBAL
+   ========================================================= */
+
+* {
+    box-sizing: border-box;
+}
+
+
+html,
+body {
+
+    margin: 0;
+
+    min-height: 100%;
+
+}
+
+
+body {
+
+    background:
+        radial-gradient(
+            circle at 50% 0%,
+            #123247 0%,
+            var(--bg-main) 35%,
+            var(--bg-deep) 100%
+        );
+
+    color:
+        var(--text);
+
+    font-family:
+        "Silkscreen",
+        monospace;
+
+    image-rendering:
+        pixelated;
+
+}
+
+
+/* =========================================================
+   PIXEL GRID / FRAME
+   ========================================================= */
+
+body::before {
+
+    content: "";
+
+    position: fixed;
+
+    inset: 0;
+
+    pointer-events: none;
+
+    opacity: 0.035;
+
+    background-image:
+        linear-gradient(
+            rgba(255,255,255,.5) 1px,
+            transparent 1px
+        ),
+        linear-gradient(
+            90deg,
+            rgba(255,255,255,.5) 1px,
+            transparent 1px
+        );
+
+    background-size:
+        8px 8px;
+
+}
+
+
+/* =========================================================
+   COMMON
+   ========================================================= */
+
+button,
+input {
+
+    font-family:
+        "Silkscreen",
+        monospace;
+
+}
+
+
+button {
+
+    cursor: pointer;
+
+}
+
+
+.hidden {
+
+    display:
+        none !important;
+
+}
+
+
+/* =========================================================
+   LOGIN SCREEN
+   ========================================================= */
+
+.login-screen {
+
+    min-height:
+        100vh;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    padding:
+        30px;
+
+}
+
+
+/* =========================================================
+   LOGIN BOX
+   ========================================================= */
+
+.login-box {
+
+    position:
+        relative;
+
+    width:
+        min(440px, 100%);
+
+    padding:
+        42px 38px 38px;
+
+    text-align:
+        center;
+
+    background:
+        #0b2435;
+
+    border:
+        3px solid var(--blue-light);
+
+    border-radius:
+        22px;
+
+    box-shadow:
+        0 0 0 5px #06131f,
+        0 8px 0 #05101a,
+        0 0 35px rgba(35, 112, 140, .18);
+
+}
+
+
+/* inner border */
+
+.login-box::before {
+
+    content: "";
+
+    position:
+        absolute;
+
+    inset:
+        7px;
+
+    border:
+        1px solid #285d72;
+
+    border-radius:
+        16px;
+
+    pointer-events:
+        none;
+
+}
+
+
+/* =========================================================
+   LOGIN CAT
+   ========================================================= */
+
+.login-logo {
+
+    position:
+        relative;
+
+    width:
+        82px;
+
+    height:
+        82px;
+
+    margin:
+        0 auto 20px;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    background:
+        #d5e1e2;
+
+    border:
+        3px solid #071722;
+
+    border-radius:
+        14px;
+
+    box-shadow:
+        0 0 0 3px #377e96;
+
+}
+
+
+.login-logo img {
+
+    width:
+        58px;
+
+    height:
+        58px;
+
+    object-fit:
+        contain;
+
+    image-rendering:
+        pixelated;
+
+}
+
+
+/* =========================================================
+   KICKER
+   ========================================================= */
+
+.admin-kicker {
+
+    color:
+        var(--cyan);
+
+    font-size:
+        8px;
+
+    letter-spacing:
+        2px;
+
+    line-height:
+        1.8;
+
+}
+
+
+/* =========================================================
+   HEADINGS
+   ========================================================= */
+
+.login-box h1 {
+
+    margin:
+        12px 0 10px;
+
+    color:
+        #d8e8eb;
+
+    font-size:
+        clamp(22px, 5vw, 30px);
+
+    letter-spacing:
+        2px;
+
+    text-shadow:
+        3px 3px 0 #06141e;
+
+}
+
+
+.login-description {
+
+    margin:
+        0 0 28px;
+
+    color:
+        var(--text-dim);
+
+    font-size:
+        8px;
+
+    line-height:
+        1.8;
+
+}
+
+
+/* =========================================================
+   LOGIN FORM
+   ========================================================= */
+
+#loginForm {
+
+    display:
+        grid;
+
+    gap:
+        10px;
+
+    text-align:
+        left;
+
+}
+
+
+#loginForm label {
+
+    margin-top:
+        8px;
+
+    color:
+        var(--cyan);
+
+    font-size:
+        7px;
+
+    letter-spacing:
+        1.5px;
+
+}
+
+
+#loginForm input {
+
+    width:
+        100%;
+
+    padding:
+        13px 14px;
+
+    color:
+        var(--text);
+
+    background:
+        #061825;
+
+    border:
+        2px solid #20566d;
+
+    border-radius:
+        9px;
+
+    outline:
+        none;
+
+    font-size:
+        9px;
+
+}
+
+
+#loginForm input::placeholder {
+
+    color:
+        #456673;
+
+}
+
+
+#loginForm input:focus {
+
+    border-color:
+        var(--cyan);
+
+    box-shadow:
+        0 0 0 2px rgba(114,197,217,.12);
+
+}
+
+
+/* =========================================================
+   LOGIN BUTTON
+   ========================================================= */
+
+.login-button {
+
+    margin-top:
+        16px;
+
+    padding:
+        14px;
+
+    color:
+        #dcebef;
+
+    background:
+        #17475d;
+
+    border:
+        2px solid var(--blue-light);
+
+    border-radius:
+        9px;
+
+    font-size:
+        9px;
+
+    letter-spacing:
+        1px;
+
+    box-shadow:
+        0 4px 0 #06131d;
+
+    transition:
+        transform .1s,
+        background .15s;
+
+}
+
+
+.login-button:hover {
+
+    background:
+        #205e78;
+
+}
+
+
+.login-button:active {
+
+    transform:
+        translateY(3px);
+
+    box-shadow:
+        0 1px 0 #06131d;
+
+}
+
+
+/* =========================================================
+   LOGIN MESSAGE
+   ========================================================= */
+
+.login-message {
+
+    min-height:
+        18px;
+
+    margin-top:
+        18px;
+
+    color:
+        var(--yellow);
+
+    font-size:
+        7px;
+
+    line-height:
+        1.7;
+
+}
+
+
+/* =========================================================
+   ADMIN PAGE
+   ========================================================= */
+
+.admin-page {
+
+    width:
+        min(1200px, calc(100% - 32px));
+
+    margin:
+        30px auto 50px;
+
+}
+
+
+/* =========================================================
+   ADMIN HEADER
+   ========================================================= */
+
+.admin-header {
+
+    position:
+        relative;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        space-between;
+
+    gap:
+        25px;
+
+    padding:
+        25px 28px;
+
+    background:
+        #0c293a;
+
+    border:
+        3px solid var(--blue-light);
+
+    border-radius:
+        20px;
+
+    box-shadow:
+        0 0 0 5px #06131f,
+        0 7px 0 #05111a;
+
+}
+
+
+.admin-header h1 {
+
+    margin:
+        8px 0 6px;
+
+    color:
+        #dbe9ec;
+
+    font-size:
+        clamp(20px, 4vw, 32px);
+
+    letter-spacing:
+        2px;
+
+    text-shadow:
+        3px 3px 0 #06141e;
+
+}
+
+
+.admin-header p {
+
+    margin:
+        0;
+
+    color:
+        var(--text-dim);
+
+    font-size:
+        8px;
+
+}
+
+
+/* =========================================================
+   ADMIN USER
+   ========================================================= */
+
+.admin-user {
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    gap:
+        12px;
+
+    flex-shrink:
+        0;
+
+}
+
+
+#adminUsername {
+
+    padding:
+        9px 12px;
+
+    color:
+        var(--cyan);
+
+    background:
+        #071a27;
+
+    border:
+        2px solid #20566d;
+
+    border-radius:
+        8px;
+
+    font-size:
+        8px;
+
+}
+
+
+/* =========================================================
+   LOGOUT
+   ========================================================= */
+
+#logoutButton {
+
+    padding:
+        10px 13px;
+
+    color:
+        #d4e4e8;
+
+    background:
+        #183e50;
+
+    border:
+        2px solid #2a718a;
+
+    border-radius:
+        8px;
+
+    font-size:
+        7px;
+
+}
+
+
+#logoutButton:hover {
+
+    background:
+        #23566b;
+
+}
+
+
+/* =========================================================
+   STATS
+   ========================================================= */
+
+.admin-stats {
+
+    display:
+        grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap:
+        14px;
+
+    margin:
+        24px 0;
+
+}
+
+
+.stat-card {
+
+    position:
+        relative;
+
+    padding:
+        20px;
+
+    background:
+        #0c2637;
+
+    border:
+        2px solid #205c73;
+
+    border-radius:
+        15px;
+
+    box-shadow:
+        0 4px 0 #06141f;
+
+}
+
+
+.stat-card span {
+
+    display:
+        block;
+
+    color:
+        var(--text-dim);
+
+    font-size:
+        7px;
+
+    letter-spacing:
+        1.5px;
+
+}
+
+
+.stat-card strong {
+
+    display:
+        block;
+
+    margin-top:
+        8px;
+
+    color:
+        #dcecef;
+
+    font-size:
+        25px;
+
+}
+
+
+/* Individual status accents */
+
+.stat-card:nth-child(1) {
+
+    border-color:
+        #8d7d43;
+
+}
+
+
+.stat-card:nth-child(1) strong {
+
+    color:
+        var(--yellow);
+
+}
+
+
+.stat-card:nth-child(2) {
+
+    border-color:
+        #39795e;
+
+}
+
+
+.stat-card:nth-child(2) strong {
+
+    color:
+        var(--green);
+
+}
+
+
+.stat-card:nth-child(3) {
+
+    border-color:
+        #854f57;
+
+}
+
+
+.stat-card:nth-child(3) strong {
+
+    color:
+        var(--red);
+
+}
+
+
+/* =========================================================
+   SIGHTINGS SECTION
+   ========================================================= */
+
+.sightings-section {
+
+    padding:
+        25px;
+
+    background:
+        #0a2232;
+
+    border:
+        3px solid #205e76;
+
+    border-radius:
+        20px;
+
+    box-shadow:
+        0 6px 0 #05121b;
+
+}
+
+
+/* =========================================================
+   SECTION HEADER
+   ========================================================= */
+
+.section-header {
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        space-between;
+
+    gap:
+        20px;
+
+    margin-bottom:
+        20px;
+
+}
+
+
+.section-header h2 {
+
+    margin:
+        0;
+
+    color:
+        #cfe2e6;
+
+    font-size:
+        14px;
+
+    letter-spacing:
+        1px;
+
+}
+
+
+#refreshButton {
+
+    padding:
+        10px 14px;
+
+    color:
+        #d7e9ed;
+
+    background:
+        #17465b;
+
+    border:
+        2px solid #2b7790;
+
+    border-radius:
+        8px;
+
+    font-size:
+        7px;
+
+}
+
+
+#refreshButton:hover {
+
+    background:
+        #205c73;
+
+}
+
+
+/* =========================================================
+   STATUS MESSAGE
+   ========================================================= */
+
+.status-message {
+
+    padding:
+        16px;
+
+    color:
+        var(--text-dim);
+
+    background:
+        #071a27;
+
+    border:
+        2px dashed #234f61;
+
+    border-radius:
+        10px;
+
+    text-align:
+        center;
+
+    font-size:
+        8px;
+
+    line-height:
+        1.7;
+
+}
+
+
+.status-message:empty {
+
+    display:
+        none;
+
+}
+
+
+/* =========================================================
+   SIGHTINGS LIST
+   ========================================================= */
+
+.sightings-list {
+
+    display:
+        grid;
+
+    gap:
+        12px;
+
+    margin-top:
+        14px;
+
+}
+
+
+/* =========================================================
+   GENERIC SIGHTING CARD
+   -----------------------------------------
+   admin.js tarafından oluşturulan kartlar
+   için ortak stil.
+   ========================================================= */
+
+.sighting-card {
+
+    padding:
+        18px;
+
+    background:
+        #0d293a;
+
+    border:
+        2px solid #205d74;
+
+    border-radius:
+        13px;
+
+    box-shadow:
+        0 3px 0 #06151f;
+
+}
+
+
+.sighting-card:hover {
+
+    border-color:
+        #3b8299;
+
+}
+
+
+.sighting-card h3 {
+
+    margin:
+        0 0 10px;
+
+    color:
+        #d7e8eb;
+
+    font-size:
+        10px;
+
+}
+
+
+.sighting-card p {
+
+    margin:
+        5px 0;
+
+    color:
+        #7597a3;
+
+    font-size:
+        7px;
+
+    line-height:
+        1.8;
+
+}
+
+
+/* =========================================================
+   SIGHTING BUTTONS
+   ========================================================= */
+
+.sighting-card button {
+
+    padding:
+        9px 12px;
+
+    margin:
+        8px 5px 0 0;
+
+    border:
+        2px solid #2a7088;
+
+    border-radius:
+        7px;
+
+    color:
+        #d9e9ed;
+
+    background:
+        #143d50;
+
+    font-size:
+        7px;
+
+}
+
+
+.sighting-card button:hover {
+
+    background:
+        #205a70;
+
+}
+
+
+/* approve */
+
+.sighting-card .approve,
+.sighting-card .approve-button {
+
+    border-color:
+        #4e9671;
+
+    color:
+        #9ed0b5;
+
+}
+
+
+/* reject */
+
+.sighting-card .reject,
+.sighting-card .reject-button {
+
+    border-color:
+        #985860;
+
+    color:
+        #d9959c;
+
+}
+
+
+/* delete */
+
+.sighting-card .delete,
+.sighting-card .delete-button {
+
+    border-color:
+        #7d454b;
+
+    color:
+        #ce858c;
+
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 700px) {
+
+    .admin-page {
+
+        width:
+            calc(100% - 18px);
+
+        margin:
+            18px auto 30px;
+
+    }
+
+
+    .admin-header {
+
+        flex-direction:
+            column;
+
+        align-items:
+            flex-start;
+
+    }
+
+
+    .admin-user {
+
+        width:
+            100%;
+
+        justify-content:
+            space-between;
+
+    }
+
+
+    .admin-stats {
+
+        grid-template-columns:
+            1fr;
+
+    }
+
+
+    .sightings-section {
+
+        padding:
+            17px;
+
+    }
+
+
+    .section-header {
+
+        align-items:
+            flex-start;
+
+        flex-direction:
+            column;
+
+    }
+
+
+    #refreshButton {
+
+        width:
+            100%;
+
+    }
+
+}

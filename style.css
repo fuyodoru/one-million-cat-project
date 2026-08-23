@@ -1,0 +1,2083 @@
+/* =========================================================
+   ONE MILLION CAT PROJECT
+   CAT TRACKER
+   ========================================================= */
+
+
+/* =========================================================
+   RESET
+   ========================================================= */
+
+* {
+    box-sizing: border-box;
+
+    margin: 0;
+    padding: 0;
+}
+
+
+html,
+body {
+
+    width: 100%;
+    min-height: 100%;
+
+}
+
+
+body {
+
+    background: #061525;
+
+    color: #a9c7d2;
+
+    font-family:
+        "Silkscreen",
+        monospace;
+
+    overflow-x: hidden;
+
+}
+
+
+/* Make sure every form/button uses the pixel font */
+
+button,
+input,
+select,
+textarea {
+
+    font-family:
+        "Silkscreen",
+        monospace;
+
+}
+
+
+/* =========================================================
+   MAIN TRACKER FRAME
+   ========================================================= */
+
+.tracker-frame {
+
+    position: relative;
+
+    width:
+        calc(100vw - 24px);
+
+    height: 88vh;
+
+    min-height: 600px;
+
+    margin:
+        12px auto 0;
+
+    background: #081827;
+
+    border:
+        5px solid #3989a5;
+
+    border-radius:
+        18px 18px 10px 10px;
+
+    box-shadow:
+
+        inset
+        0 0 0 2px
+        #123c50,
+
+        0 0 0 2px
+        #020b13;
+
+    overflow: hidden;
+
+}
+
+
+/* =========================================================
+   MAP WRAPPER
+   ========================================================= */
+
+.map-wrapper {
+
+    position: absolute;
+
+    top: 28px;
+    left: 28px;
+    right: 28px;
+    bottom: 63px;
+
+    overflow: hidden;
+
+    background: #071526;
+
+    border:
+        3px solid #16445b;
+
+    border-radius: 9px;
+
+}
+
+
+#map {
+
+    width: 100%;
+    height: 100%;
+
+    background: #071526;
+
+    filter:
+        brightness(0.72)
+        saturate(0.65);
+
+}
+
+
+/* =========================================================
+   LEAFLET
+   ========================================================= */
+
+.leaflet-control-attribution {
+
+    background:
+        rgba(
+            5,
+            17,
+            29,
+            0.85
+        ) !important;
+
+    color:
+        #547888 !important;
+
+    font-size: 7px;
+
+}
+
+
+.leaflet-control-attribution a {
+
+    color:
+        #7299aa !important;
+
+}
+
+
+.leaflet-popup-content-wrapper {
+
+    background:
+        #081927;
+
+    border:
+        2px solid #3e7488;
+
+    border-radius:
+        7px;
+
+    box-shadow:
+        3px 3px 0 #020a11;
+
+}
+
+
+.leaflet-popup-tip {
+
+    background:
+        #081927;
+
+}
+
+
+.leaflet-popup-content {
+
+    margin:
+        12px;
+
+}
+
+
+/* =========================================================
+   CUSTOM MARKER
+   ========================================================= */
+
+.leaflet-marker-icon {
+
+    image-rendering:
+        pixelated;
+
+    filter:
+        drop-shadow(
+            0 0 3px
+            rgba(
+                125,
+                174,
+                190,
+                0.4
+            )
+        );
+
+}
+
+
+/* =========================================================
+   TOP LEFT CAT MENU BUTTON
+   ========================================================= */
+
+.cat-menu-button {
+
+    position: absolute;
+
+    top: 10px;
+    left: 10px;
+
+    z-index: 3000;
+
+    width: 70px;
+    height: 70px;
+
+    padding: 7px;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    background:
+        #d7dfe0;
+
+    border:
+        3px solid
+        #152b38;
+
+    border-radius:
+        12px;
+
+    box-shadow:
+        3px 3px 0
+        #07131d;
+
+    cursor:
+        pointer;
+
+    transition:
+        transform 0.1s,
+        background 0.1s;
+
+}
+
+
+.cat-menu-button:hover {
+
+    background:
+        #e5ebeb;
+
+}
+
+
+.cat-menu-button:active {
+
+    transform:
+        translate(
+            2px,
+            2px
+        );
+
+    box-shadow:
+        1px 1px 0
+        #07131d;
+
+}
+
+
+.cat-menu-button img {
+
+    width: 100%;
+    height: 100%;
+
+    object-fit:
+        contain;
+
+    image-rendering:
+        pixelated;
+
+}
+
+
+/* =========================================================
+   CENTER LOGO
+   ========================================================= */
+
+.tracker-logo {
+
+    position: absolute;
+
+    top: 8px;
+    left: 50%;
+
+    transform:
+        translateX(-50%);
+
+    z-index: 2500;
+
+    height: 55px;
+
+    min-width: 360px;
+
+    padding:
+        6px 20px;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    gap: 8px;
+
+    background:
+        #18384a;
+
+    color:
+        #bcd6de;
+
+    border:
+        4px solid
+        #285e75;
+
+    border-radius:
+        12px;
+
+    box-shadow:
+
+        inset
+        0 0 0 2px
+        #0d2534,
+
+        3px 3px 0
+        #020b12;
+
+    font-size:
+        16px;
+
+    font-weight:
+        700;
+
+    letter-spacing:
+        1px;
+
+    white-space:
+        nowrap;
+
+}
+
+
+.logo-mini-cat {
+
+    width: 34px;
+    height: 34px;
+
+    object-fit:
+        contain;
+
+    image-rendering:
+        pixelated;
+
+}
+
+
+.logo-subtitle {
+
+    position: absolute;
+
+    left: 50%;
+
+    bottom:
+        -18px;
+
+    transform:
+        translateX(-50%);
+
+    color:
+        #7398a8;
+
+    font-size:
+        7px;
+
+    letter-spacing:
+        2px;
+
+    white-space:
+        nowrap;
+
+}
+
+
+/* =========================================================
+   TOP RIGHT BUTTON
+   ========================================================= */
+
+.top-right-button {
+
+    position: absolute;
+
+    top: 10px;
+    right: 10px;
+
+    z-index: 3000;
+
+    width: 64px;
+    height: 64px;
+
+    background:
+        #d7dfe0;
+
+    border:
+        3px solid
+        #152b38;
+
+    border-radius:
+        12px;
+
+    box-shadow:
+        3px 3px 0
+        #07131d;
+
+    cursor:
+        pointer;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+}
+
+
+.top-right-button:hover {
+
+    background:
+        #e5ebeb;
+
+}
+
+
+.top-right-button:active {
+
+    transform:
+        translate(
+            2px,
+            2px
+        );
+
+}
+
+
+.top-right-button img {
+
+    width: 38px;
+    height: 38px;
+
+    object-fit:
+        contain;
+
+    image-rendering:
+        pixelated;
+
+}
+
+
+/* =========================================================
+   NAVIGATION PANEL
+   ========================================================= */
+
+.navigation-panel {
+
+    position: absolute;
+
+    top: 88px;
+    left: 15px;
+
+    z-index: 2800;
+
+    width: 190px;
+
+    padding:
+        10px;
+
+    background:
+        #d7dfe0;
+
+    border:
+        3px solid
+        #152b38;
+
+    border-radius:
+        10px;
+
+    box-shadow:
+        4px 4px 0
+        #07131d;
+
+    opacity:
+        0;
+
+    visibility:
+        hidden;
+
+    transform:
+        translateY(-8px);
+
+    transition:
+        opacity 0.12s ease,
+        transform 0.12s ease,
+        visibility 0.12s;
+
+}
+
+
+.navigation-panel.open {
+
+    opacity:
+        1;
+
+    visibility:
+        visible;
+
+    transform:
+        translateY(0);
+
+}
+
+
+.navigation-title {
+
+    padding:
+        8px;
+
+    color:
+        #294c5a;
+
+    font-size:
+        10px;
+
+    letter-spacing:
+        2px;
+
+    border-bottom:
+        2px solid
+        #9aaeb5;
+
+    margin-bottom:
+        6px;
+
+}
+
+
+.navigation-item {
+
+    width: 100%;
+
+    padding:
+        11px 8px;
+
+    margin:
+        3px 0;
+
+    background:
+        transparent;
+
+    color:
+        #456571;
+
+    border:
+        2px solid
+        transparent;
+
+    border-radius:
+        5px;
+
+    text-align:
+        left;
+
+    font-family:
+        "Silkscreen",
+        monospace;
+
+    font-size:
+        9px;
+
+    cursor:
+        pointer;
+
+}
+
+
+.navigation-item:hover,
+.navigation-item.active {
+
+    background:
+        #b7c9ce;
+
+    color:
+        #152f3b;
+
+    border-color:
+        #607f89;
+
+}
+
+
+/* =========================================================
+   FULL BODY MASCOT
+   ========================================================= */
+
+.mascot {
+
+    position: absolute;
+
+    left: 4px;
+
+    bottom:
+        28px;
+
+    z-index:
+        2600;
+
+    width:
+        120px;
+
+    pointer-events:
+        none;
+
+}
+
+
+.mascot img {
+
+    display:
+        block;
+
+    width:
+        120px;
+
+    height:
+        auto;
+
+    image-rendering:
+        pixelated;
+
+}
+
+
+/* =========================================================
+   BOTTOM TRACKER BAR
+   ========================================================= */
+
+.tracker-bar {
+
+    position: absolute;
+
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    height:
+        63px;
+
+    z-index:
+        2400;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    background:
+        #2b89a8;
+
+    border-top:
+        4px solid
+        #123e52;
+
+    border-bottom:
+        3px solid
+        #06131f;
+
+    border-radius:
+        0 0 6px 6px;
+
+    box-shadow:
+        inset
+        0 2px 0
+        #55a6be;
+
+}
+
+
+/* =========================================================
+   TICKER
+   ========================================================= */
+
+.tracker-message {
+
+    width:
+        min(
+            55vw,
+            650px
+        );
+
+    height:
+        38px;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    gap:
+        12px;
+
+    overflow:
+        hidden;
+
+    padding:
+        0 16px;
+
+    background:
+        #18232a;
+
+    color:
+        #8eabb4;
+
+    border:
+        3px solid
+        #527985;
+
+    border-radius:
+        7px;
+
+    box-shadow:
+
+        inset
+        0 0 0 2px
+        #0b1217,
+
+        3px 3px 0
+        #0c2734;
+
+    font-size:
+        9px;
+
+    letter-spacing:
+        1px;
+
+    white-space:
+        nowrap;
+
+}
+
+
+.message-text {
+
+    color:
+        #c1d9df;
+
+}
+
+
+.separator {
+
+    color:
+        #557b88;
+
+}
+
+
+/* =========================================================
+   SOUND BUTTON
+   ========================================================= */
+
+.sound-button {
+
+    width:
+        48px;
+
+    height:
+        38px;
+
+    margin-left:
+        9px;
+
+    background:
+        #d4dde0;
+
+    border:
+        3px solid
+        #46636d;
+
+    border-radius:
+        7px;
+
+    color:
+        #18252b;
+
+    font-family:
+        "Silkscreen",
+        monospace;
+
+    cursor:
+        pointer;
+
+    box-shadow:
+        2px 2px 0
+        #10252e;
+
+}
+
+
+.sound-button:hover {
+
+    background:
+        #e4edef;
+
+}
+
+
+.sound-button:active {
+
+    transform:
+        translate(
+            2px,
+            2px
+        );
+
+    box-shadow:
+        none;
+
+}
+
+
+/* =========================================================
+   CREDITS AREA
+   ========================================================= */
+
+.credits-area {
+
+    width:
+        calc(100vw - 24px);
+
+    margin:
+        0 auto;
+
+    min-height:
+        150px;
+
+    padding:
+        22px 20px 18px;
+
+    display:
+        flex;
+
+    flex-direction:
+        column;
+
+    align-items:
+        center;
+
+    text-align:
+        center;
+
+    background:
+
+        linear-gradient(
+            to bottom,
+            #123b76 0%,
+            #0a2147 45%,
+            #061525 100%
+        );
+
+    color:
+        #688596;
+
+    border-radius:
+        0 0 12px 12px;
+
+}
+
+
+/* =========================================================
+   PROJECT NAME
+   ========================================================= */
+
+.project-name {
+
+    color:
+        #9eb9c4;
+
+    font-size:
+        11px;
+
+    letter-spacing:
+        2px;
+
+    margin-bottom:
+        6px;
+
+}
+
+
+.project-description {
+
+    color:
+        #4f7080;
+
+    font-size:
+        8px;
+
+    margin-bottom:
+        15px;
+
+}
+
+
+/* =========================================================
+   CREDITS LINKS
+   ========================================================= */
+
+.credits-links {
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    gap:
+        8px;
+
+    font-size:
+        7px;
+
+    letter-spacing:
+        0.5px;
+
+}
+
+
+.credits-links a {
+
+    color:
+        #688b9a;
+
+    text-decoration:
+        none;
+
+}
+
+
+.credits-links a:hover {
+
+    color:
+        #a9c7d2;
+
+}
+
+
+.credits-links span {
+
+    color:
+        #38596a;
+
+}
+
+
+/* =========================================================
+   COPYRIGHT
+   ========================================================= */
+
+.copyright {
+
+    margin-top:
+        8px;
+
+    color:
+        #3f5f6d;
+
+    font-size:
+        6px;
+
+    letter-spacing:
+        0.5px;
+
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 900px) {
+
+    .tracker-frame {
+
+        width:
+            calc(100vw - 12px);
+
+        min-height:
+            500px;
+
+    }
+
+
+    .tracker-logo {
+
+        min-width:
+            280px;
+
+        font-size:
+            11px;
+
+        padding-left:
+            10px;
+
+        padding-right:
+            10px;
+
+    }
+
+
+    .cat-menu-button {
+
+        width:
+            60px;
+
+        height:
+            60px;
+
+    }
+
+
+    .top-right-button {
+
+        width:
+            54px;
+
+        height:
+            54px;
+
+    }
+
+
+    .tracker-message {
+
+        width:
+            60vw;
+
+        font-size:
+            7px;
+
+        gap:
+            7px;
+
+    }
+
+
+    .mascot {
+
+        width:
+            90px;
+
+    }
+
+
+    .mascot img {
+
+        width:
+            90px;
+
+    }
+
+
+    .credits-links {
+
+        flex-wrap:
+            wrap;
+
+        justify-content:
+            center;
+
+    }
+
+}
+/* =========================================================
+   VISUAL TUNING — ROUND / PIXEL GAME UI
+   ========================================================= */
+
+
+/* ---------------------------------------------------------
+   OUTER FRAME
+--------------------------------------------------------- */
+
+.tracker-frame {
+    border-width: 6px;
+
+    border-radius:
+        22px 22px 14px 14px;
+
+    box-shadow:
+        inset 0 0 0 3px #123c50,
+        0 0 0 2px #020b13;
+}
+
+
+/* ---------------------------------------------------------
+   MAP
+--------------------------------------------------------- */
+
+#map {
+    filter:
+        brightness(0.84)
+        saturate(0.78);
+}
+
+
+/* ---------------------------------------------------------
+   MAP FRAME
+--------------------------------------------------------- */
+
+.map-wrapper {
+    top: 30px;
+    left: 30px;
+    right: 30px;
+    bottom: 65px;
+
+    border-width: 4px;
+
+    border-radius: 11px;
+}
+
+
+/* ---------------------------------------------------------
+   TOP LEFT CAT
+--------------------------------------------------------- */
+
+.cat-menu-button {
+
+    width: 76px;
+    height: 76px;
+
+    top: 12px;
+    left: 12px;
+
+    border-width: 4px;
+
+    border-radius: 14px;
+
+    box-shadow:
+        4px 4px 0 #07131d;
+}
+
+
+/* ---------------------------------------------------------
+   TOP RIGHT PAW
+--------------------------------------------------------- */
+
+.top-right-button {
+
+    width: 68px;
+    height: 68px;
+
+    top: 12px;
+    right: 12px;
+
+    border-width: 4px;
+
+    border-radius: 14px;
+
+    box-shadow:
+        4px 4px 0 #07131d;
+}
+
+
+/* ---------------------------------------------------------
+   CENTER LOGO
+--------------------------------------------------------- */
+
+.tracker-logo {
+
+    height: 62px;
+
+    min-width: 400px;
+
+    padding:
+        7px 25px;
+
+    border-width: 5px;
+
+    border-radius: 14px;
+
+    font-size: 18px;
+
+    letter-spacing: 1.5px;
+
+    box-shadow:
+        inset 0 0 0 2px #0d2534,
+        4px 4px 0 #020b12;
+}
+
+
+.logo-mini-cat {
+
+    width: 38px;
+    height: 38px;
+}
+
+
+.logo-subtitle {
+
+    bottom: -20px;
+
+    font-size: 7px;
+
+    letter-spacing: 2px;
+}
+
+
+/* ---------------------------------------------------------
+   MASCOT
+--------------------------------------------------------- */
+
+.mascot {
+
+    left: 5px;
+
+    bottom: 24px;
+
+    width: 145px;
+}
+
+
+.mascot img {
+
+    width: 145px;
+}
+
+
+/* ---------------------------------------------------------
+   BOTTOM BAR
+--------------------------------------------------------- */
+
+.tracker-bar {
+
+    height: 65px;
+
+    border-top-width: 5px;
+}
+
+
+/* ---------------------------------------------------------
+   TICKER
+--------------------------------------------------------- */
+
+.tracker-message {
+
+    height: 42px;
+
+    width:
+        min(60vw, 720px);
+
+    padding:
+        0 20px;
+
+    border-width: 4px;
+
+    border-radius: 8px;
+
+    font-size: 9px;
+
+    letter-spacing: 1px;
+
+    box-shadow:
+        inset 0 0 0 2px #0b1217,
+        4px 4px 0 #0c2734;
+}
+
+
+/* ---------------------------------------------------------
+   SOUND BUTTON
+--------------------------------------------------------- */
+
+.sound-button {
+
+    width: 52px;
+    height: 42px;
+
+    border-width: 4px;
+
+    border-radius: 8px;
+}
+
+
+/* ---------------------------------------------------------
+   CREDITS
+--------------------------------------------------------- */
+
+.credits-area {
+
+    min-height: 165px;
+
+    padding-top: 25px;
+}
+
+
+.project-name {
+
+    font-size: 12px;
+
+    letter-spacing: 2.5px;
+}
+
+
+.project-description {
+
+    font-size: 8px;
+
+    letter-spacing: 0.5px;
+
+    margin-bottom: 18px;
+}
+
+
+.credits-links {
+
+    font-size: 8px;
+
+    gap: 9px;
+}
+
+
+.copyright {
+
+    font-size: 7px;
+}
+/* =========================================================
+   LIVE MAP STATISTICS
+   ========================================================= */
+
+.map-stats {
+
+    position: absolute;
+
+    left: 14px;
+    bottom: 14px;
+
+    z-index: 1000;
+
+    display: flex;
+
+    gap: 7px;
+
+    pointer-events: none;
+
+}
+
+
+.stat-card {
+
+    min-width: 82px;
+
+    padding:
+        7px 9px;
+
+    background:
+        rgba(
+            8,
+            25,
+            39,
+            0.94
+        );
+
+    border:
+        2px solid
+        #315d6d;
+
+    border-radius:
+        7px;
+
+    box-shadow:
+        2px 2px 0
+        rgba(
+            2,
+            10,
+            17,
+            0.8
+        );
+
+    display:
+        flex;
+
+    flex-direction:
+        column;
+
+    gap:
+        3px;
+
+}
+
+
+.stat-label {
+
+    color:
+        #608493;
+
+    font-size:
+        6px;
+
+    letter-spacing:
+        1px;
+
+}
+
+
+.stat-value {
+
+    color:
+        #c3dce3;
+
+    font-size:
+        11px;
+
+    font-weight:
+        700;
+
+}
+
+
+.progress-card {
+
+    min-width:
+        100px;
+
+    border-color:
+        #3c829b;
+
+}
+
+
+/* =========================================================
+   MOBILE STATS
+   ========================================================= */
+
+@media (max-width: 900px) {
+
+    .map-stats {
+
+        left: 8px;
+        bottom: 8px;
+
+        gap: 4px;
+
+        max-width:
+            calc(100% - 16px);
+
+        overflow-x:
+            auto;
+
+    }
+
+
+    .stat-card {
+
+        min-width:
+            65px;
+
+        padding:
+            6px 7px;
+
+    }
+
+
+    .stat-label {
+
+        font-size:
+            5px;
+
+    }
+
+
+    .stat-value {
+
+        font-size:
+            8px;
+
+    }
+
+}
+/* =========================================================
+   REPORT CAT BUTTON
+   ========================================================= */
+
+.report-cat-button {
+
+    position: absolute;
+
+    top: 92px;
+    right: 22px;
+
+    z-index: 1000;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 7px;
+
+    padding: 10px 13px;
+
+    border: 2px solid #2f788f;
+
+    border-radius: 9px;
+
+    background: #102f40;
+
+    color: #c9dfe4;
+
+    font-family:
+        "Silkscreen",
+        monospace;
+
+    font-size: 7px;
+
+    letter-spacing: 0.5px;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 3px 0 #06151f;
+
+    transition:
+        background 0.15s,
+        transform 0.1s;
+}
+
+
+.report-cat-button span {
+
+    font-size: 13px;
+
+    line-height: 1;
+
+    color: #78c4d5;
+
+}
+
+
+.report-cat-button:hover {
+
+    background: #17475b;
+
+}
+
+
+.report-cat-button:active {
+
+    transform:
+        translateY(3px);
+
+    box-shadow:
+        0 0 0 #06151f;
+
+}
+/* =========================================================
+   REPORT CAT — FINAL POSITION
+   ========================================================= */
+
+.tracker-frame {
+    position: relative !important;
+}
+
+#reportCatButton {
+    position: absolute !important;
+
+    top: 95px !important;
+    right: 22px !important;
+
+    z-index: 9999 !important;
+
+    width: auto !important;
+    height: auto !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    padding: 10px 13px !important;
+
+    border: 2px solid #2f788f !important;
+    border-radius: 9px !important;
+
+    background: #102f40 !important;
+    color: #c9dfe4 !important;
+
+    font-family: "Silkscreen", monospace !important;
+    font-size: 7px !important;
+
+    cursor: pointer !important;
+
+    box-shadow: 0 3px 0 #06151f !important;
+}
+/* =========================================================
+   REPORT CAT MODAL
+   ========================================================= */
+
+.report-modal {
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 10000;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 20px;
+
+    background:
+        rgba(3, 13, 20, 0.78);
+}
+
+
+.report-modal.hidden {
+    display: none !important;
+}
+
+
+.report-modal-box {
+    position: relative;
+
+    width: min(430px, 100%);
+
+    padding: 30px;
+
+    border:
+        3px solid #1e7895;
+
+    border-radius: 16px;
+
+    background:
+        #0b2435;
+
+    box-shadow:
+        0 0 0 5px #071827,
+        0 15px 40px rgba(0, 0, 0, 0.5);
+
+    color: #d2e5ea;
+
+    font-family:
+        "Silkscreen",
+        monospace;
+}
+
+
+.report-modal-close {
+    position: absolute;
+
+    top: 10px;
+    right: 12px;
+
+    width: 32px;
+    height: 32px;
+
+    border:
+        2px solid #245d70;
+
+    border-radius: 7px;
+
+    background: #071827;
+
+    color: #9fc2cc;
+
+    font-family:
+        "Silkscreen",
+        monospace;
+
+    font-size: 18px;
+
+    cursor: pointer;
+}
+
+
+.report-modal-title {
+    margin-bottom: 8px;
+
+    font-size: 18px;
+
+    color: #d2e5ea;
+}
+
+
+.report-modal-subtitle {
+    margin-bottom: 25px;
+
+    font-size: 7px;
+
+    color: #6e9eaf;
+
+    letter-spacing: 1px;
+}
+
+
+#reportCatForm {
+    display: grid;
+
+    gap: 9px;
+}
+
+
+#reportCatForm label {
+    margin-top: 8px;
+
+    font-size: 7px;
+
+    letter-spacing: 1px;
+
+    color: #7fc8dc;
+}
+
+
+#reportCatForm label span {
+    color: #6e9eaf;
+}
+
+
+#reportCatForm input {
+    width: 100%;
+
+    box-sizing: border-box;
+
+    padding: 11px;
+
+    border:
+        2px solid #245d70;
+
+    border-radius: 7px;
+
+    outline: none;
+
+    background: #071827;
+
+    color: #d2e5ea;
+
+    font-family:
+        "Silkscreen",
+        monospace;
+
+    font-size: 8px;
+}
+
+
+#reportCatForm input:focus {
+    border-color: #3b8ca7;
+}
+
+
+#catPhoto {
+    padding: 8px;
+}
+
+
+.photo-message,
+.report-location-message,
+.report-message {
+    min-height: 16px;
+
+    margin-top: 4px;
+
+    font-size: 7px;
+
+    line-height: 1.6;
+}
+
+
+.photo-message {
+    color: #d4c27a;
+}
+
+
+.report-location-message {
+    color: #6e9eaf;
+}
+
+
+.report-message {
+    color: #d4c27a;
+}
+
+
+.report-modal-actions {
+    display: flex;
+
+    justify-content: flex-end;
+
+    gap: 10px;
+
+    margin-top: 18px;
+}
+
+
+.report-cancel-button,
+.report-submit-button {
+    padding: 11px 15px;
+
+    border-radius: 7px;
+
+    font-family:
+        "Silkscreen",
+        monospace;
+
+    font-size: 7px;
+
+    cursor: pointer;
+}
+
+
+.report-cancel-button {
+    border:
+        2px solid #245d70;
+
+    background: #071827;
+
+    color: #9fc2cc;
+}
+
+
+.report-submit-button {
+    border:
+        2px solid #3b8ca7;
+
+    background: #17445a;
+
+    color: #d2e5ea;
+}
+
+
+.report-submit-button:hover {
+    background: #205a73;
+}
+/* =========================================================
+   REPORT CAT MODAL
+   ========================================================= */
+
+.report-modal {
+
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 9999;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 20px;
+
+    background: rgba(0, 0, 0, 0.75);
+
+}
+
+
+.report-modal.hidden {
+
+    display: none !important;
+
+}
+
+
+.report-modal-box {
+
+    position: relative;
+
+    width: min(480px, 100%);
+
+    padding: 30px;
+
+    border: 3px solid #1e7895;
+
+    border-radius: 16px;
+
+    background: #0b2435;
+
+    box-shadow:
+        0 0 0 5px #071827,
+        0 10px 40px rgba(0, 0, 0, 0.6);
+
+}
+
+
+.report-modal-close {
+
+    position: absolute;
+
+    top: 10px;
+
+    right: 12px;
+
+    border: none;
+
+    background: transparent;
+
+    color: #7fc8dc;
+
+    font-size: 28px;
+
+    cursor: pointer;
+
+}
+
+
+.report-modal-title {
+
+    margin-bottom: 8px;
+
+    color: #d2e5ea;
+
+    font-family: "Silkscreen", monospace;
+
+    font-size: 20px;
+
+}
+
+
+.report-modal-subtitle {
+
+    margin-bottom: 25px;
+
+    color: #6e9eaf;
+
+    font-family: "Silkscreen", monospace;
+
+    font-size: 8px;
+
+}
+
+
+#reportCatForm {
+
+    display: grid;
+
+    gap: 10px;
+
+}
+
+
+#reportCatForm label {
+
+    margin-top: 8px;
+
+    color: #7fc8dc;
+
+    font-family: "Silkscreen", monospace;
+
+    font-size: 8px;
+
+}
+
+
+#reportCatForm label span {
+
+    color: #6e9eaf;
+
+}
+
+
+#reportCatForm input {
+
+    box-sizing: border-box;
+
+    width: 100%;
+
+    padding: 11px;
+
+    border: 2px solid #245d70;
+
+    border-radius: 7px;
+
+    outline: none;
+
+    background: #071827;
+
+    color: #d2e5ea;
+
+    font-family: "Silkscreen", monospace;
+
+    font-size: 9px;
+
+}
+
+
+.report-modal-actions {
+
+    display: flex;
+
+    gap: 10px;
+
+    justify-content: flex-end;
+
+    margin-top: 20px;
+
+}
+
+
+.report-modal-actions button {
+
+    padding: 11px 18px;
+
+    border: 2px solid #3b8ca7;
+
+    border-radius: 7px;
+
+    background: #17445a;
+
+    color: #d2e5ea;
+
+    font-family: "Silkscreen", monospace;
+
+    font-size: 8px;
+
+    cursor: pointer;
+
+}
+
+
+.report-modal-actions button:hover {
+
+    background: #205a73;
+
+}

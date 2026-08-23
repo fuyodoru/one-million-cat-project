@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Cat Tracker — Admin</title>
+
+
+    <!-- =================================================
+         PIXEL FONT
+    ================================================== -->
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&display=swap"
+        rel="stylesheet"
+    >
+
+
+    <!-- =================================================
+         ADMIN CSS
+    ================================================== -->
+
+    <link
+        rel="stylesheet"
+        href="admin.css"
+    >
+
+</head>
+
+
+<body>
+
+
+    <!-- =================================================
+         LOGIN SCREEN
+    ================================================== -->
+
+    <section
+        id="loginScreen"
+        class="login-screen"
+    >
+
+        <div class="login-box">
+
+
+            <!-- PIXEL CAT LOGO -->
+
+            <div class="login-logo">
+
+                <img
+                    src="assets/cats/logo-face-1.png"
+                    alt="Cat Tracker"
+                >
+
+            </div>
+
+
+            <div class="admin-kicker">
+
+                ONE MILLION CAT PROJECT
+
+            </div>
+
+
+            <h1>
+
+                ADMIN ACCESS
+
+            </h1>
+
+
+            <p class="login-description">
+
+                SIGN IN TO MODERATE CAT SIGHTINGS.
+
+            </p>
+
+
+            <!-- =================================================
+                 LOGIN FORM
+            ================================================== -->
+
+            <form id="loginForm">
+
+
+                <label for="email">
+
+                    EMAIL
+
+                </label>
+
+
+                <input
+                    id="email"
+                    type="email"
+                    autocomplete="email"
+                    placeholder="YOUR EMAIL"
+                    required
+                >
+
+
+                <label for="password">
+
+                    PASSWORD
+
+                </label>
+
+
+                <input
+                    id="password"
+                    type="password"
+                    autocomplete="current-password"
+                    placeholder="PASSWORD"
+                    required
+                >
+
+
+                <button
+                    type="submit"
+                    class="login-button"
+                >
+
+                    LOG IN
+
+                </button>
+
+
+            </form>
+
+
+            <div
+                id="loginMessage"
+                class="login-message"
+            ></div>
+
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =================================================
+         ADMIN PANEL
+    ================================================== -->
+
+    <main
+        id="adminPanel"
+        class="admin-page hidden"
+    >
+
+
+        <!-- =================================================
+             HEADER
+        ================================================== -->
+
+        <header class="admin-header">
+
+
+            <div>
+
+                <div class="admin-kicker">
+
+                    ONE MILLION CAT PROJECT
+
+                </div>
+
+
+                <h1>
+
+                    CAT SIGHTINGS
+
+                </h1>
+
+
+                <p>
+
+                    ADMIN MODERATION PANEL
+
+                </p>
+
+            </div>
+
+
+            <div class="admin-user">
+
+
+                <span id="adminUsername">
+
+                    ADMIN
+
+                </span>
+
+
+                <button
+                    id="logoutButton"
+                    type="button"
+                >
+
+                    LOG OUT
+
+                </button>
+
+
+            </div>
+
+
+        </header>
+
+
+
+        <!-- =================================================
+             STATISTICS
+        ================================================== -->
+
+        <section class="admin-stats">
+
+
+            <div class="stat-card">
+
+                <span>
+
+                    PENDING
+
+                </span>
+
+
+                <strong id="pendingCount">
+
+                    0
+
+                </strong>
+
+            </div>
+
+
+
+            <div class="stat-card">
+
+                <span>
+
+                    APPROVED
+
+                </span>
+
+
+                <strong id="approvedCount">
+
+                    0
+
+                </strong>
+
+            </div>
+
+
+
+            <div class="stat-card">
+
+                <span>
+
+                    REJECTED
+
+                </span>
+
+
+                <strong id="rejectedCount">
+
+                    0
+
+                </strong>
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- =================================================
+             SIGHTINGS
+        ================================================== -->
+
+        <section class="sightings-section">
+
+
+            <div class="section-header">
+
+
+                <h2>
+
+                    PENDING SIGHTINGS
+
+                </h2>
+
+
+                <button
+                    id="refreshButton"
+                    type="button"
+                >
+
+                    REFRESH
+
+                </button>
+
+
+            </div>
+
+
+
+            <div
+                id="statusMessage"
+                class="status-message"
+            >
+
+                LOADING...
+
+            </div>
+
+
+
+            <div
+                id="sightingsList"
+                class="sightings-list"
+            ></div>
+
+
+        </section>
+
+
+    </main>
+
+
+
+    <!-- =================================================
+         SUPABASE
+    ================================================== -->
+
+    <script
+        src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
+    ></script>
+
+
+    <!-- =================================================
+         OUR JAVASCRIPT
+    ================================================== -->
+
+    <script src="admin.js"></script>
+
+
+</body>
+
+</html>
