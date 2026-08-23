@@ -2089,6 +2089,10 @@ textarea {
    MOBILE RESPONSIVE DESIGN — FINAL
 ========================================================= */
 
+/* =========================================================
+   MOBILE RESPONSIVE DESIGN — FINAL
+========================================================= */
+
 @media (max-width: 600px) {
 
     html,
@@ -2114,8 +2118,8 @@ textarea {
 
         width: calc(100vw - 20px) !important;
 
-        height: 720px !important;
-        min-height: 720px !important;
+        height: 640px !important;
+        min-height: 640px !important;
 
         margin: 10px auto 0 !important;
 
@@ -2127,36 +2131,7 @@ textarea {
 
 
     /* =====================================================
-       MAP
-    ===================================================== */
-
-    .map-wrapper {
-        position: absolute !important;
-
-        top: 105px !important;
-        left: 10px !important;
-        right: 10px !important;
-        bottom: 65px !important;
-
-        width: auto !important;
-        height: auto !important;
-
-        margin: 0 !important;
-
-        border-width: 3px !important;
-        border-radius: 9px !important;
-
-        overflow: hidden !important;
-    }
-
-    #map {
-        width: 100% !important;
-        height: 100% !important;
-    }
-
-
-    /* =====================================================
-       LEFT CAT BUTTON
+       TOP LEFT CAT BUTTON
     ===================================================== */
 
     .cat-menu-button {
@@ -2179,13 +2154,61 @@ textarea {
     .cat-menu-button img {
         width: 100% !important;
         height: 100% !important;
+
         max-width: none !important;
         max-height: none !important;
     }
 
 
     /* =====================================================
-       RIGHT PAW BUTTON
+       CENTER LOGO
+    ===================================================== */
+
+    .tracker-logo {
+        position: absolute !important;
+
+        top: 14px !important;
+        left: 50% !important;
+
+        transform: translateX(-50%) !important;
+
+        width: calc(100% - 155px) !important;
+
+        min-width: 0 !important;
+        max-width: 235px !important;
+
+        height: 48px !important;
+
+        padding: 5px 6px !important;
+
+        z-index: 4500 !important;
+
+        border-width: 3px !important;
+        border-radius: 10px !important;
+
+        font-size: 9px !important;
+        letter-spacing: 0.8px !important;
+
+        white-space: nowrap !important;
+
+        overflow: visible !important;
+    }
+
+    .tracker-logo .logo-mini-cat {
+        width: 20px !important;
+        height: 20px !important;
+    }
+
+    .logo-subtitle {
+        bottom: -15px !important;
+
+        font-size: 5px !important;
+        letter-spacing: 1.5px !important;
+    }
+
+
+    /* =====================================================
+       TOP RIGHT PAW BUTTON
     ===================================================== */
 
     .top-right-button {
@@ -2210,59 +2233,13 @@ textarea {
 
 
     /* =====================================================
-       CENTER LOGO
-    ===================================================== */
-
-    .tracker-logo {
-        position: absolute !important;
-
-        top: 14px !important;
-        left: 50% !important;
-
-        transform: translateX(-50%) !important;
-
-        width: calc(100% - 150px) !important;
-        min-width: 0 !important;
-        max-width: 250px !important;
-
-        height: 48px !important;
-
-        padding: 5px 6px !important;
-
-        z-index: 4500 !important;
-
-        border-width: 3px !important;
-        border-radius: 10px !important;
-
-        font-size: 9px !important;
-        letter-spacing: 1px !important;
-
-        white-space: nowrap !important;
-
-        overflow: visible !important;
-    }
-
-    .logo-mini-cat {
-        width: 20px !important;
-        height: 20px !important;
-    }
-
-    .logo-subtitle {
-        bottom: -14px !important;
-
-        font-size: 5px !important;
-        letter-spacing: 1.5px !important;
-    }
-
-
-    /* =====================================================
-       REPORT CAT BUTTON
+       REPORT CAT
     ===================================================== */
 
     #reportCatButton {
         position: absolute !important;
 
-        top: 72px !important;
+        top: 78px !important;
         right: 12px !important;
 
         width: auto !important;
@@ -2290,7 +2267,7 @@ textarea {
     .navigation-panel {
         position: absolute !important;
 
-        top: 75px !important;
+        top: 78px !important;
         left: 10px !important;
 
         width: calc(100% - 20px) !important;
@@ -2302,7 +2279,37 @@ textarea {
 
 
     /* =====================================================
-       MAP POPUP
+       MAP
+       MUCH SHORTER ON MOBILE
+    ===================================================== */
+
+    .map-wrapper {
+        position: absolute !important;
+
+        top: 112px !important;
+        left: 10px !important;
+        right: 10px !important;
+
+        width: auto !important;
+
+        height: 430px !important;
+
+        margin: 0 !important;
+
+        border-width: 3px !important;
+        border-radius: 9px !important;
+
+        overflow: hidden !important;
+    }
+
+    #map {
+        width: 100% !important;
+        height: 100% !important;
+    }
+
+
+    /* =====================================================
+       MAP POPUPS
     ===================================================== */
 
     .leaflet-popup {
@@ -2323,25 +2330,27 @@ textarea {
 
 
     /* =====================================================
-       MAP STATS
+       STATISTICS
+       ALL 5 CARDS ON ONE ROW
     ===================================================== */
 
     .map-stats {
         position: absolute !important;
 
-        left: 8px !important;
-        right: 8px !important;
+        left: 7px !important;
+        right: 7px !important;
         bottom: 8px !important;
 
         width: auto !important;
         max-width: none !important;
 
-        display: grid !important;
+        display: flex !important;
 
-        grid-template-columns:
-            repeat(4, minmax(0, 1fr)) !important;
+        flex-direction: row !important;
 
-        gap: 4px !important;
+        flex-wrap: nowrap !important;
+
+        gap: 3px !important;
 
         z-index: 3000 !important;
 
@@ -2349,27 +2358,38 @@ textarea {
     }
 
     .stat-card {
-        min-width: 0 !important;
-        width: 100% !important;
+        flex: 1 1 0 !important;
 
-        padding: 6px 3px !important;
+        min-width: 0 !important;
+        width: auto !important;
+
+        padding: 5px 2px !important;
 
         box-sizing: border-box !important;
 
         text-align: center !important;
+
+        white-space: nowrap !important;
     }
 
     .stat-label {
         font-size: 4px !important;
-        letter-spacing: 0.5px !important;
+        letter-spacing: 0.3px !important;
+
+        white-space: nowrap !important;
     }
 
     .stat-value {
-        font-size: 8px !important;
+        font-size: 7px !important;
+
+        white-space: nowrap !important;
     }
 
     .progress-card {
+        flex: 1 1 0 !important;
+
         min-width: 0 !important;
+
         grid-column: auto !important;
     }
 
@@ -2384,13 +2404,13 @@ textarea {
         left: 4px !important;
         bottom: 42px !important;
 
-        width: 75px !important;
+        width: 70px !important;
 
         z-index: 4000 !important;
     }
 
     .mascot img {
-        width: 75px !important;
+        width: 70px !important;
         height: auto !important;
     }
 
@@ -2411,13 +2431,14 @@ textarea {
 
         margin: 0 !important;
 
-        z-index: 3500 !important;
-
         padding: 0 8px !important;
 
         box-sizing: border-box !important;
 
+        z-index: 3500 !important;
+
         display: flex !important;
+
         align-items: center !important;
         justify-content: center !important;
     }
@@ -2520,6 +2541,7 @@ textarea {
 
     .report-modal-box {
         width: 100% !important;
+
         max-width: 350px !important;
 
         max-height: calc(100vh - 24px) !important;
@@ -2557,7 +2579,7 @@ textarea {
 
 
     /* =====================================================
-       LEAFLET
+       LEAFLET CONTROLS
     ===================================================== */
 
     .leaflet-control-zoom {
