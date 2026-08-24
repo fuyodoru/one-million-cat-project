@@ -2805,3 +2805,64 @@ textarea {
 
     text-align: center;
 }
+
+/* =========================================================
+   CAT CARD — FINAL LEAFLET OVERRIDE
+========================================================= */
+
+.leaflet-popup.cat-card-popup {
+    max-width: 320px !important;
+    width: 320px !important;
+}
+
+.leaflet-popup.cat-card-popup .leaflet-popup-content-wrapper {
+    width: 300px !important;
+    max-width: 300px !important;
+    min-width: 300px !important;
+
+    padding: 0 !important;
+    margin: 0 !important;
+
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+
+.leaflet-popup.cat-card-popup .leaflet-popup-content {
+    width: 280px !important;
+    min-width: 280px !important;
+    max-width: 280px !important;
+
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+/* Mobile override */
+@media (max-width: 600px) {
+
+    .leaflet-popup.cat-card-popup {
+        width: 292px !important;
+        max-width: 292px !important;
+    }
+
+    .leaflet-popup.cat-card-popup .leaflet-popup-content-wrapper {
+        width: 282px !important;
+        min-width: 282px !important;
+        max-width: 282px !important;
+    }
+
+    .leaflet-popup.cat-card-popup .leaflet-popup-content {
+        width: 280px !important;
+        min-width: 280px !important;
+        max-width: 280px !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    .leaflet-popup.cat-card-popup .cat-card {
+        width: 280px !important;
+        min-width: 280px !important;
+        max-width: 280px !important;
+    }
+}
