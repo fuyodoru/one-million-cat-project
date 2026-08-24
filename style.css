@@ -2590,73 +2590,109 @@ textarea {
         font-size: 6px !important;
     }
 }
-
 /* =========================================================
-   CAT CARD
-   ========================================================= */
+   CAT CARD / LEAFLET POPUP
+========================================================= */
+
+/* Leaflet popup itself */
+.leaflet-popup.cat-card-popup {
+    margin-bottom: 20px;
+}
 
 .cat-card-popup .leaflet-popup-content-wrapper {
-    background: transparent;
-    padding: 0;
-    border-radius: 0;
-    box-shadow: none;
+    background: transparent !important;
+    padding: 0 !important;
+    border: none !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
 }
 
 .cat-card-popup .leaflet-popup-content {
-    margin: 0;
-    width: auto !important;
+    width: 280px !important;
+    min-width: 280px !important;
+    max-width: 280px !important;
+    margin: 0 !important;
+    padding: 0 !important;
 }
 
 .cat-card-popup .leaflet-popup-tip {
-    background: #0b1d29;
-    box-shadow: none;
+    background: #082333 !important;
+    box-shadow: none !important;
 }
+
+/* =========================================================
+   CARD
+========================================================= */
 
 .cat-card {
     position: relative;
-
-    width: 290px;
-
-    background:
-        linear-gradient(
-            180deg,
-            #0d2938 0%,
-            #081923 100%
-        );
-
-    border: 3px solid #277e9c;
-
-    border-radius: 16px;
+    width: 280px;
+    min-width: 280px;
+    max-width: 280px;
 
     overflow: hidden;
 
+    background: #082333;
+    border: 3px solid #2c91b0;
+    border-radius: 12px;
+
     box-shadow:
-        0 0 0 3px #07131c,
-        0 8px 25px rgba(0, 0, 0, 0.55);
+        0 0 0 3px #061722,
+        0 8px 20px rgba(0, 0, 0, 0.65);
 
-    color: #c5e0e8;
+    color: #d9f1f5;
 
-    font-family:
-        "Courier New",
-        monospace;
+    font-family: inherit;
 }
 
+/* =========================================================
+   CLOSE BUTTON
+========================================================= */
 
-/* PHOTO */
+.cat-card-close {
+    position: absolute;
+
+    top: 8px;
+    right: 8px;
+
+    z-index: 20;
+
+    width: 26px;
+    height: 26px;
+
+    padding: 0;
+
+    border: 2px solid #2c91b0;
+    border-radius: 5px;
+
+    background: #061722;
+    color: #bce8ef;
+
+    font-size: 18px;
+    line-height: 20px;
+
+    cursor: pointer;
+}
+
+.cat-card-close:hover {
+    background: #12384a;
+}
+
+/* =========================================================
+   PHOTO
+========================================================= */
 
 .cat-card-photo {
     width: 100%;
-    height: 175px;
+    height: 170px;
 
-    background: #07131c;
+    overflow: hidden;
+
+    background: #061722;
 
     display: flex;
     align-items: center;
     justify-content: center;
-
-    overflow: hidden;
-
-    border-bottom: 3px solid #277e9c;
 }
 
 .cat-card-photo img {
@@ -2668,150 +2704,104 @@ textarea {
     display: block;
 }
 
-
-/* NO PHOTO */
-
+/* No photo */
 .cat-card-no-photo {
     flex-direction: column;
 
-    gap: 8px;
+    background:
+        linear-gradient(
+            135deg,
+            #061722,
+            #0c2d3d
+        );
 
-    color: #7194a0;
-
-    font-size: 11px;
-
-    letter-spacing: 2px;
+    color: #7095a0;
 }
 
 .cat-card-paw {
     font-size: 42px;
-    image-rendering: pixelated;
+    margin-bottom: 5px;
 }
 
-
-/* CLOSE */
-
-.cat-card-close {
-    position: absolute;
-
-    top: 8px;
-    right: 8px;
-
-    width: 34px;
-    height: 34px;
-
-    border: 2px solid #277e9c;
-    border-radius: 8px;
-
-    background: #07131c;
-    color: #c5e0e8;
-
-    font-size: 22px;
-    line-height: 1;
-
-    cursor: pointer;
-
-    z-index: 5;
+.cat-card-no-photo span {
+    font-size: 10px;
+    letter-spacing: 2px;
 }
 
-.cat-card-close:hover {
-    background: #123546;
-}
-
-
-/* CONTENT */
+/* =========================================================
+   CONTENT
+========================================================= */
 
 .cat-card-content {
     padding: 16px;
 }
 
 .cat-card-label {
-    font-size: 10px;
-
-    letter-spacing: 3px;
-
-    color: #72b5c8;
-
     margin-bottom: 8px;
+
+    color: #7bd5e8;
+
+    font-size: 9px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
 }
 
 .cat-card-title {
-    font-size: 17px;
+    margin-bottom: 16px;
 
+    color: #e2f6f8;
+
+    font-size: 17px;
     font-weight: bold;
 
-    letter-spacing: 2px;
-
-    color: #d3e8ed;
-
-    margin-bottom: 15px;
+    letter-spacing: 1px;
+    line-height: 1.3;
 }
+
+/* =========================================================
+   INFO
+========================================================= */
 
 .cat-card-info {
     display: flex;
-
     flex-direction: column;
-
     gap: 10px;
 }
 
 .cat-card-row {
     display: flex;
+    align-items: center;
 
-    align-items: flex-start;
+    gap: 8px;
 
-    gap: 9px;
+    color: #b7d7df;
 
     font-size: 12px;
-
     line-height: 1.4;
-
-    color: #aacbd4;
 }
 
 .cat-card-icon {
     flex-shrink: 0;
 
-    width: 18px;
+    width: 20px;
 
     text-align: center;
 }
+
+/* =========================================================
+   FOOTER
+========================================================= */
 
 .cat-card-footer {
-    margin-top: 16px;
-
+    margin-top: 15px;
     padding-top: 10px;
 
-    border-top: 1px solid #23576b;
+    border-top: 1px solid rgba(68, 160, 185, 0.4);
+
+    color: #5c9cab;
 
     font-size: 8px;
-
-    letter-spacing: 3px;
+    letter-spacing: 2px;
 
     text-align: center;
-
-    color: #618e9b;
-}
-
-
-/* MOBILE */
-
-@media (max-width: 600px) {
-
-    .cat-card {
-        width: 260px;
-    }
-
-    .cat-card-photo {
-        height: 150px;
-    }
-
-    .cat-card-content {
-        padding: 14px;
-    }
-
-    .cat-card-title {
-        font-size: 15px;
-    }
-
 }
