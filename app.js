@@ -56,6 +56,10 @@ L.tileLayer(
 ).addTo(map);
 
 
+/* =========================================================
+   PAW MARKER
+========================================================= */
+
 const pawIcon =
     L.icon({
         iconUrl:
@@ -107,6 +111,44 @@ function escapeHTML(value) {
         );
 }
 
+
+/* =========================================================
+   DATE FORMAT
+========================================================= */
+
+function formatDate(
+    value
+) {
+
+    if (!value) {
+        return "DATE UNKNOWN";
+    }
+
+    const date =
+        new Date(value);
+
+    if (
+        Number.isNaN(
+            date.getTime()
+        )
+    ) {
+        return "DATE UNKNOWN";
+    }
+
+    return date.toLocaleDateString(
+        "en-GB",
+        {
+            day: "2-digit",
+            month: "short",
+            year: "numeric"
+        }
+    );
+}
+
+
+/* =========================================================
+   PROGRESS FORMAT
+========================================================= */
 
 function formatProgress(
     progress
@@ -186,6 +228,7 @@ async function loadCatSightings() {
         "Loading cat sightings..."
     );
 
+
     markerLayer.clearLayers();
 
 
@@ -203,6 +246,7 @@ async function loadCatSightings() {
             public_longitude,
             city,
             country,
+            photo_url,
             created_at
         `);
 
@@ -317,8 +361,8 @@ function updateStatistics(
                     new Date(
                         sighting.created_at
                     )
-                    .toISOString()
-                    .split("T")[0];
+                        .toISOString()
+                        .split("T")[0];
 
 
                 if (
@@ -428,10 +472,221 @@ function updateCounter(
 
 
 /* =========================================================
+   CREATE SIGNED PHOTO URL
+========================================================= */
+
+async function getCatPhotoURL(
+    photoPath
+) {
+
+    if (
+        !photoPath
+    ) {
+        return null;
+    }
+
+
+    try {
+
+        const {
+            data,
+            error
+        } =
+            await supabaseClient
+                .storage
+                .from(
+                    "cat-sightings"
+                )
+                .createSignedUrl(
+                    photoPath,
+                    60 * 60
+                );
+
+
+        if (
+            error
+        ) {
+
+            console.warn(
+                "Could not create signed photo URL:",
+                error
+            );
+
+            return null;
+        }
+
+
+        return (
+            data?.signedUrl ||
+            null
+        );
+
+    } catch (
+        error
+    ) {
+
+        console.warn(
+            "Could not load cat photo:",
+            error
+        );
+
+        return null;
+    }
+}
+
+
+/* =========================================================
+   CAT CARD HTML
+========================================================= */
+
+function createCatCardHTML(
+    sighting,
+    photoURL
+) {
+
+    const count =
+        Number(
+            sighting.cat_count ||
+            0
+        );
+
+
+    const city =
+        sighting.city ||
+        "UNKNOWN CITY";
+
+
+    const country =
+        sighting.country ||
+        "UNKNOWN COUNTRY";
+
+
+    const date =
+        formatDate(
+            sighting.created_at
+        );
+
+
+    let photoHTML;
+
+
+    if (
+        photoURL
+    ) {
+
+        photoHTML = `
+            <div class="cat-card-photo">
+
+                <img
+                    src="${escapeHTML(photoURL)}"
+                    alt="Cat sighting in ${escapeHTML(city)}"
+                    loading="lazy"
+                >
+
+            </div>
+        `;
+
+    } else {
+
+        photoHTML = `
+            <div class="cat-card-photo cat-card-no-photo">
+
+                <div class="cat-card-paw">
+                    🐾
+                </div>
+
+                <span>
+                    NO PHOTO
+                </span>
+
+            </div>
+        `;
+    }
+
+
+    return `
+
+        <div class="cat-card">
+
+            <button
+                class="cat-card-close"
+                type="button"
+                aria-label="Close"
+            >
+                ×
+            </button>
+
+
+            ${photoHTML}
+
+
+            <div class="cat-card-content">
+
+                <div class="cat-card-label">
+                    🐾 CAT SIGHTING
+                </div>
+
+
+                <div class="cat-card-title">
+
+                    ${count}
+
+                    ${count === 1
+                        ? "CAT"
+                        : "CATS"}
+
+                    RECORDED
+
+                </div>
+
+
+                <div class="cat-card-info">
+
+                    <div class="cat-card-row">
+
+                        <span class="cat-card-icon">
+                            📍
+                        </span>
+
+                        <span>
+                            ${escapeHTML(city)},
+                            ${escapeHTML(country)}
+                        </span>
+
+                    </div>
+
+
+                    <div class="cat-card-row">
+
+                        <span class="cat-card-icon">
+                            📅
+                        </span>
+
+                        <span>
+                            ${escapeHTML(date)}
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="cat-card-footer">
+                    EVERY CAT COUNTS
+                </div>
+
+            </div>
+
+        </div>
+    `;
+}
+
+
+/* =========================================================
    MARKERS
 ========================================================= */
 
-function addCatMarker(
+async function addCatMarker(
     sighting
 ) {
 
@@ -489,45 +744,89 @@ function addCatMarker(
         );
 
 
-    const count =
-        Number(
-            sighting.cat_count ||
-            0
+    /*
+     * We create the marker first,
+     * then load the optional photo.
+     */
+
+    const photoURL =
+        await getCatPhotoURL(
+            sighting.photo_url
         );
 
 
-    const location =
-        sighting.city &&
-        sighting.country
-
-            ? `${escapeHTML(
-                    sighting.city
-              )}, ${escapeHTML(
-                    sighting.country
-              )}`
-
-            : "LOCATION UNKNOWN";
+    const cardHTML =
+        createCatCardHTML(
+            sighting,
+            photoURL
+        );
 
 
-    marker.bindPopup(`
-        <div class="cat-popup">
+    marker.bindPopup(
+        cardHTML,
+        {
+            className:
+                "cat-card-popup",
 
-            <strong>
-                🐾 CAT SIGHTING
-            </strong>
+            maxWidth:
+                320,
 
-            <br><br>
+            minWidth:
+                280,
 
-            ${count}
-            ${count === 1 ? "CAT" : "CATS"}
-            RECORDED
+            closeButton:
+                false,
 
-            <br><br>
+            autoPan:
+                true,
 
-            ${location}
+            autoPanPadding:
+                [20, 20]
+        }
+    );
 
-        </div>
-    `);
+
+    /*
+     * Custom close button.
+     */
+
+    marker.on(
+        "popupopen",
+        event => {
+
+            const popupElement =
+                event.popup
+                    .getElement();
+
+
+            if (
+                !popupElement
+            ) {
+                return;
+            }
+
+
+            const closeButton =
+                popupElement.querySelector(
+                    ".cat-card-close"
+                );
+
+
+            if (
+                closeButton
+            ) {
+
+                closeButton.addEventListener(
+                    "click",
+                    () => {
+
+                        marker.closePopup();
+
+                    }
+                );
+            }
+        }
+    );
 }
 
 
@@ -1132,6 +1431,7 @@ async function getAuthenticatedUser() {
             error
         );
 
+
         throw new Error(
             "COULD NOT CREATE A USER SESSION."
         );
@@ -1157,13 +1457,13 @@ async function getAuthenticatedUser() {
 ========================================================= */
 
 /*
-   CITY + COUNTRY
+    CITY + COUNTRY
         ↓
-   OpenStreetMap Nominatim
+    OpenStreetMap Nominatim
         ↓
-   Coordinates
+    Coordinates
 
-   Browser GPS is NOT used.
+    Browser GPS is NOT used.
 */
 
 async function geocodeCity(
@@ -1371,9 +1671,9 @@ async function uploadCatPhoto(
 
 
     /*
-       If the bucket is private, the URL stored here
-       is only a file path in practice. Admin can later
-       use createSignedUrl().
+        If the bucket is private,
+        photo_url stores only the
+        storage file path.
     */
 
     return filePath;
@@ -1450,7 +1750,7 @@ async function submitCatSighting() {
 
 
     /*
-       1. Anonymous user.
+        1. Anonymous user.
     */
 
     const user =
@@ -1458,8 +1758,8 @@ async function submitCatSighting() {
 
 
     /*
-       2. Convert city + country
-          into coordinates.
+        2. Convert city + country
+           into coordinates.
     */
 
     if (
@@ -1488,7 +1788,7 @@ async function submitCatSighting() {
 
 
     /*
-       3. Upload optional photo.
+        3. Upload optional photo.
     */
 
     let photoPath =
@@ -1526,16 +1826,16 @@ async function submitCatSighting() {
 
 
     /*
-       4. Save sighting.
+        4. Save sighting.
 
-       latitude / longitude:
-       city coordinates
+        latitude / longitude:
+        city coordinates
 
-       public_latitude / public_longitude:
-       same city coordinates
+        public_latitude / public_longitude:
+        same city coordinates
 
-       The marker gets a small privacy
-       offset in addCatMarker().
+        Marker gets privacy offset
+        in addCatMarker().
     */
 
     const {
