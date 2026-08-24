@@ -471,22 +471,39 @@ function updateCounter(
 }
 
 
-/* =========================================================
-   CREATE SIGNED PHOTO URL
-========================================================= */
+async function getCatPhotoURL(photoPath) {
 
-async function getCatPhotoURL(
-    photoPath
-) {
-
-    if (
-        !photoPath
-    ) {
+    if (!photoPath) {
+        console.log("CAT CARD: No photo path.");
         return null;
     }
 
+    console.log(
+        "CAT CARD: Loading photo:",
+        photoPath
+    );
 
     try {
+
+        /* -----------------------------------------
+           Already a complete URL
+        ----------------------------------------- */
+
+        if (
+            photoPath.startsWith("http://") ||
+            photoPath.startsWith("https://")
+        ) {
+            console.log(
+                "CAT CARD: Using existing URL."
+            );
+
+            return photoPath;
+        }
+
+
+        /* -----------------------------------------
+           Supabase Storage signed URL
+        ----------------------------------------- */
 
         const {
             data,
@@ -494,21 +511,17 @@ async function getCatPhotoURL(
         } =
             await supabaseClient
                 .storage
-                .from(
-                    "cat-sightings"
-                )
+                .from("cat-sightings")
                 .createSignedUrl(
                     photoPath,
                     60 * 60
                 );
 
 
-        if (
-            error
-        ) {
+        if (error) {
 
-            console.warn(
-                "Could not create signed photo URL:",
+            console.error(
+                "CAT CARD: Signed URL ERROR:",
                 error
             );
 
@@ -516,24 +529,36 @@ async function getCatPhotoURL(
         }
 
 
-        return (
-            data?.signedUrl ||
-            null
+        if (
+            !data ||
+            !data.signedUrl
+        ) {
+
+            console.error(
+                "CAT CARD: Supabase returned no signed URL.",
+                data
+            );
+
+            return null;
+        }
+
+
+        console.log(
+            "CAT CARD: Signed URL created."
         );
 
-    } catch (
-        error
-    ) {
+        return data.signedUrl;
 
-        console.warn(
-            "Could not load cat photo:",
+    } catch (error) {
+
+        console.error(
+            "CAT CARD: Photo loading ERROR:",
             error
         );
 
         return null;
     }
 }
-
 
 /* =========================================================
    CAT CARD HTML
