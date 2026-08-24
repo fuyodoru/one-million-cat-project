@@ -2590,3 +2590,228 @@ textarea {
         font-size: 6px !important;
     }
 }
+
+/* =========================================================
+   CAT CARD
+   ========================================================= */
+
+.cat-card-popup .leaflet-popup-content-wrapper {
+    background: transparent;
+    padding: 0;
+    border-radius: 0;
+    box-shadow: none;
+}
+
+.cat-card-popup .leaflet-popup-content {
+    margin: 0;
+    width: auto !important;
+}
+
+.cat-card-popup .leaflet-popup-tip {
+    background: #0b1d29;
+    box-shadow: none;
+}
+
+.cat-card {
+    position: relative;
+
+    width: 290px;
+
+    background:
+        linear-gradient(
+            180deg,
+            #0d2938 0%,
+            #081923 100%
+        );
+
+    border: 3px solid #277e9c;
+
+    border-radius: 16px;
+
+    overflow: hidden;
+
+    box-shadow:
+        0 0 0 3px #07131c,
+        0 8px 25px rgba(0, 0, 0, 0.55);
+
+    color: #c5e0e8;
+
+    font-family:
+        "Courier New",
+        monospace;
+}
+
+
+/* PHOTO */
+
+.cat-card-photo {
+    width: 100%;
+    height: 175px;
+
+    background: #07131c;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    overflow: hidden;
+
+    border-bottom: 3px solid #277e9c;
+}
+
+.cat-card-photo img {
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+
+    display: block;
+}
+
+
+/* NO PHOTO */
+
+.cat-card-no-photo {
+    flex-direction: column;
+
+    gap: 8px;
+
+    color: #7194a0;
+
+    font-size: 11px;
+
+    letter-spacing: 2px;
+}
+
+.cat-card-paw {
+    font-size: 42px;
+    image-rendering: pixelated;
+}
+
+
+/* CLOSE */
+
+.cat-card-close {
+    position: absolute;
+
+    top: 8px;
+    right: 8px;
+
+    width: 34px;
+    height: 34px;
+
+    border: 2px solid #277e9c;
+    border-radius: 8px;
+
+    background: #07131c;
+    color: #c5e0e8;
+
+    font-size: 22px;
+    line-height: 1;
+
+    cursor: pointer;
+
+    z-index: 5;
+}
+
+.cat-card-close:hover {
+    background: #123546;
+}
+
+
+/* CONTENT */
+
+.cat-card-content {
+    padding: 16px;
+}
+
+.cat-card-label {
+    font-size: 10px;
+
+    letter-spacing: 3px;
+
+    color: #72b5c8;
+
+    margin-bottom: 8px;
+}
+
+.cat-card-title {
+    font-size: 17px;
+
+    font-weight: bold;
+
+    letter-spacing: 2px;
+
+    color: #d3e8ed;
+
+    margin-bottom: 15px;
+}
+
+.cat-card-info {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 10px;
+}
+
+.cat-card-row {
+    display: flex;
+
+    align-items: flex-start;
+
+    gap: 9px;
+
+    font-size: 12px;
+
+    line-height: 1.4;
+
+    color: #aacbd4;
+}
+
+.cat-card-icon {
+    flex-shrink: 0;
+
+    width: 18px;
+
+    text-align: center;
+}
+
+.cat-card-footer {
+    margin-top: 16px;
+
+    padding-top: 10px;
+
+    border-top: 1px solid #23576b;
+
+    font-size: 8px;
+
+    letter-spacing: 3px;
+
+    text-align: center;
+
+    color: #618e9b;
+}
+
+
+/* MOBILE */
+
+@media (max-width: 600px) {
+
+    .cat-card {
+        width: 260px;
+    }
+
+    .cat-card-photo {
+        height: 150px;
+    }
+
+    .cat-card-content {
+        padding: 14px;
+    }
+
+    .cat-card-title {
+        font-size: 15px;
+    }
+
+}
