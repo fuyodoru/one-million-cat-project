@@ -1670,38 +1670,53 @@ if (mapControlButton) {
    NAVIGATION
    ========================================================= */
 
-const navigationItems =
-    document.querySelectorAll(
-        ".navigation-item"
-    );
+const catMenuButton =
+    document.getElementById("catMenuButton");
+
+const navigationPanel =
+    document.getElementById("navigationPanel");
+
+const filterToggle =
+    document.getElementById("filterToggle");
+
+const filterPanel =
+    document.getElementById("filterPanel");
 
 
-navigationItems.forEach(
-    item => {
+catMenuButton.addEventListener("click", () => {
 
-        item.addEventListener(
-            "click",
-            () => {
+    navigationPanel.classList.toggle("hidden");
 
-                navigationItems.forEach(
-                    button => {
+    const navigationOpen =
+        !navigationPanel.classList.contains("hidden");
 
-                        button.classList.remove(
-                            "active"
-                        );
-                    }
-                );
+    /*
+     * When navigation is open, move the filter
+     * control below it.
+     */
+    if (navigationOpen) {
 
-
-                item.classList.add(
-                    "active"
-                );
-            }
+        filterToggle.classList.add(
+            "filter-below-navigation"
         );
+
+        filterPanel.classList.add(
+            "filter-below-navigation"
+        );
+
+    } else {
+
+        filterToggle.classList.remove(
+            "filter-below-navigation"
+        );
+
+        filterPanel.classList.remove(
+            "filter-below-navigation"
+        );
+
     }
-);
 
-
+});
 /* =========================================================
    SOUND
    ========================================================= */
