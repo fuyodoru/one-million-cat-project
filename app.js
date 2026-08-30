@@ -595,8 +595,7 @@ function updateCounter(
  *
  *     createSignedUrl()
  */
-
-async function getCatPhotoURL(photoPath) {
+function getCatPhotoURL(photoPath) {
 
     if (!photoPath) {
         return null;
