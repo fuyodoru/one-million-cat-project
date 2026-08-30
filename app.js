@@ -72,9 +72,6 @@ const pawIcon =
 
 /*
  * Fallback marker.
- *
- * If paw-marker.png cannot be loaded,
- * this marker will still appear.
  */
 
 const fallbackPawIcon =
@@ -266,13 +263,10 @@ async function loadCatSightings() {
 
 
     /*
-     * IMPORTANT:
+     * PUBLIC VIEW
      *
-     * We query the PUBLIC VIEW.
-     *
-     * select("*") avoids accidentally
-     * requesting a column that may not
-     * exist in the view.
+     * Only data exposed by the view
+     * can be accessed by the frontend.
      */
 
     const {
@@ -285,10 +279,6 @@ async function loadCatSightings() {
             )
             .select("*");
 
-
-    /*
-     * DEBUG
-     */
 
     console.log(
         "Supabase data:",
@@ -372,16 +362,10 @@ async function loadCatSightings() {
 
 
     /*
-     * CREATE MARKERS
+     * Create markers.
      *
-     * IMPORTANT:
-     *
-     * Marker creation does NOT wait
+     * Marker creation does not wait
      * for photo loading.
-     *
-     * This means a missing photo
-     * can never prevent the cat
-     * from appearing on the map.
      */
 
     sightings.forEach(
@@ -560,7 +544,23 @@ function updateCounter(totalCats) {
    PHOTO URL
 ========================================================= */
 
-async function getCatPhotoURL(
+/*
+ * IMPORTANT:
+ *
+ * The "cat-sightings" bucket is PUBLIC.
+ *
+ * Therefore we use getPublicUrl()
+ * instead of createSignedUrl().
+ *
+ * The database stores only the storage path:
+ *
+ * user-id/random-file-name.jpg
+ *
+ * Supabase converts that path into
+ * the public file URL.
+ */
+
+function getCatPhotoURL(
     photoPath
 ) {
 
@@ -573,89 +573,66 @@ async function getCatPhotoURL(
 
 
     console.log(
-        "CAT CARD: Loading photo:",
+        "CAT CARD: Loading public photo:",
         photoPath
     );
 
 
-    try {
+    /*
+     * Already a complete URL.
+     */
 
-        /*
-         * Already a complete URL.
-         */
+    if (
+        photoPath.startsWith(
+            "http://"
+        ) ||
+        photoPath.startsWith(
+            "https://"
+        )
+    ) {
 
-        if (
-            photoPath.startsWith(
-                "http://"
-            ) ||
-            photoPath.startsWith(
-                "https://"
+        return photoPath;
+    }
+
+
+    /*
+     * PUBLIC SUPABASE STORAGE
+     */
+
+    const {
+        data
+    } =
+        supabaseClient
+            .storage
+            .from(
+                "cat-sightings"
             )
-        ) {
-
-            return photoPath;
-        }
-
-
-        /*
-         * Supabase Storage path.
-         */
-
-        const {
-            data,
-            error
-        } =
-            await supabaseClient
-                .storage
-                .from(
-                    "cat-sightings"
-                )
-                .createSignedUrl(
-                    photoPath,
-                    60 * 60
-                );
-
-
-        if (
-            error
-        ) {
-
-            console.error(
-                "CAT CARD: Signed URL ERROR:",
-                error
+            .getPublicUrl(
+                photoPath
             );
 
-            return null;
-        }
 
-
-        if (
-            !data ||
-            !data.signedUrl
-        ) {
-
-            console.error(
-                "CAT CARD: No signed URL returned:",
-                data
-            );
-
-            return null;
-        }
-
-
-        return data.signedUrl;
-
-    } catch (
-        error
+    if (
+        !data ||
+        !data.publicUrl
     ) {
 
         console.error(
-            "CAT CARD: Photo loading ERROR:",
-            error
+            "CAT CARD: Could not create public URL:",
+            data
         );
 
         return null;
     }
+
+
+    console.log(
+        "CAT CARD: Public URL:",
+        data.publicUrl
+    );
+
+
+    return data.publicUrl;
 }
 
 
@@ -705,6 +682,7 @@ function createCatCardHTML(
                     src="${escapeHTML(photoURL)}"
                     alt="Cat sighting in ${escapeHTML(city)}"
                     loading="lazy"
+                    onerror="this.parentElement.innerHTML='<div class=&quot;cat-card-paw&quot;>🐾</div><span>PHOTO UNAVAILABLE</span>';"
                 >
 
             </div>
@@ -743,13 +721,16 @@ function createCatCardHTML(
                 ×
             </button>
 
+
             ${photoHTML}
+
 
             <div class="cat-card-content">
 
                 <div class="cat-card-label">
                     🐾 CAT SIGHTING
                 </div>
+
 
                 <div class="cat-card-title">
 
@@ -758,6 +739,7 @@ function createCatCardHTML(
                     RECORDED
 
                 </div>
+
 
                 <div class="cat-card-info">
 
@@ -774,6 +756,7 @@ function createCatCardHTML(
 
                     </div>
 
+
                     <div class="cat-card-row">
 
                         <span class="cat-card-icon">
@@ -787,6 +770,7 @@ function createCatCardHTML(
                     </div>
 
                 </div>
+
 
                 <div class="cat-card-footer">
                     EVERY CAT COUNTS
@@ -879,13 +863,11 @@ async function addCatMarker(
 
 
     /*
-     * Create marker IMMEDIATELY.
-     *
-     * We intentionally do NOT wait
-     * for the photo.
+     * Create marker immediately.
      */
 
     let marker;
+
 
     try {
 
@@ -900,6 +882,7 @@ async function addCatMarker(
                         pawIcon
                 }
             );
+
 
         marker.addTo(
             markerLayer
@@ -931,10 +914,6 @@ async function addCatMarker(
     }
 
 
-    /*
-     * Confirm marker creation.
-     */
-
     console.log(
         "MARKER ADDED:",
         sighting.id,
@@ -943,10 +922,10 @@ async function addCatMarker(
 
 
     /*
-     * Create a basic card immediately.
+     * Create card immediately.
      *
-     * This guarantees the popup exists
-     * even if the photo fails.
+     * This guarantees that the popup
+     * exists even before photo loading.
      */
 
     const initialCardHTML =
@@ -1026,20 +1005,19 @@ async function addCatMarker(
 
 
     /*
-     * Load photo AFTER marker exists.
+     * Load public photo.
+     *
+     * IMPORTANT:
+     * getCatPhotoURL() is synchronous now.
      */
 
     try {
 
         const photoURL =
-            await getCatPhotoURL(
+            getCatPhotoURL(
                 sighting.photo_url
             );
 
-
-        /*
-         * Update popup with photo.
-         */
 
         const updatedCardHTML =
             createCatCardHTML(
@@ -1860,6 +1838,10 @@ async function uploadCatPhoto(
     }
 
 
+    /*
+     * Each user gets their own folder.
+     */
+
     const filePath =
         `${userId}/${crypto.randomUUID()}.${extension}`;
 
@@ -1910,6 +1892,12 @@ async function uploadCatPhoto(
             `PHOTO UPLOAD FAILED: ${error.message}`
         );
     }
+
+
+    console.log(
+        "PHOTO UPLOAD SUCCESS:",
+        filePath
+    );
 
 
     return filePath;
@@ -2120,6 +2108,11 @@ async function submitCatSighting() {
             `SUBMISSION FAILED: ${error.message}`
         );
     }
+
+
+    console.log(
+        "CAT SIGHTING SUBMITTED SUCCESSFULLY."
+    );
 }
 
 
@@ -2290,6 +2283,10 @@ console.log(
 
 console.log(
     "Cat Card: ENABLED"
+);
+
+console.log(
+    "Public Storage: ENABLED"
 );
 
 console.log(
