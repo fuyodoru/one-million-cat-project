@@ -2310,3 +2310,792 @@ if (closeFilters && filterPanel) {
     );
 
 }
+
+/* =========================================================
+   CAT FILTERS
+   ========================================================= */
+
+
+/* =========================================================
+   FILTER DOM
+   ========================================================= */
+
+const filterToggle =
+    document.getElementById(
+        "filterToggle"
+    );
+
+
+const filterPanel =
+    document.getElementById(
+        "filterPanel"
+    );
+
+
+const closeFilters =
+    document.getElementById(
+        "closeFilters"
+    );
+
+
+const countryFilter =
+    document.getElementById(
+        "countryFilter"
+    );
+
+
+const cityFilter =
+    document.getElementById(
+        "cityFilter"
+    );
+
+
+const dateFilter =
+    document.getElementById(
+        "dateFilter"
+    );
+
+
+const clearFilters =
+    document.getElementById(
+        "clearFilters"
+    );
+
+
+/* =========================================================
+   OPEN / CLOSE FILTER PANEL
+   ========================================================= */
+
+function openFilters() {
+
+    if (!filterPanel) {
+        return;
+    }
+
+    filterPanel.classList.add(
+        "open"
+    );
+
+    if (filterToggle) {
+
+        filterToggle.setAttribute(
+            "aria-expanded",
+            "true"
+        );
+
+    }
+
+}
+
+
+function closeFiltersFunction() {
+
+    if (!filterPanel) {
+        return;
+    }
+
+    filterPanel.classList.remove(
+        "open"
+    );
+
+    if (filterToggle) {
+
+        filterToggle.setAttribute(
+            "aria-expanded",
+            "false"
+        );
+
+    }
+
+}
+
+
+if (filterToggle) {
+
+    filterToggle.addEventListener(
+        "click",
+        event => {
+
+            event.preventDefault();
+
+            event.stopPropagation();
+
+
+            if (
+                filterPanel &&
+                filterPanel.classList.contains("open")
+            ) {
+
+                closeFiltersFunction();
+
+            } else {
+
+                openFilters();
+
+            }
+
+        }
+    );
+
+}
+
+
+if (closeFilters) {
+
+    closeFilters.addEventListener(
+        "click",
+        event => {
+
+            event.preventDefault();
+
+            closeFiltersFunction();
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   NORMALIZE TEXT
+   ========================================================= */
+
+function normalizeFilterText(
+    value
+) {
+
+    return String(
+        value ?? ""
+    )
+        .trim()
+        .toLowerCase();
+
+}
+
+
+/* =========================================================
+   POPULATE COUNTRY FILTER
+   ========================================================= */
+
+function populateCountryFilter() {
+
+    if (!countryFilter) {
+        return;
+    }
+
+
+    const currentValue =
+        countryFilter.value;
+
+
+    countryFilter.innerHTML = "";
+
+
+    const allOption =
+        document.createElement(
+            "option"
+        );
+
+    allOption.value = "";
+
+    allOption.textContent =
+        "ALL COUNTRIES";
+
+
+    countryFilter.appendChild(
+        allOption
+    );
+
+
+    const countries =
+        [
+            ...new Set(
+                allSightings
+                    .map(
+                        sighting =>
+                            sighting.country
+                    )
+                    .filter(Boolean)
+            )
+        ]
+        .sort(
+            (a, b) =>
+                String(a)
+                    .localeCompare(
+                        String(b)
+                    )
+        );
+
+
+    countries.forEach(
+        country => {
+
+            const option =
+                document.createElement(
+                    "option"
+                );
+
+            option.value =
+                country;
+
+            option.textContent =
+                country;
+
+            countryFilter.appendChild(
+                option
+            );
+
+        }
+    );
+
+
+    /*
+     * Restore previous selection
+     * if it still exists.
+     */
+
+    if (
+        countries.some(
+            country =>
+                normalizeFilterText(country) ===
+                normalizeFilterText(currentValue)
+        )
+    ) {
+
+        countryFilter.value =
+            currentValue;
+
+    } else {
+
+        countryFilter.value =
+            "";
+
+    }
+
+}
+
+
+/* =========================================================
+   POPULATE CITY FILTER
+   ========================================================= */
+
+function populateCityFilter() {
+
+    if (!cityFilter) {
+        return;
+    }
+
+
+    const selectedCountry =
+        countryFilter
+            ? countryFilter.value
+            : "";
+
+
+    const currentValue =
+        cityFilter.value;
+
+
+    cityFilter.innerHTML = "";
+
+
+    const allOption =
+        document.createElement(
+            "option"
+        );
+
+    allOption.value = "";
+
+    allOption.textContent =
+        "ALL CITIES";
+
+
+    cityFilter.appendChild(
+        allOption
+    );
+
+
+    let availableSightings =
+        allSightings;
+
+
+    /*
+     * If a country is selected,
+     * only use cities from that country.
+     */
+
+    if (selectedCountry) {
+
+        availableSightings =
+            availableSightings.filter(
+                sighting =>
+                    normalizeFilterText(
+                        sighting.country
+                    ) ===
+                    normalizeFilterText(
+                        selectedCountry
+                    )
+            );
+
+    }
+
+
+    const cities =
+        [
+            ...new Set(
+                availableSightings
+                    .map(
+                        sighting =>
+                            sighting.city
+                    )
+                    .filter(Boolean)
+            )
+        ]
+        .sort(
+            (a, b) =>
+                String(a)
+                    .localeCompare(
+                        String(b)
+                    )
+        );
+
+
+    cities.forEach(
+        city => {
+
+            const option =
+                document.createElement(
+                    "option"
+                );
+
+            option.value =
+                city;
+
+            option.textContent =
+                city;
+
+            cityFilter.appendChild(
+                option
+            );
+
+        }
+    );
+
+
+    /*
+     * Restore selection if possible.
+     */
+
+    if (
+        cities.some(
+            city =>
+                normalizeFilterText(city) ===
+                normalizeFilterText(currentValue)
+        )
+    ) {
+
+        cityFilter.value =
+            currentValue;
+
+    } else {
+
+        cityFilter.value =
+            "";
+
+    }
+
+}
+
+
+/* =========================================================
+   CHECK MONTH
+   ========================================================= */
+
+function matchesSelectedMonth(
+    sighting,
+    selectedMonth
+) {
+
+    if (!selectedMonth) {
+        return true;
+    }
+
+
+    if (!sighting.created_at) {
+        return false;
+    }
+
+
+    const date =
+        new Date(
+            sighting.created_at
+        );
+
+
+    if (
+        Number.isNaN(
+            date.getTime()
+        )
+    ) {
+
+        return false;
+
+    }
+
+
+    /*
+     * Input type="month" returns:
+     *
+     * YYYY-MM
+     */
+
+    const year =
+        date.getFullYear();
+
+
+    const month =
+        String(
+            date.getMonth() + 1
+        ).padStart(
+            2,
+            "0"
+        );
+
+
+    const sightingMonth =
+        `${year}-${month}`;
+
+
+    return (
+        sightingMonth ===
+        selectedMonth
+    );
+
+}
+
+
+/* =========================================================
+   FILTER DATA
+   ========================================================= */
+
+function getFilteredSightings() {
+
+    const selectedCountry =
+        countryFilter
+            ? countryFilter.value
+            : "";
+
+
+    const selectedCity =
+        cityFilter
+            ? cityFilter.value
+            : "";
+
+
+    const selectedMonth =
+        dateFilter
+            ? dateFilter.value
+            : "";
+
+
+    return allSightings.filter(
+        sighting => {
+
+            /*
+             * COUNTRY
+             */
+
+            if (
+                selectedCountry &&
+                normalizeFilterText(
+                    sighting.country
+                ) !==
+                normalizeFilterText(
+                    selectedCountry
+                )
+            ) {
+
+                return false;
+
+            }
+
+
+            /*
+             * CITY
+             */
+
+            if (
+                selectedCity &&
+                normalizeFilterText(
+                    sighting.city
+                ) !==
+                normalizeFilterText(
+                    selectedCity
+                )
+            ) {
+
+                return false;
+
+            }
+
+
+            /*
+             * DATE
+             */
+
+            if (
+                !matchesSelectedMonth(
+                    sighting,
+                    selectedMonth
+                )
+            ) {
+
+                return false;
+
+            }
+
+
+            return true;
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   RENDER FILTERED MARKERS
+   ========================================================= */
+
+function renderFilteredSightings(
+    sightings
+) {
+
+    markerLayer.clearLayers();
+
+
+    sightings.forEach(
+        sighting => {
+
+            addCatMarker(
+                sighting
+            );
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   APPLY FILTERS
+   ========================================================= */
+
+function applyFilters() {
+
+    const filteredSightings =
+        getFilteredSightings();
+
+
+    console.log(
+        "FILTERED SIGHTINGS:",
+        filteredSightings
+    );
+
+
+    /*
+     * Calculate cats.
+     */
+
+    const totalCats =
+        filteredSightings.reduce(
+            (
+                total,
+                sighting
+            ) => {
+
+                return (
+                    total +
+                    Number(
+                        sighting.cat_count || 0
+                    )
+                );
+
+            },
+            0
+        );
+
+
+    /*
+     * Update map.
+     */
+
+    renderFilteredSightings(
+        filteredSightings
+    );
+
+
+    /*
+     * Update statistics.
+     */
+
+    updateStatistics(
+        filteredSightings,
+        totalCats
+    );
+
+
+    /*
+     * Update bottom ticker.
+     */
+
+    updateCounter(
+        totalCats
+    );
+
+
+    /*
+     * Show a useful console
+     * message for debugging.
+     */
+
+    console.log(
+        `Showing ${filteredSightings.length} of ${allSightings.length} sightings`
+    );
+
+}
+
+
+/* =========================================================
+   COUNTRY CHANGE
+   ========================================================= */
+
+if (countryFilter) {
+
+    countryFilter.addEventListener(
+        "change",
+        () => {
+
+            /*
+             * Country changed.
+             * Rebuild city list.
+             */
+
+            populateCityFilter();
+
+
+            /*
+             * Apply all filters.
+             */
+
+            applyFilters();
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   CITY CHANGE
+   ========================================================= */
+
+if (cityFilter) {
+
+    cityFilter.addEventListener(
+        "change",
+        () => {
+
+            applyFilters();
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   DATE CHANGE
+   ========================================================= */
+
+if (dateFilter) {
+
+    dateFilter.addEventListener(
+        "change",
+        () => {
+
+            applyFilters();
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   CLEAR FILTERS
+   ========================================================= */
+
+if (clearFilters) {
+
+    clearFilters.addEventListener(
+        "click",
+        () => {
+
+            if (countryFilter) {
+
+                countryFilter.value =
+                    "";
+
+            }
+
+
+            if (cityFilter) {
+
+                cityFilter.value =
+                    "";
+
+            }
+
+
+            if (dateFilter) {
+
+                dateFilter.value =
+                    "";
+
+            }
+
+
+            /*
+             * Rebuild cities
+             * back to all cities.
+             */
+
+            populateCityFilter();
+
+
+            /*
+             * Show everything again.
+             */
+
+            applyFilters();
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   INITIAL FILTER SETUP
+   ========================================================= */
+
+if (
+    allSightings.length > 0
+) {
+
+    populateCountryFilter();
+
+    populateCityFilter();
+
+}
