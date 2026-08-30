@@ -596,82 +596,63 @@ function updateCounter(
  *     createSignedUrl()
  */
 
-function getCatPhotoURL(
-    photoPath
-) {
+async function getCatPhotoURL(photoPath) {
 
-    if (
-        !photoPath
-    ) {
-
+    if (!photoPath) {
         return null;
     }
-
 
     console.log(
         "CAT PHOTO PATH:",
         photoPath
     );
 
+    try {
 
-    /*
-     * Already a complete URL.
-     */
+        // Already a complete URL
+        if (
+            photoPath.startsWith("http://") ||
+            photoPath.startsWith("https://")
+        ) {
 
-    if (
-        photoPath.startsWith(
-            "http://"
-        ) ||
-        photoPath.startsWith(
-            "https://"
-        )
-    ) {
+            return photoPath;
+        }
 
-        return photoPath;
-    }
+        /*
+         * cat-sightings is a PUBLIC bucket.
+         *
+         * Therefore we do NOT need a signed URL.
+         * Supabase can give us the permanent public URL.
+         */
 
+        const {
+            data
+        } =
+            supabaseClient
+                .storage
+                .from("cat-sightings")
+                .getPublicUrl(photoPath);
 
-    /*
-     * Supabase public storage.
-     */
+        const publicURL =
+            data?.publicUrl || null;
 
-    const {
-        data
-    } =
-        supabaseClient
-            .storage
-            .from(
-                "cat-sightings"
-            )
-            .getPublicUrl(
-                photoPath
-            );
+        console.log(
+            "CAT PHOTO PUBLIC URL:",
+            publicURL
+        );
 
+        return publicURL;
 
-    if (
-        !data ||
-        !data.publicUrl
-    ) {
+    } catch (error) {
 
         console.error(
-            "COULD NOT CREATE PUBLIC PHOTO URL:",
-            data
+            "CAT PHOTO URL ERROR:",
+            error
         );
 
         return null;
     }
-
-
-    console.log(
-        "CAT PHOTO URL:",
-        data.publicUrl
-    );
-
-
-    return data.publicUrl;
 }
-
-
 /* =========================================================
    CAT CARD
    ========================================================= */
