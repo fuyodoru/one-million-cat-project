@@ -40,13 +40,15 @@ const map = L.map(
     2
 );
 
+
 L.tileLayer(
     "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
     {
         maxZoom: 19,
-        attribution: '&copy; OpenStreetMap contributors'
+        attribution: "&copy; OpenStreetMap contributors"
     }
 ).addTo(map);
+
 
 /* =========================================================
    PAW MARKER
@@ -140,9 +142,7 @@ function formatDate(value) {
    PROGRESS
 ========================================================= */
 
-function formatProgress(
-    progress
-) {
+function formatProgress(progress) {
 
     if (
         progress === 0
@@ -167,9 +167,7 @@ function formatProgress(
    PRIVACY OFFSET
 ========================================================= */
 
-function getPrivacyOffset(
-    id
-) {
+function getPrivacyOffset(id) {
 
     const value =
         String(
@@ -218,9 +216,26 @@ async function loadCatSightings() {
         "Loading cat sightings..."
     );
 
-
     markerLayer.clearLayers();
 
+
+    /*
+     * IMPORTANT:
+     *
+     * public_cat_sightings currently contains:
+     *
+     * id
+     * cat_count
+     * public_latitude
+     * public_longitude
+     * city
+     * country
+     * created_at
+     *
+     * It DOES NOT contain photo_url.
+     *
+     * Therefore we do NOT request photo_url here.
+     */
 
     const {
         data,
@@ -236,14 +251,11 @@ async function loadCatSightings() {
             public_longitude,
             city,
             country,
-            photo_url,
             created_at
         `);
 
 
-    if (
-        error
-    ) {
+    if (error) {
 
         console.error(
             "Supabase error:",
@@ -252,12 +264,23 @@ async function loadCatSightings() {
 
         updateCounter(0);
 
+        updateStatistics(
+            [],
+            0
+        );
+
         return;
     }
 
 
     const sightings =
         data || [];
+
+
+    console.log(
+        "Sightings received:",
+        sightings
+    );
 
 
     const totalCats =
@@ -270,8 +293,7 @@ async function loadCatSightings() {
                 return (
                     total +
                     Number(
-                        sighting.cat_count ||
-                        0
+                        sighting.cat_count || 0
                     )
                 );
 
@@ -292,17 +314,14 @@ async function loadCatSightings() {
 
 
     /*
-     * Important:
-     *
-     * addCatMarker() is async because
-     * photos need signed URLs.
+     * Add markers.
      */
 
     for (
         const sighting of sightings
     ) {
 
-        await addCatMarker(
+        addCatMarker(
             sighting
         );
     }
@@ -310,7 +329,7 @@ async function loadCatSightings() {
 
     console.log(
         "Cat sightings loaded:",
-        sightings
+        sightings.length
     );
 }
 
@@ -374,8 +393,7 @@ function updateStatistics(
                     return (
                         total +
                         Number(
-                            sighting.cat_count ||
-                            0
+                            sighting.cat_count || 0
                         )
                     );
                 }
@@ -453,9 +471,7 @@ function updateStatistics(
    COUNTER
 ========================================================= */
 
-function updateCounter(
-    totalCats
-) {
+function updateCounter(totalCats) {
 
     const element =
         document.getElementById(
@@ -474,136 +490,16 @@ function updateCounter(
 
 
 /* =========================================================
-   PHOTO URL
-========================================================= */
-
-async function getCatPhotoURL(
-    photoPath
-) {
-
-    if (
-        !photoPath
-    ) {
-
-        console.log(
-            "CAT CARD: No photo path."
-        );
-
-        return null;
-    }
-
-
-    console.log(
-        "CAT CARD: Loading photo:",
-        photoPath
-    );
-
-
-    try {
-
-        /*
-         * If photo_url is already
-         * a complete URL, use it.
-         */
-
-        if (
-            photoPath.startsWith(
-                "http://"
-            ) ||
-            photoPath.startsWith(
-                "https://"
-            )
-        ) {
-
-            console.log(
-                "CAT CARD: Using existing URL."
-            );
-
-            return photoPath;
-        }
-
-
-        /*
-         * Otherwise photo_url is
-         * a Supabase Storage path.
-         */
-
-        const {
-            data,
-            error
-        } =
-            await supabaseClient
-                .storage
-                .from(
-                    "cat-sightings"
-                )
-                .createSignedUrl(
-                    photoPath,
-                    60 * 60
-                );
-
-
-        if (
-            error
-        ) {
-
-            console.error(
-                "CAT CARD: Signed URL ERROR:",
-                error
-            );
-
-            return null;
-        }
-
-
-        if (
-            !data ||
-            !data.signedUrl
-        ) {
-
-            console.error(
-                "CAT CARD: No signed URL returned:",
-                data
-            );
-
-            return null;
-        }
-
-
-        console.log(
-            "CAT CARD: Signed URL created."
-        );
-
-
-        return data.signedUrl;
-
-    } catch (
-        error
-    ) {
-
-        console.error(
-            "CAT CARD: Photo loading ERROR:",
-            error
-        );
-
-        return null;
-    }
-}
-
-
-/* =========================================================
    CAT CARD
 ========================================================= */
 
 function createCatCardHTML(
-    sighting,
-    photoURL
+    sighting
 ) {
 
     const count =
         Number(
-            sighting.cat_count ||
-            0
+            sighting.cat_count || 0
         );
 
 
@@ -623,45 +519,30 @@ function createCatCardHTML(
         );
 
 
-    let photoHTML;
+    /*
+     * There is currently no photo_url
+     * in public_cat_sightings.
+     *
+     * Therefore the card uses a
+     * placeholder until we add
+     * secure public photo access.
+     */
 
+    const photoHTML = `
 
-    if (
-        photoURL
-    ) {
+        <div class="cat-card-photo cat-card-no-photo">
 
-        photoHTML = `
-
-            <div class="cat-card-photo">
-
-                <img
-                    src="${escapeHTML(photoURL)}"
-                    alt="Cat sighting in ${escapeHTML(city)}"
-                    loading="lazy"
-                >
-
+            <div class="cat-card-paw">
+                🐾
             </div>
 
-        `;
+            <span>
+                NO PHOTO
+            </span>
 
-    } else {
+        </div>
 
-        photoHTML = `
-
-            <div class="cat-card-photo cat-card-no-photo">
-
-                <div class="cat-card-paw">
-                    🐾
-                </div>
-
-                <span>
-                    NO PHOTO
-                </span>
-
-            </div>
-
-        `;
-    }
+    `;
 
 
     return `
@@ -743,7 +624,7 @@ function createCatCardHTML(
    MARKER
 ========================================================= */
 
-async function addCatMarker(
+function addCatMarker(
     sighting
 ) {
 
@@ -777,6 +658,12 @@ async function addCatMarker(
     }
 
 
+    /*
+     * Privacy offset prevents the
+     * marker from exposing the exact
+     * reported location.
+     */
+
     const offset =
         getPrivacyOffset(
             sighting.id
@@ -802,30 +689,18 @@ async function addCatMarker(
 
 
     /*
-     * Load photo.
-     */
-
-    const photoURL =
-        await getCatPhotoURL(
-            sighting.photo_url
-        );
-
-
-    /*
      * Create Cat Card.
      */
 
     const cardHTML =
         createCatCardHTML(
-            sighting,
-            photoURL
+            sighting
         );
 
 
     console.log(
         "CAT CARD CREATED:",
-        sighting.id,
-        cardHTML
+        sighting.id
     );
 
 
