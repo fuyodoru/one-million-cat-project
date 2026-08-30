@@ -3362,3 +3362,371 @@ textarea {
     }
 
 }
+/* =========================================================
+   MOBILE POLISH — FINAL
+   ========================================================= */
+
+@media (max-width: 600px) {
+
+    /* -----------------------------------------------------
+       MAIN FRAME
+    ----------------------------------------------------- */
+
+    .tracker-frame {
+        width: calc(100vw - 16px) !important;
+        height: 650px !important;
+        min-height: 650px !important;
+
+        margin-top: 8px !important;
+    }
+
+
+    /* -----------------------------------------------------
+       HEADER
+    ----------------------------------------------------- */
+
+    .cat-menu-button {
+        top: 11px !important;
+        left: 11px !important;
+
+        width: 59px !important;
+        height: 59px !important;
+    }
+
+
+    .top-right-button {
+        top: 11px !important;
+        right: 11px !important;
+
+        width: 59px !important;
+        height: 59px !important;
+    }
+
+
+    .tracker-logo {
+        top: 14px !important;
+
+        width: calc(100% - 150px) !important;
+        max-width: 240px !important;
+
+        height: 47px !important;
+
+        font-size: 8.5px !important;
+        letter-spacing: 0.7px !important;
+    }
+
+
+    .tracker-logo .logo-mini-cat {
+        width: 19px !important;
+        height: 19px !important;
+    }
+
+
+    .logo-subtitle {
+        bottom: -15px !important;
+
+        font-size: 5px !important;
+        letter-spacing: 1.4px !important;
+    }
+
+
+    /* -----------------------------------------------------
+       REPORT CAT
+    ----------------------------------------------------- */
+
+    #reportCatButton {
+        top: 82px !important;
+        right: 11px !important;
+
+        padding: 8px 10px !important;
+
+        font-size: 5.5px !important;
+        letter-spacing: 0.4px !important;
+    }
+
+    .report-cat-button span {
+        font-size: 10px !important;
+    }
+
+
+    /* -----------------------------------------------------
+       MAP
+    ----------------------------------------------------- */
+
+    .map-wrapper {
+        top: 111px !important;
+        left: 9px !important;
+        right: 9px !important;
+
+        height: 438px !important;
+
+        border-width: 3px !important;
+        border-radius: 10px !important;
+    }
+
+
+    #map {
+        filter:
+            brightness(0.72)
+            saturate(0.68)
+            contrast(0.94) !important;
+    }
+
+
+    /* -----------------------------------------------------
+       STATISTICS
+    ----------------------------------------------------- */
+
+    .map-stats {
+        left: 6px !important;
+        right: 6px !important;
+        bottom: 7px !important;
+
+        gap: 3px !important;
+    }
+
+
+    .stat-card {
+        padding: 6px 2px !important;
+
+        min-height: 45px !important;
+
+        border-width: 2px !important;
+        border-radius: 7px !important;
+    }
+
+
+    .stat-label {
+        font-size: 4.5px !important;
+        letter-spacing: 0.35px !important;
+    }
+
+
+    .stat-value {
+        margin-top: 2px !important;
+
+        font-size: 7.5px !important;
+    }
+
+
+    /* Make mission value fit nicely */
+    .progress-card .stat-value {
+        font-size: 7px !important;
+    }
+
+
+    /* -----------------------------------------------------
+       MASCOT
+    ----------------------------------------------------- */
+
+    .mascot {
+        left: 5px !important;
+        bottom: 47px !important;
+
+        width: 72px !important;
+
+        z-index: 4000 !important;
+    }
+
+
+    .mascot img {
+        width: 72px !important;
+    }
+
+
+    /* -----------------------------------------------------
+       BOTTOM TRACKER BAR
+    ----------------------------------------------------- */
+
+    .tracker-bar {
+        height: 65px !important;
+
+        padding:
+            0 8px !important;
+    }
+
+
+    .tracker-message {
+        height: 39px !important;
+
+        padding:
+            0 9px !important;
+
+        font-size: 6px !important;
+        letter-spacing: 0.45px !important;
+
+        border-width: 3px !important;
+    }
+
+
+    .sound-button {
+        width: 42px !important;
+        height: 39px !important;
+
+        flex-basis: 42px !important;
+    }
+
+
+    /* -----------------------------------------------------
+       FOOTER
+    ----------------------------------------------------- */
+
+    .credits-area {
+        width: calc(100vw - 16px) !important;
+
+        min-height: 155px !important;
+
+        padding:
+            24px 10px 20px !important;
+    }
+
+
+    .project-name {
+        font-size: 9px !important;
+        letter-spacing: 1.7px !important;
+    }
+
+
+    .project-description {
+        font-size: 6px !important;
+
+        line-height: 1.6 !important;
+
+        margin-bottom: 17px !important;
+    }
+
+
+    .credits-links {
+        font-size: 5.5px !important;
+
+        gap: 5px !important;
+    }
+
+
+    .copyright {
+        font-size: 5px !important;
+    }
+
+
+    /* -----------------------------------------------------
+       REPORT MODAL
+    ----------------------------------------------------- */
+
+    .report-modal {
+        padding: 12px !important;
+    }
+
+
+    .report-modal-box {
+        width: 100% !important;
+        max-width: 355px !important;
+
+        max-height:
+            calc(100vh - 24px) !important;
+
+        padding: 22px !important;
+
+        border-width: 3px !important;
+    }
+
+
+    .report-modal-title {
+        font-size: 15px !important;
+    }
+
+
+    .report-modal-subtitle {
+        font-size: 6px !important;
+
+        margin-bottom: 18px !important;
+    }
+
+
+    #reportCatForm {
+        gap: 8px !important;
+    }
+
+
+    #reportCatForm label {
+        font-size: 7px !important;
+    }
+
+
+    #reportCatForm input {
+        padding: 10px !important;
+
+        font-size: 8px !important;
+    }
+
+
+    .report-modal-actions {
+        margin-top: 16px !important;
+
+        gap: 7px !important;
+    }
+
+
+    .report-modal-actions button {
+        padding: 10px 13px !important;
+
+        font-size: 7px !important;
+    }
+}
+
+
+/* =========================================================
+   VERY SMALL PHONES
+   ========================================================= */
+
+@media (max-width: 380px) {
+
+    .tracker-logo {
+        width: calc(100% - 142px) !important;
+
+        font-size: 7.5px !important;
+    }
+
+
+    .tracker-logo .logo-mini-cat {
+        width: 16px !important;
+        height: 16px !important;
+    }
+
+
+    .cat-menu-button,
+    .top-right-button {
+        width: 55px !important;
+        height: 55px !important;
+    }
+
+
+    #reportCatButton {
+        top: 78px !important;
+
+        padding: 7px 8px !important;
+
+        font-size: 5px !important;
+    }
+
+
+    .map-wrapper {
+        top: 106px !important;
+        height: 435px !important;
+    }
+
+
+    .stat-label {
+        font-size: 4px !important;
+    }
+
+
+    .stat-value {
+        font-size: 7px !important;
+    }
+
+
+    .tracker-message {
+        font-size: 5.5px !important;
+    }
+}
+
