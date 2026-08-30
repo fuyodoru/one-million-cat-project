@@ -3730,3 +3730,402 @@ textarea {
     }
 }
 
+/* =========================================================
+   MOBILE — FINAL CLEAN LAYOUT
+   ========================================================= */
+
+@media (max-width: 600px) {
+
+    html,
+    body {
+        width: 100%;
+        min-width: 0;
+        margin: 0;
+        padding: 0;
+        overflow-x: hidden;
+    }
+
+    body {
+        background: #061525;
+    }
+
+
+    /* =====================================================
+       MAIN FRAME
+       ===================================================== */
+
+    .tracker-frame {
+        position: relative !important;
+
+        width: calc(100vw - 20px) !important;
+        height: 640px !important;
+        min-height: 640px !important;
+
+        margin: 10px auto 0 !important;
+
+        border: 5px solid #3989a5 !important;
+        border-radius: 18px 18px 12px 12px !important;
+
+        overflow: hidden !important;
+    }
+
+
+    /* =====================================================
+       CAT MENU
+       ===================================================== */
+
+    .cat-menu-button {
+        position: absolute !important;
+
+        top: 12px !important;
+        left: 12px !important;
+
+        width: 58px !important;
+        height: 58px !important;
+
+        padding: 6px !important;
+
+        z-index: 5000 !important;
+
+        border: 3px solid #152b38 !important;
+        border-radius: 11px !important;
+    }
+
+
+    /* =====================================================
+       LOGO
+       ===================================================== */
+
+    .tracker-logo {
+        position: absolute !important;
+
+        top: 14px !important;
+        left: 50% !important;
+
+        transform: translateX(-50%) !important;
+
+        width: 235px !important;
+        max-width: calc(100% - 155px) !important;
+        min-width: 0 !important;
+
+        height: 48px !important;
+
+        padding: 5px 6px !important;
+
+        z-index: 4500 !important;
+
+        border: 3px solid #285e75 !important;
+        border-radius: 10px !important;
+
+        font-size: 9px !important;
+        letter-spacing: 0.8px !important;
+
+        white-space: nowrap !important;
+    }
+
+    .tracker-logo .logo-mini-cat {
+        width: 20px !important;
+        height: 20px !important;
+    }
+
+    .logo-subtitle {
+        bottom: -15px !important;
+
+        font-size: 5px !important;
+        letter-spacing: 1.5px !important;
+    }
+
+
+    /* =====================================================
+       PAW BUTTON
+       ===================================================== */
+
+    .top-right-button {
+        position: absolute !important;
+
+        top: 12px !important;
+        right: 12px !important;
+
+        width: 58px !important;
+        height: 58px !important;
+
+        z-index: 5000 !important;
+
+        border: 3px solid #152b38 !important;
+        border-radius: 11px !important;
+    }
+
+    .top-right-button img {
+        width: 34px !important;
+        height: 34px !important;
+    }
+
+
+    /* =====================================================
+       REPORT CAT
+       ===================================================== */
+
+    #reportCatButton {
+        position: absolute !important;
+
+        top: 78px !important;
+        right: 12px !important;
+
+        z-index: 4500 !important;
+
+        width: auto !important;
+        height: auto !important;
+
+        padding: 8px 11px !important;
+
+        font-size: 6px !important;
+
+        border: 2px solid #2f788f !important;
+        border-radius: 8px !important;
+    }
+
+    .report-cat-button span {
+        font-size: 11px !important;
+    }
+
+
+    /* =====================================================
+       NAVIGATION
+       ===================================================== */
+
+    .navigation-panel {
+        position: absolute !important;
+
+        top: 78px !important;
+        left: 10px !important;
+
+        width: calc(100% - 20px) !important;
+
+        z-index: 6000 !important;
+    }
+
+
+    /* =====================================================
+       MAP
+       THIS IS THE IMPORTANT PART
+       ===================================================== */
+
+    .map-wrapper {
+        position: absolute !important;
+
+        top: 112px !important;
+        left: 10px !important;
+        right: 10px !important;
+        bottom: 72px !important;
+
+        width: auto !important;
+        height: auto !important;
+
+        margin: 0 !important;
+
+        border: 3px solid #16445b !important;
+        border-radius: 9px !important;
+
+        overflow: hidden !important;
+    }
+
+    #map {
+        position: absolute !important;
+
+        top: 0 !important;
+        left: 0 !important;
+
+        width: 100% !important;
+        height: 100% !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+
+    /* =====================================================
+       STATS
+       ===================================================== */
+
+    .map-stats {
+        position: absolute !important;
+
+        left: 7px !important;
+        right: 7px !important;
+        bottom: 8px !important;
+
+        width: auto !important;
+
+        display: flex !important;
+        flex-direction: row !important;
+        flex-wrap: nowrap !important;
+
+        gap: 3px !important;
+
+        z-index: 3000 !important;
+
+        overflow: visible !important;
+    }
+
+    .stat-card {
+        flex: 1 1 0 !important;
+
+        min-width: 0 !important;
+        width: auto !important;
+
+        padding: 5px 2px !important;
+
+        text-align: center !important;
+
+        white-space: nowrap !important;
+    }
+
+    .stat-label {
+        font-size: 4px !important;
+        letter-spacing: 0.3px !important;
+
+        white-space: nowrap !important;
+    }
+
+    .stat-value {
+        font-size: 7px !important;
+
+        white-space: nowrap !important;
+    }
+
+
+    /* =====================================================
+       MASCOT
+       ===================================================== */
+
+    .mascot {
+        position: absolute !important;
+
+        left: 4px !important;
+        bottom: 39px !important;
+
+        width: 70px !important;
+
+        z-index: 4000 !important;
+    }
+
+    .mascot img {
+        width: 70px !important;
+        height: auto !important;
+    }
+
+
+    /* =====================================================
+       BOTTOM BAR
+       ===================================================== */
+
+    .tracker-bar {
+        position: absolute !important;
+
+        left: 0 !important;
+        right: 0 !important;
+        bottom: 0 !important;
+
+        width: 100% !important;
+        height: 65px !important;
+
+        padding: 0 8px !important;
+
+        z-index: 3500 !important;
+
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+    }
+
+    .tracker-message {
+        flex: 1 !important;
+
+        min-width: 0 !important;
+        width: auto !important;
+
+        height: 38px !important;
+
+        padding: 0 8px !important;
+
+        font-size: 6px !important;
+        letter-spacing: 0.5px !important;
+
+        overflow: hidden !important;
+
+        white-space: nowrap !important;
+        text-overflow: ellipsis !important;
+    }
+
+    .sound-button {
+        flex: 0 0 42px !important;
+
+        width: 42px !important;
+        height: 38px !important;
+
+        margin-left: 6px !important;
+
+        padding: 0 !important;
+    }
+
+
+    /* =====================================================
+       REPORT MODAL
+       ===================================================== */
+
+    .report-modal {
+        position: fixed !important;
+
+        inset: 0 !important;
+
+        padding: 12px !important;
+
+        z-index: 10000 !important;
+    }
+
+    .report-modal-box {
+        width: 100% !important;
+        max-width: 350px !important;
+
+        max-height: calc(100vh - 24px) !important;
+
+        padding: 22px !important;
+
+        overflow-y: auto !important;
+    }
+
+
+    /* =====================================================
+       LEAFLET
+       ===================================================== */
+
+    .leaflet-control-zoom {
+        display: none !important;
+    }
+
+    .leaflet-control-attribution {
+        font-size: 6px !important;
+    }
+
+
+    /* =====================================================
+       CAT POPUP
+       ===================================================== */
+
+    .cat-card {
+        width: 260px !important;
+    }
+
+    .cat-card-photo {
+        height: 150px !important;
+    }
+
+    .cat-card-content {
+        padding: 14px !important;
+    }
+
+    .cat-card-title {
+        font-size: 15px !important;
+    }
+
+}
