@@ -4517,14 +4517,13 @@ textarea {
 
 
 /* =========================================================
-   MOBILE FILTERS
+   CAT FILTER SYSTEM
+   ONE MILLION CAT PROJECT
    ========================================================= */
 
-@media (max-width: 600px) {
-
-/* =========================================================
-   CAT FILTER BUTTON
-   ========================================================= */
+/* ---------------------------------------------------------
+   FILTER PAW BUTTON
+   --------------------------------------------------------- */
 
 .filter-toggle {
     position: absolute;
@@ -4558,16 +4557,13 @@ textarea {
         background 0.12s ease;
 }
 
-
 .filter-toggle:hover {
     background: #12394b;
 }
 
-
 .filter-toggle:active {
     transform: translateY(2px);
 }
-
 
 .filter-toggle img {
     width: 29px;
@@ -4578,7 +4574,256 @@ textarea {
     image-rendering: pixelated;
 }
 
+
+/* ---------------------------------------------------------
+   FILTER PANEL
+   --------------------------------------------------------- */
+
+.filter-panel {
+    position: absolute;
+
+    top: 105px;
+    left: 14px;
+
+    width: 190px;
+
+    padding: 11px 12px 12px;
+
+    background: #061b2b;
+
+    border: 3px solid #287d98;
+    border-radius: 10px;
+
+    box-shadow:
+        4px 4px 0 #07111b,
+        0 0 0 2px #12394c;
+
+    z-index: 6000;
+
+    /*
+       The panel is hidden by default.
+       JS adds .open when the paw button is clicked.
+    */
+    display: none;
+}
+
+.filter-panel.open {
+    display: block;
+}
+
+
+/* ---------------------------------------------------------
+   NO "FILTERS" TITLE
+   --------------------------------------------------------- */
+
+.filter-title {
+    display: none !important;
+}
+
+
+/* ---------------------------------------------------------
+   PANEL HEADER
+   --------------------------------------------------------- */
+
+.filter-panel-header {
+    display: flex;
+
+    align-items: center;
+    justify-content: flex-end;
+
+    margin-bottom: 11px;
+
+    padding-bottom: 0;
+
+    border-bottom: none;
+}
+
+
+/* ---------------------------------------------------------
+   CLOSE BUTTON
+   --------------------------------------------------------- */
+
+.filter-close {
+    width: 25px;
+    height: 25px;
+
+    padding: 0;
+
+    border: 2px solid #2f788f;
+    border-radius: 5px;
+
+    background: #102d3c;
+    color: #c7dfe4;
+
+    font-family:
+        "Silkscreen",
+        monospace;
+
+    font-size: 13px;
+
+    line-height: 18px;
+
+    cursor: pointer;
+}
+
+.filter-close:hover {
+    background: #17475b;
+}
+
+
+/* ---------------------------------------------------------
+   FILTER GROUP
+   --------------------------------------------------------- */
+
+.filter-group {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 5px;
+
+    margin-bottom: 10px;
+}
+
+.filter-group label {
+    color: #6e9eaf;
+
+    font-family:
+        "Silkscreen",
+        monospace;
+
+    font-size: 6px;
+
+    letter-spacing: 1.2px;
+}
+
+
+/* ---------------------------------------------------------
+   SELECT / DATE INPUT
+   --------------------------------------------------------- */
+
+.filter-group select,
+.filter-group input {
+    width: 100%;
+
+    box-sizing: border-box;
+
+    height: 32px;
+
+    padding: 5px 8px;
+
+    border: 2px solid #245d70;
+    border-radius: 6px;
+
+    outline: none;
+
+    background: #0b2433;
+    color: #c7dfe4;
+
+    font-family:
+        "Silkscreen",
+        monospace;
+
+    font-size: 7px;
+
+    cursor: pointer;
+}
+
+.filter-group select:focus,
+.filter-group input:focus {
+    border-color: #3989a5;
+}
+
+
+/* ---------------------------------------------------------
+   CLEAR FILTERS
+   --------------------------------------------------------- */
+
+.clear-filters-button {
+    width: 100%;
+
+    margin-top: 3px;
+
+    padding: 9px 8px;
+
+    border: 2px solid #3b8ca7;
+    border-radius: 6px;
+
+    background: #153b4c;
+    color: #c7dfe4;
+
+    font-family:
+        "Silkscreen",
+        monospace;
+
+    font-size: 6px;
+
+    letter-spacing: 1px;
+
+    cursor: pointer;
+}
+
+.clear-filters-button:hover {
+    background: #1d5369;
+}
+
+
+/* =========================================================
+   MOBILE FILTERS
+   ========================================================= */
+
+@media (max-width: 600px) {
+
+    /* -----------------------------------------------------
+       FILTER PAW BUTTON
+       ----------------------------------------------------- */
+
+    .filter-toggle {
+        position: absolute;
+
+        top: 118px;
+        left: 14px;
+
+        z-index: 7000;
+
+        width: 44px;
+        height: 44px;
+
+        padding: 6px;
+
+        display: flex;
+
+        align-items: center;
+        justify-content: center;
+
+        border: 3px solid #2f788f;
+        border-radius: 9px;
+
+        background: #0b2635;
+
+        cursor: pointer;
+
+        box-shadow:
+            0 4px 0 #061722;
+    }
+
+    .filter-toggle img {
+        width: 29px;
+        height: 29px;
+
+        object-fit: contain;
+
+        image-rendering: pixelated;
+    }
+
+
+    /* -----------------------------------------------------
+       FILTER PANEL
+       ----------------------------------------------------- */
+
     .filter-panel {
+        position: absolute !important;
+
         top: 136px !important;
         left: 10px !important;
 
@@ -4591,20 +4836,40 @@ textarea {
 
         box-shadow:
             0 4px 0 #061722 !important;
+
+        z-index: 6000 !important;
     }
 
 
-    .filter-panel-header {
-        margin-bottom: 10px !important;
-        padding-bottom: 7px !important;
-    }
-
+    /* -----------------------------------------------------
+       REMOVE FILTER TITLE COMPLETELY
+       ----------------------------------------------------- */
 
     .filter-title {
-        font-size: 6px !important;
-        letter-spacing: 1.2px !important;
+        display: none !important;
     }
 
+
+    /* -----------------------------------------------------
+       PANEL HEADER
+       ----------------------------------------------------- */
+
+    .filter-panel-header {
+        display: flex !important;
+
+        align-items: center !important;
+        justify-content: flex-end !important;
+
+        margin-bottom: 10px !important;
+        padding-bottom: 0 !important;
+
+        border-bottom: none !important;
+    }
+
+
+    /* -----------------------------------------------------
+       CLOSE BUTTON
+       ----------------------------------------------------- */
 
     .filter-close {
         width: 22px !important;
@@ -4614,17 +4879,26 @@ textarea {
     }
 
 
+    /* -----------------------------------------------------
+       FILTER GROUPS
+       ----------------------------------------------------- */
+
     .filter-group {
         gap: 4px !important;
+
         margin-bottom: 8px !important;
     }
 
-
     .filter-group label {
         font-size: 5px !important;
+
         letter-spacing: 0.8px !important;
     }
 
+
+    /* -----------------------------------------------------
+       SELECT / DATE
+       ----------------------------------------------------- */
 
     .filter-group select,
     .filter-group input {
@@ -4639,10 +4913,15 @@ textarea {
     }
 
 
+    /* -----------------------------------------------------
+       CLEAR FILTERS
+       ----------------------------------------------------- */
+
     .clear-filters-button {
         padding: 8px 6px !important;
 
         font-size: 5px !important;
+
         letter-spacing: 0.7px !important;
     }
 
