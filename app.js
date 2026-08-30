@@ -49,7 +49,9 @@ L.tileLayer(
             "&copy; OpenStreetMap contributors"
     }
 ).addTo(map);
-
+setTimeout(() => {
+    map.invalidateSize(true);
+}, 300);
 
 /* =========================================================
    PAW MARKER
