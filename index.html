@@ -146,7 +146,80 @@
     REPORT CAT
 
 </button>
+<!-- =================================================
+     FILTERS
+================================================== -->
 
+<div
+    id="filterPanel"
+    class="filter-panel"
+>
+
+    <div class="filter-title">
+        FILTERS
+    </div>
+
+    <div class="filter-row">
+
+        <div class="filter-group">
+
+            <label for="countryFilter">
+                COUNTRY
+            </label>
+
+            <select id="countryFilter">
+
+                <option value="">
+                    ALL COUNTRIES
+                </option>
+
+            </select>
+
+        </div>
+
+
+        <div class="filter-group">
+
+            <label for="cityFilter">
+                CITY
+            </label>
+
+            <select id="cityFilter">
+
+                <option value="">
+                    ALL CITIES
+                </option>
+
+            </select>
+
+        </div>
+
+
+        <div class="filter-group">
+
+            <label for="dateFilter">
+                DATE
+            </label>
+
+            <input
+                id="dateFilter"
+                type="month"
+            >
+
+        </div>
+
+    </div>
+
+
+    <button
+        id="clearFilters"
+        class="clear-filters-button"
+        type="button"
+    >
+        CLEAR FILTERS
+    </button>
+
+</div>
 <!-- =================================================
      REPORT CAT MODAL
 ================================================== -->
