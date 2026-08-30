@@ -60,7 +60,7 @@ setTimeout(
 
 
 /* =========================================================
-   MARKER ICON
+   MARKER ICONS
    ========================================================= */
 
 const pawIcon =
@@ -152,6 +152,41 @@ const dateFilter =
 const clearFilters =
     document.getElementById(
         "clearFilters"
+    );
+
+
+/* =========================================================
+   DOM — NAVIGATION
+   ========================================================= */
+
+const catMenuButton =
+    document.getElementById(
+        "catMenuButton"
+    );
+
+const navigationPanel =
+    document.getElementById(
+        "navigationPanel"
+    );
+
+
+/* =========================================================
+   DOM — MAP CONTROL
+   ========================================================= */
+
+const mapControlButton =
+    document.getElementById(
+        "mapControlButton"
+    );
+
+
+/* =========================================================
+   DOM — SOUND
+   ========================================================= */
+
+const soundButton =
+    document.getElementById(
+        "soundButton"
     );
 
 
@@ -302,15 +337,11 @@ function formatProgress(
     progress
 ) {
 
-    if (
-        progress === 0
-    ) {
+    if (progress === 0) {
         return "0.000%";
     }
 
-    if (
-        progress < 0.001
-    ) {
+    if (progress < 0.001) {
         return "<0.001%";
     }
 
@@ -365,94 +396,6 @@ function getPrivacyOffset(id) {
 
 
 /* =========================================================
-   LOAD CAT SIGHTINGS
-   ========================================================= */
-
-async function loadCatSightings() {
-
-    console.log(
-        "================================"
-    );
-
-    console.log(
-        "LOADING CAT SIGHTINGS"
-    );
-
-    console.log(
-        "================================"
-    );
-
-
-    const {
-        data,
-        error
-    } =
-        await supabaseClient
-            .from(
-                "public_cat_sightings"
-            )
-            .select("*");
-
-
-    console.log(
-        "Supabase data:",
-        data
-    );
-
-    console.log(
-        "Supabase error:",
-        error
-    );
-
-
-    if (error) {
-
-        console.error(
-            "SUPABASE LOAD ERROR:",
-            error
-        );
-
-        allSightings = [];
-
-        markerLayer.clearLayers();
-
-        updateCounter(0);
-
-        updateStatistics(
-            [],
-            0
-        );
-
-        return;
-    }
-
-
-    allSightings =
-        Array.isArray(data)
-            ? data
-            : [];
-
-
-    console.log(
-        "NUMBER OF SIGHTINGS:",
-        allSightings.length
-    );
-
-
-    populateCountryFilter();
-
-    populateCityFilter();
-
-    applyFilters();
-
-
-    console.log(
-        "CAT SIGHTINGS READY."
-    );
-}
-
-
-/* =========================================================
    STATISTICS
    ========================================================= */
 
@@ -501,7 +444,6 @@ function updateStatistics(
                     )
                         .toISOString()
                         .split("T")[0];
-
 
                 if (
                     date === today
@@ -605,7 +547,6 @@ function getCatPhotoURL(
         return null;
     }
 
-
     if (
         photoPath.startsWith(
             "http://"
@@ -617,7 +558,6 @@ function getCatPhotoURL(
 
         return photoPath;
     }
-
 
     try {
 
@@ -632,7 +572,6 @@ function getCatPhotoURL(
                 .getPublicUrl(
                     photoPath
                 );
-
 
         return (
             data?.publicUrl ||
@@ -652,7 +591,7 @@ function getCatPhotoURL(
 
 
 /* =========================================================
-   CAT CARD
+   CAT POPUP CARD
    ========================================================= */
 
 function createCatCardHTML(
@@ -898,10 +837,16 @@ function addCatMarker(
     }
 
 
+    const photoURL =
+        getCatPhotoURL(
+            sighting.photo_url
+        );
+
+
     marker.bindPopup(
         createCatCardHTML(
             sighting,
-            null
+            photoURL
         ),
         {
             className:
@@ -935,7 +880,6 @@ function addCatMarker(
             const popupElement =
                 event.popup.getElement();
 
-
             if (!popupElement) {
                 return;
             }
@@ -958,25 +902,88 @@ function addCatMarker(
             }
         }
     );
+}
 
 
-    const photoURL =
-        getCatPhotoURL(
-            sighting.photo_url
+/* =========================================================
+   LOAD CAT SIGHTINGS
+   ========================================================= */
+
+async function loadCatSightings() {
+
+    console.log(
+        "================================"
+    );
+
+    console.log(
+        "LOADING CAT SIGHTINGS"
+    );
+
+    console.log(
+        "================================"
+    );
+
+
+    const {
+        data,
+        error
+    } =
+        await supabaseClient
+            .from(
+                "public_cat_sightings"
+            )
+            .select("*");
+
+
+    if (error) {
+
+        console.error(
+            "SUPABASE LOAD ERROR:",
+            error
         );
 
+        allSightings = [];
 
-    marker.setPopupContent(
-        createCatCardHTML(
-            sighting,
-            photoURL
-        )
+        markerLayer.clearLayers();
+
+        updateCounter(0);
+
+        updateStatistics(
+            [],
+            0
+        );
+
+        return;
+    }
+
+
+    allSightings =
+        Array.isArray(data)
+            ? data
+            : [];
+
+
+    console.log(
+        "NUMBER OF SIGHTINGS:",
+        allSightings.length
+    );
+
+
+    populateCountryFilter();
+
+    populateCityFilter();
+
+    applyFilters();
+
+
+    console.log(
+        "CAT SIGHTINGS READY."
     );
 }
 
 
 /* =========================================================
-   FILTER PANEL OPEN / CLOSE
+   FILTER PANEL
    ========================================================= */
 
 function openFilters() {
@@ -984,7 +991,6 @@ function openFilters() {
     if (!filterPanel) {
         return;
     }
-
 
     filterPanel.classList.add(
         "open"
@@ -1006,7 +1012,6 @@ function closeFiltersPanel() {
     if (!filterPanel) {
         return;
     }
-
 
     filterPanel.classList.remove(
         "open"
@@ -1067,7 +1072,7 @@ if (closeFilters) {
 
 
 /* =========================================================
-   POPULATE COUNTRY FILTER
+   COUNTRY FILTER
    ========================================================= */
 
 function populateCountryFilter() {
@@ -1116,10 +1121,9 @@ function populateCountryFilter() {
         ]
         .sort(
             (a, b) =>
-                String(a)
-                    .localeCompare(
-                        String(b)
-                    )
+                String(a).localeCompare(
+                    String(b)
+                )
         );
 
 
@@ -1131,13 +1135,11 @@ function populateCountryFilter() {
                     "option"
                 );
 
-
             option.value =
                 country;
 
             option.textContent =
                 country;
-
 
             countryFilter.appendChild(
                 option
@@ -1170,7 +1172,7 @@ function populateCountryFilter() {
 
 
 /* =========================================================
-   POPULATE CITY FILTER
+   CITY FILTER
    ========================================================= */
 
 function populateCityFilter() {
@@ -1244,10 +1246,9 @@ function populateCityFilter() {
         ]
         .sort(
             (a, b) =>
-                String(a)
-                    .localeCompare(
-                        String(b)
-                    )
+                String(a).localeCompare(
+                    String(b)
+                )
         );
 
 
@@ -1259,13 +1260,11 @@ function populateCityFilter() {
                     "option"
                 );
 
-
             option.value =
                 city;
 
             option.textContent =
                 city;
-
 
             cityFilter.appendChild(
                 option
@@ -1327,6 +1326,7 @@ function matchesSelectedMonth(
             date.getTime()
         )
     ) {
+
         return false;
     }
 
@@ -1344,12 +1344,8 @@ function matchesSelectedMonth(
         );
 
 
-    const sightingMonth =
-        `${year}-${month}`;
-
-
     return (
-        sightingMonth ===
+        `${year}-${month}` ===
         selectedMonth
     );
 }
@@ -1434,7 +1430,7 @@ function getFilteredSightings() {
 
 
 /* =========================================================
-   RENDER FILTERED MARKERS
+   RENDER FILTERED SIGHTINGS
    ========================================================= */
 
 function renderFilteredSightings(
@@ -1516,8 +1512,8 @@ if (countryFilter) {
         () => {
 
             /*
-             * Changing country rebuilds
-             * the city dropdown.
+             * When country changes,
+             * rebuild city options.
              */
 
             populateCityFilter();
@@ -1587,19 +1583,8 @@ if (clearFilters) {
 
 
 /* =========================================================
-   MENU
+   NAVIGATION
    ========================================================= */
-
-const catMenuButton =
-    document.getElementById(
-        "catMenuButton"
-    );
-
-const navigationPanel =
-    document.getElementById(
-        "navigationPanel"
-    );
-
 
 if (
     catMenuButton &&
@@ -1610,7 +1595,10 @@ if (
         "click",
         event => {
 
+            event.preventDefault();
+
             event.stopPropagation();
+
 
             navigationPanel.classList.toggle(
                 "open"
@@ -1619,6 +1607,10 @@ if (
     );
 }
 
+
+/*
+ * Clicking the map closes navigation.
+ */
 
 map.on(
     "click",
@@ -1637,12 +1629,6 @@ map.on(
 /* =========================================================
    MAP CONTROL
    ========================================================= */
-
-const mapControlButton =
-    document.getElementById(
-        "mapControlButton"
-    );
-
 
 if (mapControlButton) {
 
@@ -1667,65 +1653,8 @@ if (mapControlButton) {
 
 
 /* =========================================================
-   NAVIGATION
-   ========================================================= */
-
-const catMenuButton =
-    document.getElementById("catMenuButton");
-
-const navigationPanel =
-    document.getElementById("navigationPanel");
-
-const filterToggle =
-    document.getElementById("filterToggle");
-
-const filterPanel =
-    document.getElementById("filterPanel");
-
-
-catMenuButton.addEventListener("click", () => {
-
-    navigationPanel.classList.toggle("hidden");
-
-    const navigationOpen =
-        !navigationPanel.classList.contains("hidden");
-
-    /*
-     * When navigation is open, move the filter
-     * control below it.
-     */
-    if (navigationOpen) {
-
-        filterToggle.classList.add(
-            "filter-below-navigation"
-        );
-
-        filterPanel.classList.add(
-            "filter-below-navigation"
-        );
-
-    } else {
-
-        filterToggle.classList.remove(
-            "filter-below-navigation"
-        );
-
-        filterPanel.classList.remove(
-            "filter-below-navigation"
-        );
-
-    }
-
-});
-/* =========================================================
    SOUND
    ========================================================= */
-
-const soundButton =
-    document.getElementById(
-        "soundButton"
-    );
-
 
 let soundEnabled =
     true;
@@ -1761,7 +1690,6 @@ const logoFrames = [
     "assets/cats/logo-face-2.png",
 
     "assets/cats/logo-face-3.png"
-
 ];
 
 
@@ -1772,7 +1700,6 @@ const mascotFrames = [
     "assets/cats/mascot-full-2.png",
 
     "assets/cats/mascot-full-3.png"
-
 ];
 
 
@@ -1861,7 +1788,9 @@ setInterval(
 );
 
 
-/* PRELOAD */
+/* =========================================================
+   PRELOAD CAT FRAMES
+   ========================================================= */
 
 [
     ...logoFrames,
@@ -1993,7 +1922,6 @@ if (catPhotoInput) {
                 "image/png",
 
                 "image/webp"
-
             ];
 
 
@@ -2275,6 +2203,7 @@ async function uploadCatPhoto(
                 filePath,
                 file,
                 {
+
                     cacheControl:
                         "3600",
 
@@ -2571,7 +2500,6 @@ if (reportCatForm) {
                             reportMessage.textContent =
                                 "";
                         }
-
                     },
                     1400
                 );
