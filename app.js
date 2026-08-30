@@ -264,6 +264,9 @@ function getPrivacyOffset(id) {
    LOAD CAT SIGHTINGS
    ========================================================= */
 
+let allSightings = [];
+
+
 async function loadCatSightings() {
 
     console.log(
@@ -275,26 +278,9 @@ async function loadCatSightings() {
     );
 
     console.log(
-        "Supabase URL:",
-        SUPABASE_URL
-    );
-
-    console.log(
         "================================"
     );
 
-
-    markerLayer.clearLayers();
-
-
-    /*
-     * IMPORTANT
-     *
-     * We query ONLY the public view.
-     *
-     * We never expose the private
-     * cat_sightings table directly.
-     */
 
     const {
         data,
@@ -304,16 +290,7 @@ async function loadCatSightings() {
             .from(
                 "public_cat_sightings"
             )
-            .select(`
-                id,
-                cat_count,
-                public_latitude,
-                public_longitude,
-                city,
-                country,
-                created_at,
-                photo_url
-            `);
+            .select("*");
 
 
     console.log(
@@ -334,6 +311,10 @@ async function loadCatSightings() {
             error
         );
 
+        allSightings = [];
+
+        markerLayer.clearLayers();
+
         updateCounter(0);
 
         updateStatistics(
@@ -342,10 +323,11 @@ async function loadCatSightings() {
         );
 
         return;
+
     }
 
 
-    const sightings =
+    allSightings =
         Array.isArray(data)
             ? data
             : [];
@@ -353,76 +335,32 @@ async function loadCatSightings() {
 
     console.log(
         "NUMBER OF SIGHTINGS:",
-        sightings.length
+        allSightings.length
     );
 
 
     /*
-     * Calculate total cats.
+     * Populate filters from
+     * the loaded data.
      */
 
-    const totalCats =
-        sightings.reduce(
-            (
-                total,
-                sighting
-            ) => {
+    populateCountryFilter();
 
-                return (
-                    total +
-                    Number(
-                        sighting.cat_count || 0
-                    )
-                );
-
-            },
-            0
-        );
-
-
-    console.log(
-        "TOTAL CATS:",
-        totalCats
-    );
-
-
-    updateStatistics(
-        sightings,
-        totalCats
-    );
-
-
-    updateCounter(
-        totalCats
-    );
+    populateCityFilter();
 
 
     /*
-     * Create markers.
-     *
-     * IMPORTANT:
-     *
-     * Marker creation does NOT
-     * wait for photo loading.
+     * Render everything.
      */
 
-    sightings.forEach(
-        sighting => {
-
-            addCatMarker(
-                sighting
-            );
-
-        }
-    );
+    applyFilters();
 
 
     console.log(
-        "ALL CAT MARKERS REQUESTED."
+        "CAT SIGHTINGS READY."
     );
+
 }
-
-
 /* =========================================================
    STATISTICS
    ========================================================= */
