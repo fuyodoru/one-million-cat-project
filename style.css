@@ -4926,3 +4926,315 @@ textarea {
     }
 
 }
+
+/* =========================================================
+   FILTER CONTROL — POSITIONING FIX
+   Keeps the filter paw below the navigation panel
+   ========================================================= */
+
+.filter-toggle {
+    position: absolute;
+    left: 18px;
+    top: 135px;
+
+    width: 42px;
+    height: 42px;
+
+    padding: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    z-index: 1200;
+
+    background: #0b2433;
+    border: 3px solid #278eae;
+    border-radius: 10px;
+
+    box-shadow:
+        0 4px 0 #071923,
+        0 0 0 2px #071923;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.15s ease,
+        background 0.15s ease;
+}
+
+.filter-toggle:hover {
+    transform: translateY(-2px);
+    background: #123449;
+}
+
+.filter-toggle:active {
+    transform: translateY(1px);
+}
+
+.filter-toggle img {
+    width: 22px;
+    height: 22px;
+    object-fit: contain;
+    image-rendering: pixelated;
+}
+
+
+/* =========================================================
+   FILTER PANEL
+   ========================================================= */
+
+.filter-panel {
+    position: absolute;
+
+    left: 18px;
+    top: 185px;
+
+    width: 190px;
+    max-width: calc(100vw - 36px);
+
+    box-sizing: border-box;
+
+    z-index: 1190;
+
+    padding: 14px;
+
+    background: #071a28;
+
+    border: 3px solid #278eae;
+    border-radius: 10px;
+
+    box-shadow:
+        0 5px 0 #071923,
+        0 0 0 2px #071923;
+
+    overflow: hidden;
+}
+
+
+/* =========================================================
+   FILTER HEADER
+   ========================================================= */
+
+.filter-panel-header {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+
+    width: 100%;
+    height: 24px;
+
+    margin-bottom: 6px;
+}
+
+.filter-close {
+    width: 22px;
+    height: 22px;
+
+    padding: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-family: "Silkscreen", monospace;
+    font-size: 12px;
+    line-height: 1;
+
+    color: #b8d5dd;
+    background: #0b2433;
+
+    border: 2px solid #278eae;
+    border-radius: 4px;
+
+    cursor: pointer;
+}
+
+.filter-close:hover {
+    background: #163b4d;
+}
+
+
+/* =========================================================
+   FILTER GROUPS
+   ========================================================= */
+
+.filter-group {
+    width: 100%;
+    margin-bottom: 12px;
+}
+
+.filter-group label {
+    display: block;
+
+    margin-bottom: 6px;
+
+    font-family: "Silkscreen", monospace;
+    font-size: 7px;
+    letter-spacing: 1.5px;
+
+    color: #8fb9c5;
+}
+
+.filter-group select,
+.filter-group input {
+    width: 100%;
+    height: 30px;
+
+    box-sizing: border-box;
+
+    padding: 0 8px;
+
+    font-family: "Silkscreen", monospace;
+    font-size: 7px;
+
+    color: #b8d5dd;
+    background: #0b2433;
+
+    border: 2px solid #278eae;
+    border-radius: 4px;
+
+    outline: none;
+}
+
+.filter-group select:focus,
+.filter-group input:focus {
+    border-color: #6bc4dc;
+}
+
+
+/* =========================================================
+   CLEAR FILTERS
+   ========================================================= */
+
+.clear-filters-button {
+    width: 100%;
+    height: 30px;
+
+    margin-top: 2px;
+
+    font-family: "Silkscreen", monospace;
+    font-size: 7px;
+    letter-spacing: 1px;
+
+    color: #b8d5dd;
+    background: #123449;
+
+    border: 2px solid #278eae;
+    border-radius: 4px;
+
+    cursor: pointer;
+}
+
+.clear-filters-button:hover {
+    background: #19445b;
+}
+
+
+/* =========================================================
+   DESKTOP — WHEN NAVIGATION IS OPEN
+   Move filter control further down so it can NEVER
+   overlap the navigation panel.
+   ========================================================= */
+
+.navigation-panel:not(.hidden) ~ .filter-toggle {
+    top: 445px;
+}
+
+.navigation-panel:not(.hidden) ~ .filter-panel {
+    top: 495px;
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 768px) {
+
+    .filter-toggle {
+        left: 12px;
+        top: 115px;
+
+        width: 38px;
+        height: 38px;
+
+        border-width: 2px;
+    }
+
+    .filter-toggle img {
+        width: 20px;
+        height: 20px;
+    }
+
+    .filter-panel {
+        left: 12px;
+        top: 160px;
+
+        width: min(190px, calc(100vw - 24px));
+
+        padding: 12px;
+
+        border-width: 2px;
+    }
+
+    .filter-panel-header {
+        height: 22px;
+    }
+
+    .filter-group {
+        margin-bottom: 10px;
+    }
+
+    .filter-group label {
+        font-size: 6px;
+        margin-bottom: 5px;
+    }
+
+    .filter-group select,
+    .filter-group input {
+        height: 28px;
+        font-size: 6px;
+    }
+
+    .clear-filters-button {
+        height: 28px;
+        font-size: 6px;
+    }
+
+    .navigation-panel:not(.hidden) ~ .filter-toggle {
+        top: min(420px, 55vh);
+    }
+
+    .navigation-panel:not(.hidden) ~ .filter-panel {
+        top: min(465px, 55vh);
+    }
+}
+
+
+/* =========================================================
+   VERY SMALL PHONES
+   ========================================================= */
+
+@media (max-width: 480px) {
+
+    .filter-toggle {
+        left: 10px;
+        width: 36px;
+        height: 36px;
+    }
+
+    .filter-panel {
+        left: 10px;
+        width: calc(100vw - 20px);
+        max-width: 185px;
+    }
+
+    .navigation-panel:not(.hidden) ~ .filter-toggle {
+        top: min(390px, 52vh);
+    }
+
+    .navigation-panel:not(.hidden) ~ .filter-panel {
+        top: min(435px, 52vh);
+    }
+}
