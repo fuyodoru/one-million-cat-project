@@ -4129,3 +4129,60 @@ textarea {
     }
 
 }
+
+/* =========================================================
+   INFINITE TICKER
+   ========================================================= */
+
+.tracker-message {
+    position: relative !important;
+
+    overflow: hidden !important;
+
+    display: block !important;
+
+    white-space: nowrap !important;
+}
+
+.ticker-track {
+    display: flex;
+
+    width: max-content;
+
+    height: 100%;
+
+    align-items: center;
+
+    animation:
+        tickerScroll 22s linear infinite;
+}
+
+.ticker-content {
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    flex-shrink: 0;
+
+    padding-right: 35px;
+
+    white-space: nowrap;
+}
+
+.ticker-content span {
+    flex-shrink: 0;
+}
+
+@keyframes tickerScroll {
+
+    from {
+        transform: translateX(0);
+    }
+
+    to {
+        transform: translateX(-50%);
+    }
+
+}
