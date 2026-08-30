@@ -2315,3 +2315,60 @@ console.log(
  */
 
 loadCatSightings();
+
+
+/* =========================================================
+   FILTER PANEL
+========================================================= */
+
+const filterToggle =
+    document.getElementById("filterToggle");
+
+const filterPanel =
+    document.getElementById("filterPanel");
+
+const closeFilters =
+    document.getElementById("closeFilters");
+
+
+if (filterToggle && filterPanel) {
+
+    filterToggle.addEventListener(
+        "click",
+        () => {
+
+            const isOpen =
+                filterPanel.classList.toggle("open");
+
+            filterToggle.setAttribute(
+                "aria-expanded",
+                isOpen
+            );
+
+        }
+    );
+
+}
+
+
+if (closeFilters && filterPanel) {
+
+    closeFilters.addEventListener(
+        "click",
+        () => {
+
+            filterPanel.classList.remove("open");
+
+            if (filterToggle) {
+
+                filterToggle.setAttribute(
+                    "aria-expanded",
+                    "false"
+                );
+
+            }
+
+        }
+    );
+
+}
