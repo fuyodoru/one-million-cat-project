@@ -70,6 +70,38 @@ const pawIcon =
     });
 
 
+/*
+ * Fallback marker.
+ *
+ * If paw-marker.png cannot be loaded,
+ * this marker will still appear.
+ */
+
+const fallbackPawIcon =
+    L.divIcon({
+        className:
+            "fallback-paw-marker",
+
+        html:
+            '<div style="' +
+            'font-size:28px;' +
+            'line-height:32px;' +
+            'width:32px;' +
+            'height:32px;' +
+            'text-align:center;' +
+            '">🐾</div>',
+
+        iconSize:
+            [32, 32],
+
+        iconAnchor:
+            [16, 16],
+
+        popupAnchor:
+            [0, -18]
+    });
+
+
 const markerLayer =
     L.layerGroup().addTo(map);
 
@@ -213,8 +245,22 @@ function getPrivacyOffset(id) {
 async function loadCatSightings() {
 
     console.log(
-        "Loading cat sightings..."
+        "================================"
     );
+
+    console.log(
+        "LOADING CAT SIGHTINGS"
+    );
+
+    console.log(
+        "Supabase URL:",
+        SUPABASE_URL
+    );
+
+    console.log(
+        "================================"
+    );
+
 
     markerLayer.clearLayers();
 
@@ -222,43 +268,43 @@ async function loadCatSightings() {
     /*
      * IMPORTANT:
      *
-     * public_cat_sightings currently contains:
+     * We query the PUBLIC VIEW.
      *
-     * id
-     * cat_count
-     * public_latitude
-     * public_longitude
-     * city
-     * country
-     * created_at
-     *
-     * It DOES NOT contain photo_url.
-     *
-     * Therefore we do NOT request photo_url here.
+     * select("*") avoids accidentally
+     * requesting a column that may not
+     * exist in the view.
      */
 
     const {
         data,
         error
-    } = await supabaseClient
-        .from(
-            "public_cat_sightings"
-        )
-        .select(`
-            id,
-            cat_count,
-            public_latitude,
-            public_longitude,
-            city,
-            country,
-            created_at
-        `);
+    } =
+        await supabaseClient
+            .from(
+                "public_cat_sightings"
+            )
+            .select("*");
+
+
+    /*
+     * DEBUG
+     */
+
+    console.log(
+        "Supabase data:",
+        data
+    );
+
+    console.log(
+        "Supabase error:",
+        error
+    );
 
 
     if (error) {
 
         console.error(
-            "Supabase error:",
+            "SUPABASE LOAD ERROR:",
             error
         );
 
@@ -274,14 +320,20 @@ async function loadCatSightings() {
 
 
     const sightings =
-        data || [];
+        Array.isArray(data)
+            ? data
+            : [];
 
 
     console.log(
-        "Sightings received:",
-        sightings
+        "NUMBER OF SIGHTINGS:",
+        sightings.length
     );
 
+
+    /*
+     * Calculate total cats.
+     */
 
     const totalCats =
         sightings.reduce(
@@ -302,6 +354,12 @@ async function loadCatSightings() {
         );
 
 
+    console.log(
+        "TOTAL CATS:",
+        totalCats
+    );
+
+
     updateStatistics(
         sightings,
         totalCats
@@ -314,22 +372,31 @@ async function loadCatSightings() {
 
 
     /*
-     * Add markers.
+     * CREATE MARKERS
+     *
+     * IMPORTANT:
+     *
+     * Marker creation does NOT wait
+     * for photo loading.
+     *
+     * This means a missing photo
+     * can never prevent the cat
+     * from appearing on the map.
      */
 
-    for (
-        const sighting of sightings
-    ) {
+    sightings.forEach(
+        sighting => {
 
-        addCatMarker(
-            sighting
-        );
-    }
+            addCatMarker(
+                sighting
+            );
+
+        }
+    );
 
 
     console.log(
-        "Cat sightings loaded:",
-        sightings.length
+        "ALL CAT MARKERS REQUESTED."
     );
 }
 
@@ -490,11 +557,115 @@ function updateCounter(totalCats) {
 
 
 /* =========================================================
+   PHOTO URL
+========================================================= */
+
+async function getCatPhotoURL(
+    photoPath
+) {
+
+    if (
+        !photoPath
+    ) {
+
+        return null;
+    }
+
+
+    console.log(
+        "CAT CARD: Loading photo:",
+        photoPath
+    );
+
+
+    try {
+
+        /*
+         * Already a complete URL.
+         */
+
+        if (
+            photoPath.startsWith(
+                "http://"
+            ) ||
+            photoPath.startsWith(
+                "https://"
+            )
+        ) {
+
+            return photoPath;
+        }
+
+
+        /*
+         * Supabase Storage path.
+         */
+
+        const {
+            data,
+            error
+        } =
+            await supabaseClient
+                .storage
+                .from(
+                    "cat-sightings"
+                )
+                .createSignedUrl(
+                    photoPath,
+                    60 * 60
+                );
+
+
+        if (
+            error
+        ) {
+
+            console.error(
+                "CAT CARD: Signed URL ERROR:",
+                error
+            );
+
+            return null;
+        }
+
+
+        if (
+            !data ||
+            !data.signedUrl
+        ) {
+
+            console.error(
+                "CAT CARD: No signed URL returned:",
+                data
+            );
+
+            return null;
+        }
+
+
+        return data.signedUrl;
+
+    } catch (
+        error
+    ) {
+
+        console.error(
+            "CAT CARD: Photo loading ERROR:",
+            error
+        );
+
+        return null;
+    }
+}
+
+
+/* =========================================================
    CAT CARD
 ========================================================= */
 
 function createCatCardHTML(
-    sighting
+    sighting,
+    photoURL
 ) {
 
     const count =
@@ -519,30 +690,45 @@ function createCatCardHTML(
         );
 
 
-    /*
-     * There is currently no photo_url
-     * in public_cat_sightings.
-     *
-     * Therefore the card uses a
-     * placeholder until we add
-     * secure public photo access.
-     */
+    let photoHTML;
 
-    const photoHTML = `
 
-        <div class="cat-card-photo cat-card-no-photo">
+    if (
+        photoURL
+    ) {
 
-            <div class="cat-card-paw">
-                🐾
+        photoHTML = `
+
+            <div class="cat-card-photo">
+
+                <img
+                    src="${escapeHTML(photoURL)}"
+                    alt="Cat sighting in ${escapeHTML(city)}"
+                    loading="lazy"
+                >
+
             </div>
 
-            <span>
-                NO PHOTO
-            </span>
+        `;
 
-        </div>
+    } else {
 
-    `;
+        photoHTML = `
+
+            <div class="cat-card-photo cat-card-no-photo">
+
+                <div class="cat-card-paw">
+                    🐾
+                </div>
+
+                <span>
+                    NO PHOTO
+                </span>
+
+            </div>
+
+        `;
+    }
 
 
     return `
@@ -557,16 +743,13 @@ function createCatCardHTML(
                 ×
             </button>
 
-
             ${photoHTML}
-
 
             <div class="cat-card-content">
 
                 <div class="cat-card-label">
                     🐾 CAT SIGHTING
                 </div>
-
 
                 <div class="cat-card-title">
 
@@ -575,7 +758,6 @@ function createCatCardHTML(
                     RECORDED
 
                 </div>
-
 
                 <div class="cat-card-info">
 
@@ -592,7 +774,6 @@ function createCatCardHTML(
 
                     </div>
 
-
                     <div class="cat-card-row">
 
                         <span class="cat-card-icon">
@@ -606,7 +787,6 @@ function createCatCardHTML(
                     </div>
 
                 </div>
-
 
                 <div class="cat-card-footer">
                     EVERY CAT COUNTS
@@ -624,9 +804,13 @@ function createCatCardHTML(
    MARKER
 ========================================================= */
 
-function addCatMarker(
+async function addCatMarker(
     sighting
 ) {
+
+    /*
+     * Read coordinates.
+     */
 
     const latitude =
         Number(
@@ -640,6 +824,22 @@ function addCatMarker(
         );
 
 
+    console.log(
+        "ADDING MARKER:",
+        {
+            id: sighting.id,
+            latitude: latitude,
+            longitude: longitude,
+            city: sighting.city,
+            country: sighting.country
+        }
+    );
+
+
+    /*
+     * Validate coordinates.
+     */
+
     if (
         !Number.isFinite(
             latitude
@@ -649,8 +849,8 @@ function addCatMarker(
         )
     ) {
 
-        console.warn(
-            "Invalid public coordinates:",
+        console.error(
+            "INVALID PUBLIC COORDINATES:",
             sighting
         );
 
@@ -659,9 +859,7 @@ function addCatMarker(
 
 
     /*
-     * Privacy offset prevents the
-     * marker from exposing the exact
-     * reported location.
+     * Privacy offset.
      */
 
     const offset =
@@ -670,46 +868,96 @@ function addCatMarker(
         );
 
 
-    const marker =
-        L.marker(
-            [
-                latitude +
-                    offset.latitude,
+    const markerLatitude =
+        latitude +
+        offset.latitude;
 
-                longitude +
-                    offset.longitude
-            ],
-            {
-                icon:
-                    pawIcon
-            }
-        ).addTo(
-            markerLayer
-        );
+
+    const markerLongitude =
+        longitude +
+        offset.longitude;
 
 
     /*
-     * Create Cat Card.
+     * Create marker IMMEDIATELY.
+     *
+     * We intentionally do NOT wait
+     * for the photo.
      */
 
-    const cardHTML =
-        createCatCardHTML(
-            sighting
+    let marker;
+
+    try {
+
+        marker =
+            L.marker(
+                [
+                    markerLatitude,
+                    markerLongitude
+                ],
+                {
+                    icon:
+                        pawIcon
+                }
+            );
+
+        marker.addTo(
+            markerLayer
+        );
+
+    } catch (
+        error
+    ) {
+
+        console.error(
+            "PAW ICON FAILED. USING FALLBACK:",
+            error
         );
 
 
+        marker =
+            L.marker(
+                [
+                    markerLatitude,
+                    markerLongitude
+                ],
+                {
+                    icon:
+                        fallbackPawIcon
+                }
+            ).addTo(
+                markerLayer
+            );
+    }
+
+
+    /*
+     * Confirm marker creation.
+     */
+
     console.log(
-        "CAT CARD CREATED:",
-        sighting.id
+        "MARKER ADDED:",
+        sighting.id,
+        marker.getLatLng()
     );
 
 
     /*
-     * Bind Cat Card to marker.
+     * Create a basic card immediately.
+     *
+     * This guarantees the popup exists
+     * even if the photo fails.
      */
 
+    const initialCardHTML =
+        createCatCardHTML(
+            sighting,
+            null
+        );
+
+
     marker.bindPopup(
-        cardHTML,
+        initialCardHTML,
         {
             className:
                 "cat-card-popup",
@@ -744,8 +992,7 @@ function addCatMarker(
         event => {
 
             const popupElement =
-                event.popup
-                    .getElement();
+                event.popup.getElement();
 
 
             if (
@@ -776,6 +1023,51 @@ function addCatMarker(
             }
         }
     );
+
+
+    /*
+     * Load photo AFTER marker exists.
+     */
+
+    try {
+
+        const photoURL =
+            await getCatPhotoURL(
+                sighting.photo_url
+            );
+
+
+        /*
+         * Update popup with photo.
+         */
+
+        const updatedCardHTML =
+            createCatCardHTML(
+                sighting,
+                photoURL
+            );
+
+
+        marker.setPopupContent(
+            updatedCardHTML
+        );
+
+
+        console.log(
+            "CAT CARD READY:",
+            sighting.id
+        );
+
+    } catch (
+        error
+    ) {
+
+        console.error(
+            "CAT CARD PHOTO ERROR:",
+            sighting.id,
+            error
+        );
+    }
 }
 
 
@@ -2001,8 +2293,16 @@ console.log(
 );
 
 console.log(
+    "Marker fallback: ENABLED"
+);
+
+console.log(
     "================================"
 );
 
+
+/*
+ * Start loading cats.
+ */
 
 loadCatSightings();
