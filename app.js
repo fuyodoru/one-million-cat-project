@@ -16,7 +16,6 @@ const SUPABASE_URL =
 const SUPABASE_PUBLISHABLE_KEY =
     "sb_publishable_9KY3n_ELqAmrNQVy9VH-nA_5Cs7U5-4";
 
-
 const supabaseClient =
     window.supabase.createClient(
         SUPABASE_URL,
@@ -28,20 +27,18 @@ const supabaseClient =
    MAP
    ========================================================= */
 
-const map =
-    L.map(
-        "map",
-        {
-            zoomControl: false,
-            minZoom: 2,
-            maxZoom: 13,
-            worldCopyJump: true
-        }
-    )
-    .setView(
-        [25, 10],
-        2
-    );
+const map = L.map(
+    "map",
+    {
+        zoomControl: false,
+        minZoom: 2,
+        maxZoom: 13,
+        worldCopyJump: true
+    }
+).setView(
+    [25, 10],
+    2
+);
 
 
 L.tileLayer(
@@ -54,11 +51,6 @@ L.tileLayer(
 ).addTo(map);
 
 
-/*
- * Make sure Leaflet calculates
- * the correct map dimensions.
- */
-
 setTimeout(
     () => {
         map.invalidateSize(true);
@@ -68,7 +60,7 @@ setTimeout(
 
 
 /* =========================================================
-   PAW MARKER
+   MARKER ICON
    ========================================================= */
 
 const pawIcon =
@@ -86,13 +78,6 @@ const pawIcon =
             [0, -18]
     });
 
-
-/*
- * Fallback paw.
- *
- * If the PNG cannot load,
- * the marker still appears.
- */
 
 const fallbackPawIcon =
     L.divIcon({
@@ -121,6 +106,118 @@ const fallbackPawIcon =
 
 const markerLayer =
     L.layerGroup().addTo(map);
+
+
+/* =========================================================
+   GLOBAL DATA
+   ========================================================= */
+
+let allSightings = [];
+
+
+/* =========================================================
+   DOM — FILTERS
+   ========================================================= */
+
+const filterToggle =
+    document.getElementById(
+        "filterToggle"
+    );
+
+const filterPanel =
+    document.getElementById(
+        "filterPanel"
+    );
+
+const closeFilters =
+    document.getElementById(
+        "closeFilters"
+    );
+
+const countryFilter =
+    document.getElementById(
+        "countryFilter"
+    );
+
+const cityFilter =
+    document.getElementById(
+        "cityFilter"
+    );
+
+const dateFilter =
+    document.getElementById(
+        "dateFilter"
+    );
+
+const clearFilters =
+    document.getElementById(
+        "clearFilters"
+    );
+
+
+/* =========================================================
+   DOM — REPORT CAT
+   ========================================================= */
+
+const reportCatButton =
+    document.getElementById(
+        "reportCatButton"
+    );
+
+const reportCatModal =
+    document.getElementById(
+        "reportCatModal"
+    );
+
+const closeReportModal =
+    document.getElementById(
+        "closeReportModal"
+    );
+
+const cancelReport =
+    document.getElementById(
+        "cancelReport"
+    );
+
+const reportCatForm =
+    document.getElementById(
+        "reportCatForm"
+    );
+
+const catCountInput =
+    document.getElementById(
+        "catCount"
+    );
+
+const reportCityInput =
+    document.getElementById(
+        "reportCity"
+    );
+
+const reportCountryInput =
+    document.getElementById(
+        "reportCountry"
+    );
+
+const catPhotoInput =
+    document.getElementById(
+        "catPhoto"
+    );
+
+const photoMessage =
+    document.getElementById(
+        "photoMessage"
+    );
+
+const reportLocationMessage =
+    document.getElementById(
+        "reportLocationMessage"
+    );
+
+const reportMessage =
+    document.getElementById(
+        "reportMessage"
+    );
 
 
 /* =========================================================
@@ -155,6 +252,16 @@ function escapeHTML(value) {
 }
 
 
+function normalizeFilterText(value) {
+
+    return String(
+        value ?? ""
+    )
+        .trim()
+        .toLowerCase();
+}
+
+
 /* =========================================================
    DATE
    ========================================================= */
@@ -179,14 +286,9 @@ function formatDate(value) {
     return date.toLocaleDateString(
         "en-GB",
         {
-            day:
-                "2-digit",
-
-            month:
-                "short",
-
-            year:
-                "numeric"
+            day: "2-digit",
+            month: "short",
+            year: "numeric"
         }
     );
 }
@@ -196,7 +298,9 @@ function formatDate(value) {
    PROGRESS
    ========================================================= */
 
-function formatProgress(progress) {
+function formatProgress(
+    progress
+) {
 
     if (
         progress === 0
@@ -264,9 +368,6 @@ function getPrivacyOffset(id) {
    LOAD CAT SIGHTINGS
    ========================================================= */
 
-let allSightings = [];
-
-
 async function loadCatSightings() {
 
     console.log(
@@ -323,7 +424,6 @@ async function loadCatSightings() {
         );
 
         return;
-
     }
 
 
@@ -339,19 +439,9 @@ async function loadCatSightings() {
     );
 
 
-    /*
-     * Populate filters from
-     * the loaded data.
-     */
-
     populateCountryFilter();
 
     populateCityFilter();
-
-
-    /*
-     * Render everything.
-     */
 
     applyFilters();
 
@@ -359,8 +449,9 @@ async function loadCatSightings() {
     console.log(
         "CAT SIGHTINGS READY."
     );
-
 }
+
+
 /* =========================================================
    STATISTICS
    ========================================================= */
@@ -404,7 +495,6 @@ function updateStatistics(
                     return total;
                 }
 
-
                 const date =
                     new Date(
                         sighting.created_at
@@ -425,9 +515,7 @@ function updateStatistics(
                     );
                 }
 
-
                 return total;
-
             },
             0
         );
@@ -440,25 +528,21 @@ function updateStatistics(
         ) * 100;
 
 
-    const setText =
-        (
-            id,
-            value
-        ) => {
+    function setText(
+        id,
+        value
+    ) {
 
-            const element =
-                document.getElementById(
-                    id
-                );
+        const element =
+            document.getElementById(
+                id
+            );
 
-            if (
-                element
-            ) {
-
-                element.textContent =
-                    value;
-            }
-        };
+        if (element) {
+            element.textContent =
+                value;
+        }
+    }
 
 
     setText(
@@ -466,36 +550,30 @@ function updateStatistics(
         totalCats.toLocaleString()
     );
 
-
     setText(
         "statSightings",
         totalSightings.toLocaleString()
     );
-
 
     setText(
         "statCountries",
         countries.size.toLocaleString()
     );
 
-
     setText(
         "statToday",
         catsToday.toLocaleString()
     );
 
-
     setText(
         "statProgress",
-        formatProgress(
-            progress
-        )
+        formatProgress(progress)
     );
 }
 
 
 /* =========================================================
-   COUNTER
+   BOTTOM COUNTER
    ========================================================= */
 
 function updateCounter(
@@ -507,10 +585,7 @@ function updateCounter(
             "trackerCount"
         );
 
-
-    if (
-        element
-    ) {
+    if (element) {
 
         element.textContent =
             `${totalCats.toLocaleString()} CATS LOGGED`;
@@ -522,63 +597,47 @@ function updateCounter(
    PHOTO URL
    ========================================================= */
 
-/*
- * The bucket "cat-sightings" is PUBLIC.
- *
- * Therefore:
- *
- *     getPublicUrl()
- *
- * is used instead of:
- *
- *     createSignedUrl()
- */
-function getCatPhotoURL(photoPath) {
+function getCatPhotoURL(
+    photoPath
+) {
 
     if (!photoPath) {
         return null;
     }
 
-    console.log(
-        "CAT PHOTO PATH:",
-        photoPath
-    );
+
+    if (
+        photoPath.startsWith(
+            "http://"
+        ) ||
+        photoPath.startsWith(
+            "https://"
+        )
+    ) {
+
+        return photoPath;
+    }
+
 
     try {
-
-        // Already a complete URL
-        if (
-            photoPath.startsWith("http://") ||
-            photoPath.startsWith("https://")
-        ) {
-
-            return photoPath;
-        }
-
-        /*
-         * cat-sightings is a PUBLIC bucket.
-         *
-         * Therefore we do NOT need a signed URL.
-         * Supabase can give us the permanent public URL.
-         */
 
         const {
             data
         } =
             supabaseClient
                 .storage
-                .from("cat-sightings")
-                .getPublicUrl(photoPath);
+                .from(
+                    "cat-sightings"
+                )
+                .getPublicUrl(
+                    photoPath
+                );
 
-        const publicURL =
-            data?.publicUrl || null;
 
-        console.log(
-            "CAT PHOTO PUBLIC URL:",
-            publicURL
+        return (
+            data?.publicUrl ||
+            null
         );
-
-        return publicURL;
 
     } catch (error) {
 
@@ -590,6 +649,8 @@ function getCatPhotoURL(photoPath) {
         return null;
     }
 }
+
+
 /* =========================================================
    CAT CARD
    ========================================================= */
@@ -624,9 +685,7 @@ function createCatCardHTML(
     let photoHTML;
 
 
-    if (
-        photoURL
-    ) {
+    if (photoURL) {
 
         photoHTML = `
 
@@ -742,53 +801,23 @@ function createCatCardHTML(
 
 
 /* =========================================================
-   MARKER
+   ADD MARKER
    ========================================================= */
 
 function addCatMarker(
     sighting
 ) {
 
-    /*
-     * Read public coordinates.
-     */
-
     const latitude =
         Number(
             sighting.public_latitude
         );
-
 
     const longitude =
         Number(
             sighting.public_longitude
         );
 
-
-    console.log(
-        "ADDING MARKER:",
-        {
-            id:
-                sighting.id,
-
-            latitude:
-                latitude,
-
-            longitude:
-                longitude,
-
-            city:
-                sighting.city,
-
-            country:
-                sighting.country
-        }
-    );
-
-
-    /*
-     * Validate coordinates.
-     */
 
     if (
         !Number.isFinite(
@@ -808,10 +837,6 @@ function addCatMarker(
     }
 
 
-    /*
-     * Privacy offset.
-     */
-
     const offset =
         getPrivacyOffset(
             sighting.id
@@ -828,13 +853,6 @@ function addCatMarker(
         offset.longitude;
 
 
-    /*
-     * Create marker.
-     *
-     * The marker ALWAYS gets
-     * created before photo processing.
-     */
-
     let marker;
 
 
@@ -850,19 +868,15 @@ function addCatMarker(
                     icon:
                         pawIcon
                 }
+            )
+            .addTo(
+                markerLayer
             );
 
-
-        marker.addTo(
-            markerLayer
-        );
-
-    } catch (
-        error
-    ) {
+    } catch (error) {
 
         console.error(
-            "CUSTOM PAW FAILED. USING FALLBACK:",
+            "CUSTOM PAW FAILED:",
             error
         );
 
@@ -883,17 +897,6 @@ function addCatMarker(
             );
     }
 
-
-    console.log(
-        "MARKER ADDED:",
-        sighting.id,
-        marker.getLatLng()
-    );
-
-
-    /*
-     * Initial popup.
-     */
 
     marker.bindPopup(
         createCatCardHTML(
@@ -925,10 +928,6 @@ function addCatMarker(
     );
 
 
-    /*
-     * Custom close button.
-     */
-
     marker.on(
         "popupopen",
         event => {
@@ -937,9 +936,7 @@ function addCatMarker(
                 event.popup.getElement();
 
 
-            if (
-                !popupElement
-            ) {
+            if (!popupElement) {
                 return;
             }
 
@@ -950,16 +947,12 @@ function addCatMarker(
                 );
 
 
-            if (
-                closeButton
-            ) {
+            if (closeButton) {
 
                 closeButton.addEventListener(
                     "click",
                     () => {
-
                         marker.closePopup();
-
                     }
                 );
             }
@@ -967,34 +960,628 @@ function addCatMarker(
     );
 
 
-    /*
-     * Photo loading.
-     *
-     * This does NOT affect
-     * marker creation.
-     */
-
     const photoURL =
         getCatPhotoURL(
             sighting.photo_url
         );
 
 
-    const updatedCardHTML =
+    marker.setPopupContent(
         createCatCardHTML(
             sighting,
             photoURL
+        )
+    );
+}
+
+
+/* =========================================================
+   FILTER PANEL OPEN / CLOSE
+   ========================================================= */
+
+function openFilters() {
+
+    if (!filterPanel) {
+        return;
+    }
+
+
+    filterPanel.classList.add(
+        "open"
+    );
+
+
+    if (filterToggle) {
+
+        filterToggle.setAttribute(
+            "aria-expanded",
+            "true"
+        );
+    }
+}
+
+
+function closeFiltersPanel() {
+
+    if (!filterPanel) {
+        return;
+    }
+
+
+    filterPanel.classList.remove(
+        "open"
+    );
+
+
+    if (filterToggle) {
+
+        filterToggle.setAttribute(
+            "aria-expanded",
+            "false"
+        );
+    }
+}
+
+
+if (filterToggle) {
+
+    filterToggle.addEventListener(
+        "click",
+        event => {
+
+            event.preventDefault();
+
+            event.stopPropagation();
+
+
+            if (
+                filterPanel &&
+                filterPanel.classList.contains(
+                    "open"
+                )
+            ) {
+
+                closeFiltersPanel();
+
+            } else {
+
+                openFilters();
+            }
+        }
+    );
+}
+
+
+if (closeFilters) {
+
+    closeFilters.addEventListener(
+        "click",
+        event => {
+
+            event.preventDefault();
+
+            closeFiltersPanel();
+        }
+    );
+}
+
+
+/* =========================================================
+   POPULATE COUNTRY FILTER
+   ========================================================= */
+
+function populateCountryFilter() {
+
+    if (!countryFilter) {
+        return;
+    }
+
+
+    const currentValue =
+        countryFilter.value;
+
+
+    countryFilter.innerHTML =
+        "";
+
+
+    const allOption =
+        document.createElement(
+            "option"
         );
 
 
-    marker.setPopupContent(
-        updatedCardHTML
+    allOption.value =
+        "";
+
+    allOption.textContent =
+        "ALL COUNTRIES";
+
+
+    countryFilter.appendChild(
+        allOption
+    );
+
+
+    const countries =
+        [
+            ...new Set(
+                allSightings
+                    .map(
+                        sighting =>
+                            sighting.country
+                    )
+                    .filter(Boolean)
+            )
+        ]
+        .sort(
+            (a, b) =>
+                String(a)
+                    .localeCompare(
+                        String(b)
+                    )
+        );
+
+
+    countries.forEach(
+        country => {
+
+            const option =
+                document.createElement(
+                    "option"
+                );
+
+
+            option.value =
+                country;
+
+            option.textContent =
+                country;
+
+
+            countryFilter.appendChild(
+                option
+            );
+        }
+    );
+
+
+    if (
+        countries.some(
+            country =>
+                normalizeFilterText(
+                    country
+                ) ===
+                normalizeFilterText(
+                    currentValue
+                )
+        )
+    ) {
+
+        countryFilter.value =
+            currentValue;
+
+    } else {
+
+        countryFilter.value =
+            "";
+    }
+}
+
+
+/* =========================================================
+   POPULATE CITY FILTER
+   ========================================================= */
+
+function populateCityFilter() {
+
+    if (!cityFilter) {
+        return;
+    }
+
+
+    const selectedCountry =
+        countryFilter
+            ? countryFilter.value
+            : "";
+
+
+    const currentValue =
+        cityFilter.value;
+
+
+    cityFilter.innerHTML =
+        "";
+
+
+    const allOption =
+        document.createElement(
+            "option"
+        );
+
+
+    allOption.value =
+        "";
+
+    allOption.textContent =
+        "ALL CITIES";
+
+
+    cityFilter.appendChild(
+        allOption
+    );
+
+
+    let availableSightings =
+        allSightings;
+
+
+    if (selectedCountry) {
+
+        availableSightings =
+            availableSightings.filter(
+                sighting =>
+                    normalizeFilterText(
+                        sighting.country
+                    ) ===
+                    normalizeFilterText(
+                        selectedCountry
+                    )
+            );
+    }
+
+
+    const cities =
+        [
+            ...new Set(
+                availableSightings
+                    .map(
+                        sighting =>
+                            sighting.city
+                    )
+                    .filter(Boolean)
+            )
+        ]
+        .sort(
+            (a, b) =>
+                String(a)
+                    .localeCompare(
+                        String(b)
+                    )
+        );
+
+
+    cities.forEach(
+        city => {
+
+            const option =
+                document.createElement(
+                    "option"
+                );
+
+
+            option.value =
+                city;
+
+            option.textContent =
+                city;
+
+
+            cityFilter.appendChild(
+                option
+            );
+        }
+    );
+
+
+    if (
+        cities.some(
+            city =>
+                normalizeFilterText(
+                    city
+                ) ===
+                normalizeFilterText(
+                    currentValue
+                )
+        )
+    ) {
+
+        cityFilter.value =
+            currentValue;
+
+    } else {
+
+        cityFilter.value =
+            "";
+    }
+}
+
+
+/* =========================================================
+   DATE FILTER
+   ========================================================= */
+
+function matchesSelectedMonth(
+    sighting,
+    selectedMonth
+) {
+
+    if (!selectedMonth) {
+        return true;
+    }
+
+
+    if (!sighting.created_at) {
+        return false;
+    }
+
+
+    const date =
+        new Date(
+            sighting.created_at
+        );
+
+
+    if (
+        Number.isNaN(
+            date.getTime()
+        )
+    ) {
+        return false;
+    }
+
+
+    const year =
+        date.getFullYear();
+
+
+    const month =
+        String(
+            date.getMonth() + 1
+        ).padStart(
+            2,
+            "0"
+        );
+
+
+    const sightingMonth =
+        `${year}-${month}`;
+
+
+    return (
+        sightingMonth ===
+        selectedMonth
+    );
+}
+
+
+/* =========================================================
+   GET FILTERED SIGHTINGS
+   ========================================================= */
+
+function getFilteredSightings() {
+
+    const selectedCountry =
+        countryFilter
+            ? countryFilter.value
+            : "";
+
+
+    const selectedCity =
+        cityFilter
+            ? cityFilter.value
+            : "";
+
+
+    const selectedMonth =
+        dateFilter
+            ? dateFilter.value
+            : "";
+
+
+    return allSightings.filter(
+        sighting => {
+
+            /* COUNTRY */
+
+            if (
+                selectedCountry &&
+                normalizeFilterText(
+                    sighting.country
+                ) !==
+                normalizeFilterText(
+                    selectedCountry
+                )
+            ) {
+
+                return false;
+            }
+
+
+            /* CITY */
+
+            if (
+                selectedCity &&
+                normalizeFilterText(
+                    sighting.city
+                ) !==
+                normalizeFilterText(
+                    selectedCity
+                )
+            ) {
+
+                return false;
+            }
+
+
+            /* DATE */
+
+            if (
+                !matchesSelectedMonth(
+                    sighting,
+                    selectedMonth
+                )
+            ) {
+
+                return false;
+            }
+
+
+            return true;
+        }
+    );
+}
+
+
+/* =========================================================
+   RENDER FILTERED MARKERS
+   ========================================================= */
+
+function renderFilteredSightings(
+    sightings
+) {
+
+    markerLayer.clearLayers();
+
+
+    sightings.forEach(
+        sighting => {
+
+            addCatMarker(
+                sighting
+            );
+        }
+    );
+}
+
+
+/* =========================================================
+   APPLY FILTERS
+   ========================================================= */
+
+function applyFilters() {
+
+    const filteredSightings =
+        getFilteredSightings();
+
+
+    const totalCats =
+        filteredSightings.reduce(
+            (
+                total,
+                sighting
+            ) => {
+
+                return (
+                    total +
+                    Number(
+                        sighting.cat_count || 0
+                    )
+                );
+            },
+            0
+        );
+
+
+    renderFilteredSightings(
+        filteredSightings
+    );
+
+
+    updateStatistics(
+        filteredSightings,
+        totalCats
+    );
+
+
+    updateCounter(
+        totalCats
     );
 
 
     console.log(
-        "CAT CARD READY:",
-        sighting.id
+        `Showing ${filteredSightings.length} of ${allSightings.length} sightings`
+    );
+}
+
+
+/* =========================================================
+   FILTER EVENTS
+   ========================================================= */
+
+if (countryFilter) {
+
+    countryFilter.addEventListener(
+        "change",
+        () => {
+
+            /*
+             * Changing country rebuilds
+             * the city dropdown.
+             */
+
+            populateCityFilter();
+
+            applyFilters();
+        }
+    );
+}
+
+
+if (cityFilter) {
+
+    cityFilter.addEventListener(
+        "change",
+        () => {
+
+            applyFilters();
+        }
+    );
+}
+
+
+if (dateFilter) {
+
+    dateFilter.addEventListener(
+        "change",
+        () => {
+
+            applyFilters();
+        }
+    );
+}
+
+
+if (clearFilters) {
+
+    clearFilters.addEventListener(
+        "click",
+        () => {
+
+            if (countryFilter) {
+                countryFilter.value =
+                    "";
+            }
+
+
+            if (cityFilter) {
+                cityFilter.value =
+                    "";
+            }
+
+
+            if (dateFilter) {
+                dateFilter.value =
+                    "";
+            }
+
+
+            populateCountryFilter();
+
+            populateCityFilter();
+
+            applyFilters();
+        }
     );
 }
 
@@ -1007,7 +1594,6 @@ const catMenuButton =
     document.getElementById(
         "catMenuButton"
     );
-
 
 const navigationPanel =
     document.getElementById(
@@ -1038,9 +1624,7 @@ map.on(
     "click",
     () => {
 
-        if (
-            navigationPanel
-        ) {
+        if (navigationPanel) {
 
             navigationPanel.classList.remove(
                 "open"
@@ -1060,9 +1644,7 @@ const mapControlButton =
     );
 
 
-if (
-    mapControlButton
-) {
+if (mapControlButton) {
 
     mapControlButton.addEventListener(
         "click",
@@ -1134,9 +1716,7 @@ let soundEnabled =
     true;
 
 
-if (
-    soundButton
-) {
+if (soundButton) {
 
     soundButton.addEventListener(
         "click",
@@ -1216,9 +1796,7 @@ function animateLogoCat() {
         logoFrames.length;
 
 
-    if (
-        menuCat
-    ) {
+    if (menuCat) {
 
         menuCat.src =
             logoFrames[
@@ -1227,9 +1805,7 @@ function animateLogoCat() {
     }
 
 
-    if (
-        logoCat
-    ) {
+    if (logoCat) {
 
         logoCat.src =
             logoFrames[
@@ -1248,9 +1824,7 @@ function animateMascot() {
         mascotFrames.length;
 
 
-    if (
-        mascotCat
-    ) {
+    if (mascotCat) {
 
         mascotCat.src =
             mascotFrames[
@@ -1272,9 +1846,7 @@ setInterval(
 );
 
 
-/*
- * Preload animation frames.
- */
+/* PRELOAD */
 
 [
     ...logoFrames,
@@ -1292,95 +1864,12 @@ setInterval(
 
 
 /* =========================================================
-   REPORT CAT ELEMENTS
-   ========================================================= */
-
-const reportCatButton =
-    document.getElementById(
-        "reportCatButton"
-    );
-
-
-const reportCatModal =
-    document.getElementById(
-        "reportCatModal"
-    );
-
-
-const closeReportModal =
-    document.getElementById(
-        "closeReportModal"
-    );
-
-
-const cancelReport =
-    document.getElementById(
-        "cancelReport"
-    );
-
-
-const reportCatForm =
-    document.getElementById(
-        "reportCatForm"
-    );
-
-
-const catCountInput =
-    document.getElementById(
-        "catCount"
-    );
-
-
-const reportCityInput =
-    document.getElementById(
-        "reportCity"
-    );
-
-
-const reportCountryInput =
-    document.getElementById(
-        "reportCountry"
-    );
-
-
-const catPhotoInput =
-    document.getElementById(
-        "catPhoto"
-    );
-
-
-const photoMessage =
-    document.getElementById(
-        "photoMessage"
-    );
-
-
-const reportLocationMessage =
-    document.getElementById(
-        "reportLocationMessage"
-    );
-
-
-const reportMessage =
-    document.getElementById(
-        "reportMessage"
-    );
-
-
-/* =========================================================
-   MODAL
+   REPORT CAT — MODAL
    ========================================================= */
 
 function openReportModal() {
 
-    if (
-        !reportCatModal
-    ) {
-
-        console.error(
-            "reportCatModal not found."
-        );
-
+    if (!reportCatModal) {
         return;
     }
 
@@ -1393,9 +1882,7 @@ function openReportModal() {
 
 function closeReportModalFunction() {
 
-    if (
-        !reportCatModal
-    ) {
+    if (!reportCatModal) {
         return;
     }
 
@@ -1406,9 +1893,7 @@ function closeReportModalFunction() {
 }
 
 
-if (
-    reportCatButton
-) {
+if (reportCatButton) {
 
     reportCatButton.addEventListener(
         "click",
@@ -1424,9 +1909,7 @@ if (
 }
 
 
-if (
-    closeReportModal
-) {
+if (closeReportModal) {
 
     closeReportModal.addEventListener(
         "click",
@@ -1435,9 +1918,7 @@ if (
 }
 
 
-if (
-    cancelReport
-) {
+if (cancelReport) {
 
     cancelReport.addEventListener(
         "click",
@@ -1446,9 +1927,7 @@ if (
 }
 
 
-if (
-    reportCatModal
-) {
+if (reportCatModal) {
 
     reportCatModal.addEventListener(
         "click",
@@ -1470,17 +1949,13 @@ if (
    PHOTO VALIDATION
    ========================================================= */
 
-if (
-    catPhotoInput
-) {
+if (catPhotoInput) {
 
     catPhotoInput.addEventListener(
         "change",
         () => {
 
-            if (
-                photoMessage
-            ) {
+            if (photoMessage) {
 
                 photoMessage.textContent =
                     "";
@@ -1491,9 +1966,7 @@ if (
                 catPhotoInput.files?.[0];
 
 
-            if (
-                !file
-            ) {
+            if (!file) {
                 return;
             }
 
@@ -1519,14 +1992,11 @@ if (
                     "";
 
 
-                if (
-                    photoMessage
-                ) {
+                if (photoMessage) {
 
                     photoMessage.textContent =
                         "PLEASE USE JPG, PNG OR WEBP.";
                 }
-
 
                 return;
             }
@@ -1541,22 +2011,17 @@ if (
                     "";
 
 
-                if (
-                    photoMessage
-                ) {
+                if (photoMessage) {
 
                     photoMessage.textContent =
                         "PHOTO MUST BE 1 MB OR SMALLER.";
                 }
 
-
                 return;
             }
 
 
-            if (
-                photoMessage
-            ) {
+            if (photoMessage) {
 
                 photoMessage.textContent =
                     "PHOTO READY.";
@@ -1600,9 +2065,7 @@ async function getAuthenticatedUser() {
             .signInAnonymously();
 
 
-    if (
-        error
-    ) {
+    if (error) {
 
         console.error(
             "Anonymous auth error:",
@@ -1616,9 +2079,7 @@ async function getAuthenticatedUser() {
     }
 
 
-    if (
-        !data?.user
-    ) {
+    if (!data?.user) {
 
         throw new Error(
             "NO USER SESSION WAS CREATED."
@@ -1664,7 +2125,6 @@ async function geocodeCity(
 
             addressdetails:
                 "1"
-
         });
 
 
@@ -1680,9 +2140,7 @@ async function geocodeCity(
         );
 
 
-    if (
-        !response.ok
-    ) {
+    if (!response.ok) {
 
         throw new Error(
             "COULD NOT FIND THE CITY LOCATION."
@@ -1754,10 +2212,7 @@ async function uploadCatPhoto(
     userId
 ) {
 
-    if (
-        !file
-    ) {
-
+    if (!file) {
         return null;
     }
 
@@ -1772,7 +2227,6 @@ async function uploadCatPhoto(
 
         "image/webp":
             "webp"
-
     };
 
 
@@ -1782,9 +2236,7 @@ async function uploadCatPhoto(
         ];
 
 
-    if (
-        !extension
-    ) {
+    if (!extension) {
 
         throw new Error(
             "INVALID PHOTO TYPE."
@@ -1792,19 +2244,8 @@ async function uploadCatPhoto(
     }
 
 
-    /*
-     * Each anonymous user
-     * gets their own folder.
-     */
-
     const filePath =
         `${userId}/${crypto.randomUUID()}.${extension}`;
-
-
-    console.log(
-        "UPLOADING PHOTO:",
-        filePath
-    );
 
 
     const {
@@ -1819,7 +2260,6 @@ async function uploadCatPhoto(
                 filePath,
                 file,
                 {
-
                     cacheControl:
                         "3600",
 
@@ -1832,9 +2272,7 @@ async function uploadCatPhoto(
             );
 
 
-    if (
-        error
-    ) {
+    if (error) {
 
         console.error(
             "PHOTO UPLOAD ERROR:",
@@ -1846,12 +2284,6 @@ async function uploadCatPhoto(
             `PHOTO UPLOAD FAILED: ${error.message}`
         );
     }
-
-
-    console.log(
-        "PHOTO UPLOAD SUCCESS:",
-        filePath
-    );
 
 
     return filePath;
@@ -1927,21 +2359,11 @@ async function submitCatSighting() {
     }
 
 
-    /*
-     * Anonymous user.
-     */
-
     const user =
         await getAuthenticatedUser();
 
 
-    /*
-     * City → coordinates.
-     */
-
-    if (
-        reportLocationMessage
-    ) {
+    if (reportLocationMessage) {
 
         reportLocationMessage.textContent =
             "FINDING CITY LOCATION...";
@@ -1955,30 +2377,20 @@ async function submitCatSighting() {
         );
 
 
-    if (
-        reportLocationMessage
-    ) {
+    if (reportLocationMessage) {
 
         reportLocationMessage.textContent =
             "CITY LOCATION FOUND.";
     }
 
 
-    /*
-     * Optional photo.
-     */
-
     let photoPath =
         null;
 
 
-    if (
-        photoFile
-    ) {
+    if (photoFile) {
 
-        if (
-            photoMessage
-        ) {
+        if (photoMessage) {
 
             photoMessage.textContent =
                 "UPLOADING PHOTO...";
@@ -1992,19 +2404,13 @@ async function submitCatSighting() {
             );
 
 
-        if (
-            photoMessage
-        ) {
+        if (photoMessage) {
 
             photoMessage.textContent =
                 "PHOTO UPLOADED.";
         }
     }
 
-
-    /*
-     * Database insert.
-     */
 
     const {
         error
@@ -2044,13 +2450,10 @@ async function submitCatSighting() {
 
                 status:
                     "pending"
-
             });
 
 
-    if (
-        error
-    ) {
+    if (error) {
 
         console.error(
             "CAT SIGHTING INSERT ERROR:",
@@ -2074,9 +2477,7 @@ async function submitCatSighting() {
    REPORT FORM
    ========================================================= */
 
-if (
-    reportCatForm
-) {
+if (reportCatForm) {
 
     reportCatForm.addEventListener(
         "submit",
@@ -2085,9 +2486,7 @@ if (
             event.preventDefault();
 
 
-            if (
-                reportMessage
-            ) {
+            if (reportMessage) {
 
                 reportMessage.textContent =
                     "SUBMITTING...";
@@ -2100,9 +2499,7 @@ if (
                 );
 
 
-            if (
-                submitButton
-            ) {
+            if (submitButton) {
 
                 submitButton.disabled =
                     true;
@@ -2117,9 +2514,7 @@ if (
                 await submitCatSighting();
 
 
-                if (
-                    reportMessage
-                ) {
+                if (reportMessage) {
 
                     reportMessage.textContent =
                         "CAT SIGHTING SUBMITTED FOR REVIEW.";
@@ -2129,27 +2524,21 @@ if (
                 reportCatForm.reset();
 
 
-                if (
-                    catCountInput
-                ) {
+                if (catCountInput) {
 
                     catCountInput.value =
                         "1";
                 }
 
 
-                if (
-                    photoMessage
-                ) {
+                if (photoMessage) {
 
                     photoMessage.textContent =
                         "";
                 }
 
 
-                if (
-                    reportLocationMessage
-                ) {
+                if (reportLocationMessage) {
 
                     reportLocationMessage.textContent =
                         "LOCATION WILL BE DETERMINED FROM CITY AND COUNTRY";
@@ -2162,9 +2551,7 @@ if (
                         closeReportModalFunction();
 
 
-                        if (
-                            reportMessage
-                        ) {
+                        if (reportMessage) {
 
                             reportMessage.textContent =
                                 "";
@@ -2174,9 +2561,8 @@ if (
                     1400
                 );
 
-            } catch (
-                error
-            ) {
+
+            } catch (error) {
 
                 console.error(
                     "REPORT CAT ERROR:",
@@ -2184,20 +2570,17 @@ if (
                 );
 
 
-                if (
-                    reportMessage
-                ) {
+                if (reportMessage) {
 
                     reportMessage.textContent =
                         error?.message ||
                         "SUBMISSION FAILED.";
                 }
 
+
             } finally {
 
-                if (
-                    submitButton
-                ) {
+                if (submitButton) {
 
                     submitButton.disabled =
                         false;
@@ -2236,6 +2619,10 @@ console.log(
 );
 
 console.log(
+    "Filters: ENABLED"
+);
+
+console.log(
     "Public storage: ENABLED"
 );
 
@@ -2248,854 +2635,4 @@ console.log(
 );
 
 
-/*
- * Start tracker.
- */
-
 loadCatSightings();
-
-
-/* =========================================================
-   FILTER PANEL
-========================================================= */
-
-const filterToggle =
-    document.getElementById("filterToggle");
-
-const filterPanel =
-    document.getElementById("filterPanel");
-
-const closeFilters =
-    document.getElementById("closeFilters");
-
-
-if (filterToggle && filterPanel) {
-
-    filterToggle.addEventListener(
-        "click",
-        () => {
-
-            const isOpen =
-                filterPanel.classList.toggle("open");
-
-            filterToggle.setAttribute(
-                "aria-expanded",
-                isOpen
-            );
-
-        }
-    );
-
-}
-
-
-if (closeFilters && filterPanel) {
-
-    closeFilters.addEventListener(
-        "click",
-        () => {
-
-            filterPanel.classList.remove("open");
-
-            if (filterToggle) {
-
-                filterToggle.setAttribute(
-                    "aria-expanded",
-                    "false"
-                );
-
-            }
-
-        }
-    );
-
-}
-
-/* =========================================================
-   CAT FILTERS
-   ========================================================= */
-
-
-/* =========================================================
-   FILTER DOM
-   ========================================================= */
-
-const filterToggle =
-    document.getElementById(
-        "filterToggle"
-    );
-
-
-const filterPanel =
-    document.getElementById(
-        "filterPanel"
-    );
-
-
-const closeFilters =
-    document.getElementById(
-        "closeFilters"
-    );
-
-
-const countryFilter =
-    document.getElementById(
-        "countryFilter"
-    );
-
-
-const cityFilter =
-    document.getElementById(
-        "cityFilter"
-    );
-
-
-const dateFilter =
-    document.getElementById(
-        "dateFilter"
-    );
-
-
-const clearFilters =
-    document.getElementById(
-        "clearFilters"
-    );
-
-
-/* =========================================================
-   OPEN / CLOSE FILTER PANEL
-   ========================================================= */
-
-function openFilters() {
-
-    if (!filterPanel) {
-        return;
-    }
-
-    filterPanel.classList.add(
-        "open"
-    );
-
-    if (filterToggle) {
-
-        filterToggle.setAttribute(
-            "aria-expanded",
-            "true"
-        );
-
-    }
-
-}
-
-
-function closeFiltersFunction() {
-
-    if (!filterPanel) {
-        return;
-    }
-
-    filterPanel.classList.remove(
-        "open"
-    );
-
-    if (filterToggle) {
-
-        filterToggle.setAttribute(
-            "aria-expanded",
-            "false"
-        );
-
-    }
-
-}
-
-
-if (filterToggle) {
-
-    filterToggle.addEventListener(
-        "click",
-        event => {
-
-            event.preventDefault();
-
-            event.stopPropagation();
-
-
-            if (
-                filterPanel &&
-                filterPanel.classList.contains("open")
-            ) {
-
-                closeFiltersFunction();
-
-            } else {
-
-                openFilters();
-
-            }
-
-        }
-    );
-
-}
-
-
-if (closeFilters) {
-
-    closeFilters.addEventListener(
-        "click",
-        event => {
-
-            event.preventDefault();
-
-            closeFiltersFunction();
-
-        }
-    );
-
-}
-
-
-/* =========================================================
-   NORMALIZE TEXT
-   ========================================================= */
-
-function normalizeFilterText(
-    value
-) {
-
-    return String(
-        value ?? ""
-    )
-        .trim()
-        .toLowerCase();
-
-}
-
-
-/* =========================================================
-   POPULATE COUNTRY FILTER
-   ========================================================= */
-
-function populateCountryFilter() {
-
-    if (!countryFilter) {
-        return;
-    }
-
-
-    const currentValue =
-        countryFilter.value;
-
-
-    countryFilter.innerHTML = "";
-
-
-    const allOption =
-        document.createElement(
-            "option"
-        );
-
-    allOption.value = "";
-
-    allOption.textContent =
-        "ALL COUNTRIES";
-
-
-    countryFilter.appendChild(
-        allOption
-    );
-
-
-    const countries =
-        [
-            ...new Set(
-                allSightings
-                    .map(
-                        sighting =>
-                            sighting.country
-                    )
-                    .filter(Boolean)
-            )
-        ]
-        .sort(
-            (a, b) =>
-                String(a)
-                    .localeCompare(
-                        String(b)
-                    )
-        );
-
-
-    countries.forEach(
-        country => {
-
-            const option =
-                document.createElement(
-                    "option"
-                );
-
-            option.value =
-                country;
-
-            option.textContent =
-                country;
-
-            countryFilter.appendChild(
-                option
-            );
-
-        }
-    );
-
-
-    /*
-     * Restore previous selection
-     * if it still exists.
-     */
-
-    if (
-        countries.some(
-            country =>
-                normalizeFilterText(country) ===
-                normalizeFilterText(currentValue)
-        )
-    ) {
-
-        countryFilter.value =
-            currentValue;
-
-    } else {
-
-        countryFilter.value =
-            "";
-
-    }
-
-}
-
-
-/* =========================================================
-   POPULATE CITY FILTER
-   ========================================================= */
-
-function populateCityFilter() {
-
-    if (!cityFilter) {
-        return;
-    }
-
-
-    const selectedCountry =
-        countryFilter
-            ? countryFilter.value
-            : "";
-
-
-    const currentValue =
-        cityFilter.value;
-
-
-    cityFilter.innerHTML = "";
-
-
-    const allOption =
-        document.createElement(
-            "option"
-        );
-
-    allOption.value = "";
-
-    allOption.textContent =
-        "ALL CITIES";
-
-
-    cityFilter.appendChild(
-        allOption
-    );
-
-
-    let availableSightings =
-        allSightings;
-
-
-    /*
-     * If a country is selected,
-     * only use cities from that country.
-     */
-
-    if (selectedCountry) {
-
-        availableSightings =
-            availableSightings.filter(
-                sighting =>
-                    normalizeFilterText(
-                        sighting.country
-                    ) ===
-                    normalizeFilterText(
-                        selectedCountry
-                    )
-            );
-
-    }
-
-
-    const cities =
-        [
-            ...new Set(
-                availableSightings
-                    .map(
-                        sighting =>
-                            sighting.city
-                    )
-                    .filter(Boolean)
-            )
-        ]
-        .sort(
-            (a, b) =>
-                String(a)
-                    .localeCompare(
-                        String(b)
-                    )
-        );
-
-
-    cities.forEach(
-        city => {
-
-            const option =
-                document.createElement(
-                    "option"
-                );
-
-            option.value =
-                city;
-
-            option.textContent =
-                city;
-
-            cityFilter.appendChild(
-                option
-            );
-
-        }
-    );
-
-
-    /*
-     * Restore selection if possible.
-     */
-
-    if (
-        cities.some(
-            city =>
-                normalizeFilterText(city) ===
-                normalizeFilterText(currentValue)
-        )
-    ) {
-
-        cityFilter.value =
-            currentValue;
-
-    } else {
-
-        cityFilter.value =
-            "";
-
-    }
-
-}
-
-
-/* =========================================================
-   CHECK MONTH
-   ========================================================= */
-
-function matchesSelectedMonth(
-    sighting,
-    selectedMonth
-) {
-
-    if (!selectedMonth) {
-        return true;
-    }
-
-
-    if (!sighting.created_at) {
-        return false;
-    }
-
-
-    const date =
-        new Date(
-            sighting.created_at
-        );
-
-
-    if (
-        Number.isNaN(
-            date.getTime()
-        )
-    ) {
-
-        return false;
-
-    }
-
-
-    /*
-     * Input type="month" returns:
-     *
-     * YYYY-MM
-     */
-
-    const year =
-        date.getFullYear();
-
-
-    const month =
-        String(
-            date.getMonth() + 1
-        ).padStart(
-            2,
-            "0"
-        );
-
-
-    const sightingMonth =
-        `${year}-${month}`;
-
-
-    return (
-        sightingMonth ===
-        selectedMonth
-    );
-
-}
-
-
-/* =========================================================
-   FILTER DATA
-   ========================================================= */
-
-function getFilteredSightings() {
-
-    const selectedCountry =
-        countryFilter
-            ? countryFilter.value
-            : "";
-
-
-    const selectedCity =
-        cityFilter
-            ? cityFilter.value
-            : "";
-
-
-    const selectedMonth =
-        dateFilter
-            ? dateFilter.value
-            : "";
-
-
-    return allSightings.filter(
-        sighting => {
-
-            /*
-             * COUNTRY
-             */
-
-            if (
-                selectedCountry &&
-                normalizeFilterText(
-                    sighting.country
-                ) !==
-                normalizeFilterText(
-                    selectedCountry
-                )
-            ) {
-
-                return false;
-
-            }
-
-
-            /*
-             * CITY
-             */
-
-            if (
-                selectedCity &&
-                normalizeFilterText(
-                    sighting.city
-                ) !==
-                normalizeFilterText(
-                    selectedCity
-                )
-            ) {
-
-                return false;
-
-            }
-
-
-            /*
-             * DATE
-             */
-
-            if (
-                !matchesSelectedMonth(
-                    sighting,
-                    selectedMonth
-                )
-            ) {
-
-                return false;
-
-            }
-
-
-            return true;
-
-        }
-    );
-
-}
-
-
-/* =========================================================
-   RENDER FILTERED MARKERS
-   ========================================================= */
-
-function renderFilteredSightings(
-    sightings
-) {
-
-    markerLayer.clearLayers();
-
-
-    sightings.forEach(
-        sighting => {
-
-            addCatMarker(
-                sighting
-            );
-
-        }
-    );
-
-}
-
-
-/* =========================================================
-   APPLY FILTERS
-   ========================================================= */
-
-function applyFilters() {
-
-    const filteredSightings =
-        getFilteredSightings();
-
-
-    console.log(
-        "FILTERED SIGHTINGS:",
-        filteredSightings
-    );
-
-
-    /*
-     * Calculate cats.
-     */
-
-    const totalCats =
-        filteredSightings.reduce(
-            (
-                total,
-                sighting
-            ) => {
-
-                return (
-                    total +
-                    Number(
-                        sighting.cat_count || 0
-                    )
-                );
-
-            },
-            0
-        );
-
-
-    /*
-     * Update map.
-     */
-
-    renderFilteredSightings(
-        filteredSightings
-    );
-
-
-    /*
-     * Update statistics.
-     */
-
-    updateStatistics(
-        filteredSightings,
-        totalCats
-    );
-
-
-    /*
-     * Update bottom ticker.
-     */
-
-    updateCounter(
-        totalCats
-    );
-
-
-    /*
-     * Show a useful console
-     * message for debugging.
-     */
-
-    console.log(
-        `Showing ${filteredSightings.length} of ${allSightings.length} sightings`
-    );
-
-}
-
-
-/* =========================================================
-   COUNTRY CHANGE
-   ========================================================= */
-
-if (countryFilter) {
-
-    countryFilter.addEventListener(
-        "change",
-        () => {
-
-            /*
-             * Country changed.
-             * Rebuild city list.
-             */
-
-            populateCityFilter();
-
-
-            /*
-             * Apply all filters.
-             */
-
-            applyFilters();
-
-        }
-    );
-
-}
-
-
-/* =========================================================
-   CITY CHANGE
-   ========================================================= */
-
-if (cityFilter) {
-
-    cityFilter.addEventListener(
-        "change",
-        () => {
-
-            applyFilters();
-
-        }
-    );
-
-}
-
-
-/* =========================================================
-   DATE CHANGE
-   ========================================================= */
-
-if (dateFilter) {
-
-    dateFilter.addEventListener(
-        "change",
-        () => {
-
-            applyFilters();
-
-        }
-    );
-
-}
-
-
-/* =========================================================
-   CLEAR FILTERS
-   ========================================================= */
-
-if (clearFilters) {
-
-    clearFilters.addEventListener(
-        "click",
-        () => {
-
-            if (countryFilter) {
-
-                countryFilter.value =
-                    "";
-
-            }
-
-
-            if (cityFilter) {
-
-                cityFilter.value =
-                    "";
-
-            }
-
-
-            if (dateFilter) {
-
-                dateFilter.value =
-                    "";
-
-            }
-
-
-            /*
-             * Rebuild cities
-             * back to all cities.
-             */
-
-            populateCityFilter();
-
-
-            /*
-             * Show everything again.
-             */
-
-            applyFilters();
-
-        }
-    );
-
-}
-
-
-/* =========================================================
-   INITIAL FILTER SETUP
-   ========================================================= */
-
-if (
-    allSightings.length > 0
-) {
-
-    populateCountryFilter();
-
-    populateCityFilter();
-
-}
