@@ -147,66 +147,92 @@
 
 </button>
 <!-- =================================================
-     FILTERS
+     CAT FILTERS
 ================================================== -->
+
+<button
+    id="filterToggle"
+    class="filter-toggle"
+    type="button"
+    aria-label="Open map filters"
+    aria-expanded="false"
+>
+    <img
+        src="assets/cats/paw-marker.png"
+        alt=""
+    >
+
+    <span>FILTERS</span>
+</button>
+
 
 <div
     id="filterPanel"
     class="filter-panel"
 >
 
-    <div class="filter-title">
-        FILTERS
+    <div class="filter-panel-header">
+
+        <div class="filter-title">
+            MAP FILTERS
+        </div>
+
+        <button
+            id="closeFilters"
+            class="filter-close"
+            type="button"
+            aria-label="Close filters"
+        >
+            ×
+        </button>
+
     </div>
 
-    <div class="filter-row">
 
-        <div class="filter-group">
+    <div class="filter-group">
 
-            <label for="countryFilter">
-                COUNTRY
-            </label>
+        <label for="countryFilter">
+            COUNTRY
+        </label>
 
-            <select id="countryFilter">
+        <select id="countryFilter">
 
-                <option value="">
-                    ALL COUNTRIES
-                </option>
+            <option value="">
+                ALL COUNTRIES
+            </option>
 
-            </select>
+        </select>
 
-        </div>
-
-
-        <div class="filter-group">
-
-            <label for="cityFilter">
-                CITY
-            </label>
-
-            <select id="cityFilter">
-
-                <option value="">
-                    ALL CITIES
-                </option>
-
-            </select>
-
-        </div>
+    </div>
 
 
-        <div class="filter-group">
+    <div class="filter-group">
 
-            <label for="dateFilter">
-                DATE
-            </label>
+        <label for="cityFilter">
+            CITY
+        </label>
 
-            <input
-                id="dateFilter"
-                type="month"
-            >
+        <select id="cityFilter">
 
-        </div>
+            <option value="">
+                ALL CITIES
+            </option>
+
+        </select>
+
+    </div>
+
+
+    <div class="filter-group">
+
+        <label for="dateFilter">
+            DATE
+        </label>
+
+        <input
+            id="dateFilter"
+            type="month"
+        >
 
     </div>
 
