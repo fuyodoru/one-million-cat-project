@@ -6267,3 +6267,72 @@ textarea {
     }
 
 }
+
+/* =========================================================
+   SUPPORT PROJECT
+========================================================= */
+
+.support-section {
+    text-align: center;
+}
+
+.support-section p {
+    max-width: 650px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.support-button {
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    min-height: 50px;
+
+    margin-top: 10px;
+    padding: 0 24px;
+
+    border: 2px solid #2d9ca5;
+    border-radius: 9px;
+
+    background: #0c3039;
+
+    color: #dffffc;
+
+    font-family: "Silkscreen", monospace;
+    font-size: 11px;
+
+    text-decoration: none;
+
+    box-shadow:
+        0 0 0 3px rgba(45, 156, 165, 0.08);
+
+    transition:
+        background 0.15s ease,
+        transform 0.15s ease,
+        box-shadow 0.15s ease;
+}
+
+.support-button:hover {
+    background: #12424d;
+
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 0 15px rgba(45, 156, 165, 0.2);
+}
+
+.support-button:active {
+    transform: translateY(1px);
+}
+
+.support-note {
+    margin-top: 14px;
+
+    color: #4d7d80;
+
+    font-size: 8px;
+
+    letter-spacing: 1px;
+}
