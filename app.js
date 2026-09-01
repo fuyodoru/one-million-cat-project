@@ -116,6 +116,17 @@ let allSightings = [];
 
 
 /* =========================================================
+   REALTIME STATE
+   ========================================================= */
+
+let realtimeReloadTimer = null;
+
+let isRealtimeReloading = false;
+
+let realtimeReloadQueued = false;
+
+
+/* =========================================================
    DOM — FILTERS
    ========================================================= */
 
@@ -983,6 +994,204 @@ async function loadCatSightings() {
 
 
 /* =========================================================
+   LIVE COUNTER / REALTIME
+   ========================================================= */
+
+function scheduleRealtimeReload() {
+
+    /*
+     * Birden fazla realtime event'i arka arkaya
+     * gelirse her biri için ayrı sorgu göndermiyoruz.
+     *
+     * Örneğin:
+     *
+     * INSERT
+     * UPDATE
+     * UPDATE
+     *
+     * çok hızlı gelirse tek bir reload yapılır.
+     */
+
+    if (realtimeReloadTimer) {
+
+        clearTimeout(
+            realtimeReloadTimer
+        );
+    }
+
+
+    realtimeReloadTimer =
+        setTimeout(
+            async () => {
+
+                realtimeReloadTimer =
+                    null;
+
+                await reloadFromRealtime();
+
+            },
+            250
+        );
+}
+
+
+async function reloadFromRealtime() {
+
+    /*
+     * Zaten bir realtime reload yapılıyorsa
+     * ikinci reload'u kuyruğa al.
+     */
+
+    if (isRealtimeReloading) {
+
+        realtimeReloadQueued =
+            true;
+
+        return;
+    }
+
+
+    isRealtimeReloading =
+        true;
+
+
+    try {
+
+        console.log(
+            "LIVE COUNTER: DATA CHANGED"
+        );
+
+        await loadCatSightings();
+
+    } catch (error) {
+
+        console.error(
+            "REALTIME RELOAD ERROR:",
+            error
+        );
+
+    } finally {
+
+        isRealtimeReloading =
+            false;
+
+
+        /*
+         * Reload sırasında başka bir event
+         * geldiyse bir kez daha güncelle.
+         */
+
+        if (
+            realtimeReloadQueued
+        ) {
+
+            realtimeReloadQueued =
+                false;
+
+            scheduleRealtimeReload();
+        }
+    }
+}
+
+
+/* =========================================================
+   START REALTIME
+   ========================================================= */
+
+function startRealtime() {
+
+    console.log(
+        "STARTING SUPABASE REALTIME..."
+    );
+
+
+    supabaseClient
+        .channel(
+            "cat-sightings-live-counter"
+        )
+        .on(
+            "postgres_changes",
+            {
+                event: "*",
+                schema: "public",
+                table: "cat_sightings"
+            },
+            payload => {
+
+                console.log(
+                    "REALTIME EVENT:",
+                    payload.eventType,
+                    payload
+                );
+
+
+                /*
+                 * INSERT:
+                 * Yeni report geldi.
+                 *
+                 * UPDATE:
+                 * Admin approve/reject yaptı.
+                 *
+                 * DELETE:
+                 * Kayıt silindi.
+                 *
+                 * Her durumda public view'i yeniden
+                 * okuyarak gerçek sonucu alıyoruz.
+                 */
+
+                scheduleRealtimeReload();
+
+            }
+        )
+        .subscribe(
+            status => {
+
+                console.log(
+                    "REALTIME STATUS:",
+                    status
+                );
+
+
+                if (
+                    status ===
+                    "SUBSCRIBED"
+                ) {
+
+                    console.log(
+                        "🐾 LIVE COUNTER CONNECTED"
+                    );
+
+                }
+
+
+                if (
+                    status ===
+                    "CHANNEL_ERROR"
+                ) {
+
+                    console.error(
+                        "REALTIME CHANNEL ERROR"
+                    );
+
+                }
+
+
+                if (
+                    status ===
+                    "TIMED_OUT"
+                ) {
+
+                    console.error(
+                        "REALTIME CONNECTION TIMED OUT"
+                    );
+
+                }
+            }
+        );
+}
+
+
+/* =========================================================
    FILTER PANEL
    ========================================================= */
 
@@ -1135,11 +1344,14 @@ function populateCountryFilter() {
                     "option"
                 );
 
+
             option.value =
                 country;
 
+
             option.textContent =
                 country;
+
 
             countryFilter.appendChild(
                 option
@@ -1260,11 +1472,14 @@ function populateCityFilter() {
                     "option"
                 );
 
+
             option.value =
                 city;
 
+
             option.textContent =
                 city;
+
 
             cityFilter.appendChild(
                 option
@@ -1511,11 +1726,6 @@ if (countryFilter) {
         "change",
         () => {
 
-            /*
-             * When country changes,
-             * rebuild city options.
-             */
-
             populateCityFilter();
 
             applyFilters();
@@ -1607,10 +1817,6 @@ if (
     );
 }
 
-
-/*
- * Clicking the map closes navigation.
- */
 
 map.on(
     "click",
@@ -2574,8 +2780,23 @@ console.log(
 );
 
 console.log(
+    "Live counter: ENABLED"
+);
+
+console.log(
     "================================"
 );
 
 
+/* =========================================================
+   INITIAL LOAD
+   ========================================================= */
+
 loadCatSightings();
+
+
+/* =========================================================
+   START LIVE COUNTER
+   ========================================================= */
+
+startRealtime();
