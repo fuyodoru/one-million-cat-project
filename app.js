@@ -993,106 +993,114 @@ async function loadCatSightings() {
 }
 
 
-/* =========================================================
-   LIVE COUNTER / REALTIME
+//* =========================================================
+   LIVE COUNTER
    ========================================================= */
 
-function scheduleRealtimeReload() {
+let displayedCounterValue = 0;
+let counterAnimationFrame = null;
 
-    /*
-     * Birden fazla realtime event'i arka arkaya
-     * gelirse her biri için ayrı sorgu göndermiyoruz.
-     *
-     * Örneğin:
-     *
-     * INSERT
-     * UPDATE
-     * UPDATE
-     *
-     * çok hızlı gelirse tek bir reload yapılır.
-     */
 
-    if (realtimeReloadTimer) {
+function animateCounter(targetValue) {
 
-        clearTimeout(
-            realtimeReloadTimer
-        );
+    targetValue = Number(targetValue) || 0;
+
+    if (counterAnimationFrame) {
+        cancelAnimationFrame(counterAnimationFrame);
     }
 
+    const startValue = displayedCounterValue;
+    const difference = targetValue - startValue;
 
-    realtimeReloadTimer =
-        setTimeout(
-            async () => {
-
-                realtimeReloadTimer =
-                    null;
-
-                await reloadFromRealtime();
-
-            },
-            250
-        );
-}
-
-
-async function reloadFromRealtime() {
-
-    /*
-     * Zaten bir realtime reload yapılıyorsa
-     * ikinci reload'u kuyruğa al.
-     */
-
-    if (isRealtimeReloading) {
-
-        realtimeReloadQueued =
-            true;
-
+    if (difference === 0) {
         return;
     }
 
+    const duration = 900;
+    const startTime = performance.now();
 
-    isRealtimeReloading =
-        true;
 
+    function update(timestamp) {
 
-    try {
+        const elapsed = timestamp - startTime;
 
-        console.log(
-            "LIVE COUNTER: DATA CHANGED"
-        );
-
-        await loadCatSightings();
-
-    } catch (error) {
-
-        console.error(
-            "REALTIME RELOAD ERROR:",
-            error
-        );
-
-    } finally {
-
-        isRealtimeReloading =
-            false;
+        const progress =
+            Math.min(
+                elapsed / duration,
+                1
+            );
 
 
         /*
-         * Reload sırasında başka bir event
-         * geldiyse bir kez daha güncelle.
+         * Ease-out:
+         * hızlı başlar,
+         * sona doğru yavaşlar.
          */
 
-        if (
-            realtimeReloadQueued
-        ) {
+        const easedProgress =
+            1 -
+            Math.pow(
+                1 - progress,
+                3
+            );
 
-            realtimeReloadQueued =
-                false;
 
-            scheduleRealtimeReload();
+        const currentValue =
+            Math.round(
+                startValue +
+                difference *
+                easedProgress
+            );
+
+
+        displayedCounterValue =
+            currentValue;
+
+
+        const element =
+            document.getElementById(
+                "trackerCount"
+            );
+
+
+        if (element) {
+
+            element.textContent =
+                `${currentValue.toLocaleString()} CATS LOGGED`;
+        }
+
+
+        if (progress < 1) {
+
+            counterAnimationFrame =
+                requestAnimationFrame(
+                    update
+                );
+
+        } else {
+
+            displayedCounterValue =
+                targetValue;
+
+            counterAnimationFrame =
+                null;
         }
     }
+
+
+    counterAnimationFrame =
+        requestAnimationFrame(
+            update
+        );
 }
 
+
+function updateCounter(totalCats) {
+
+    animateCounter(
+        totalCats
+    );
+}
 
 /* =========================================================
    START REALTIME
