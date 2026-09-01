@@ -16,6 +16,7 @@ const SUPABASE_URL =
 const SUPABASE_PUBLISHABLE_KEY =
     "sb_publishable_9KY3n_ELqAmrNQVy9VH-nA_5Cs7U5-4";
 
+
 const supabaseClient =
     window.supabase.createClient(
         SUPABASE_URL,
@@ -113,17 +114,6 @@ const markerLayer =
    ========================================================= */
 
 let allSightings = [];
-
-
-/* =========================================================
-   REALTIME STATE
-   ========================================================= */
-
-let realtimeReloadTimer = null;
-
-let isRealtimeReloading = false;
-
-let realtimeReloadQueued = false;
 
 
 /* =========================================================
@@ -344,9 +334,7 @@ function formatDate(value) {
    PROGRESS
    ========================================================= */
 
-function formatProgress(
-    progress
-) {
+function formatProgress(progress) {
 
     if (progress === 0) {
         return "0.000%";
@@ -526,23 +514,144 @@ function updateStatistics(
 
 
 /* =========================================================
-   BOTTOM COUNTER
+   LIVE COUNTER
    ========================================================= */
+
+let displayedCounterValue = 0;
+
+let counterAnimationFrame = null;
+
+
+function animateCounter(targetValue) {
+
+    targetValue =
+        Number(targetValue) || 0;
+
+
+    if (
+        counterAnimationFrame
+    ) {
+
+        cancelAnimationFrame(
+            counterAnimationFrame
+        );
+
+        counterAnimationFrame =
+            null;
+    }
+
+
+    const startValue =
+        displayedCounterValue;
+
+
+    const difference =
+        targetValue -
+        startValue;
+
+
+    if (
+        difference === 0
+    ) {
+
+        return;
+    }
+
+
+    const duration =
+        900;
+
+
+    const startTime =
+        performance.now();
+
+
+    function update(timestamp) {
+
+        const elapsed =
+            timestamp -
+            startTime;
+
+
+        const progress =
+            Math.min(
+                elapsed /
+                duration,
+                1
+            );
+
+
+        /*
+         * Ease-out animation.
+         */
+
+        const easedProgress =
+            1 -
+            Math.pow(
+                1 - progress,
+                3
+            );
+
+
+        const currentValue =
+            Math.round(
+                startValue +
+                difference *
+                easedProgress
+            );
+
+
+        displayedCounterValue =
+            currentValue;
+
+
+        const element =
+            document.getElementById(
+                "trackerCount"
+            );
+
+
+        if (element) {
+
+            element.textContent =
+                `${currentValue.toLocaleString()} CATS LOGGED`;
+        }
+
+
+        if (
+            progress < 1
+        ) {
+
+            counterAnimationFrame =
+                requestAnimationFrame(
+                    update
+                );
+
+        } else {
+
+            displayedCounterValue =
+                targetValue;
+
+            counterAnimationFrame =
+                null;
+        }
+    }
+
+
+    counterAnimationFrame =
+        requestAnimationFrame(
+            update
+        );
+}
+
 
 function updateCounter(
     totalCats
 ) {
 
-    const element =
-        document.getElementById(
-            "trackerCount"
-        );
-
-    if (element) {
-
-        element.textContent =
-            `${totalCats.toLocaleString()} CATS LOGGED`;
-    }
+    animateCounter(
+        totalCats
+    );
 }
 
 
@@ -558,6 +667,7 @@ function getCatPhotoURL(
         return null;
     }
 
+
     if (
         photoPath.startsWith(
             "http://"
@@ -569,6 +679,7 @@ function getCatPhotoURL(
 
         return photoPath;
     }
+
 
     try {
 
@@ -583,6 +694,7 @@ function getCatPhotoURL(
                 .getPublicUrl(
                     photoPath
                 );
+
 
         return (
             data?.publicUrl ||
@@ -920,7 +1032,22 @@ function addCatMarker(
    LOAD CAT SIGHTINGS
    ========================================================= */
 
+let loadingSightings = false;
+
+
 async function loadCatSightings() {
+
+    /*
+     * Prevent simultaneous loads.
+     */
+
+    if (loadingSightings) {
+        return;
+    }
+
+
+    loadingSightings = true;
+
 
     console.log(
         "================================"
@@ -935,267 +1062,65 @@ async function loadCatSightings() {
     );
 
 
-    const {
-        data,
-        error
-    } =
-        await supabaseClient
-            .from(
-                "public_cat_sightings"
-            )
-            .select("*");
+    try {
+
+        const {
+            data,
+            error
+        } =
+            await supabaseClient
+                .from(
+                    "public_cat_sightings"
+                )
+                .select("*");
 
 
-    if (error) {
+        if (error) {
+
+            console.error(
+                "SUPABASE LOAD ERROR:",
+                error
+            );
+
+            return;
+        }
+
+
+        allSightings =
+            Array.isArray(data)
+                ? data
+                : [];
+
+
+        console.log(
+            "NUMBER OF PUBLIC SIGHTINGS:",
+            allSightings.length
+        );
+
+
+        populateCountryFilter();
+
+        populateCityFilter();
+
+        applyFilters();
+
+
+        console.log(
+            "CAT SIGHTINGS READY."
+        );
+
+    } catch (error) {
 
         console.error(
-            "SUPABASE LOAD ERROR:",
+            "LOAD CAT SIGHTINGS ERROR:",
             error
         );
 
-        allSightings = [];
+    } finally {
 
-        markerLayer.clearLayers();
-
-        updateCounter(0);
-
-        updateStatistics(
-            [],
-            0
-        );
-
-        return;
+        loadingSightings =
+            false;
     }
-
-
-    allSightings =
-        Array.isArray(data)
-            ? data
-            : [];
-
-
-    console.log(
-        "NUMBER OF SIGHTINGS:",
-        allSightings.length
-    );
-
-
-    populateCountryFilter();
-
-    populateCityFilter();
-
-    applyFilters();
-
-
-    console.log(
-        "CAT SIGHTINGS READY."
-    );
-}
-
-
-//* =========================================================
-   LIVE COUNTER
-   ========================================================= */
-
-let displayedCounterValue = 0;
-let counterAnimationFrame = null;
-
-
-function animateCounter(targetValue) {
-
-    targetValue = Number(targetValue) || 0;
-
-    if (counterAnimationFrame) {
-        cancelAnimationFrame(counterAnimationFrame);
-    }
-
-    const startValue = displayedCounterValue;
-    const difference = targetValue - startValue;
-
-    if (difference === 0) {
-        return;
-    }
-
-    const duration = 900;
-    const startTime = performance.now();
-
-
-    function update(timestamp) {
-
-        const elapsed = timestamp - startTime;
-
-        const progress =
-            Math.min(
-                elapsed / duration,
-                1
-            );
-
-
-        /*
-         * Ease-out:
-         * hızlı başlar,
-         * sona doğru yavaşlar.
-         */
-
-        const easedProgress =
-            1 -
-            Math.pow(
-                1 - progress,
-                3
-            );
-
-
-        const currentValue =
-            Math.round(
-                startValue +
-                difference *
-                easedProgress
-            );
-
-
-        displayedCounterValue =
-            currentValue;
-
-
-        const element =
-            document.getElementById(
-                "trackerCount"
-            );
-
-
-        if (element) {
-
-            element.textContent =
-                `${currentValue.toLocaleString()} CATS LOGGED`;
-        }
-
-
-        if (progress < 1) {
-
-            counterAnimationFrame =
-                requestAnimationFrame(
-                    update
-                );
-
-        } else {
-
-            displayedCounterValue =
-                targetValue;
-
-            counterAnimationFrame =
-                null;
-        }
-    }
-
-
-    counterAnimationFrame =
-        requestAnimationFrame(
-            update
-        );
-}
-
-
-function updateCounter(totalCats) {
-
-    animateCounter(
-        totalCats
-    );
-}
-
-/* =========================================================
-   START REALTIME
-   ========================================================= */
-
-function startRealtime() {
-
-    console.log(
-        "STARTING SUPABASE REALTIME..."
-    );
-
-
-    supabaseClient
-        .channel(
-            "cat-sightings-live-counter"
-        )
-        .on(
-            "postgres_changes",
-            {
-                event: "*",
-                schema: "public",
-                table: "cat_sightings"
-            },
-            payload => {
-
-                console.log(
-                    "REALTIME EVENT:",
-                    payload.eventType,
-                    payload
-                );
-
-
-                /*
-                 * INSERT:
-                 * Yeni report geldi.
-                 *
-                 * UPDATE:
-                 * Admin approve/reject yaptı.
-                 *
-                 * DELETE:
-                 * Kayıt silindi.
-                 *
-                 * Her durumda public view'i yeniden
-                 * okuyarak gerçek sonucu alıyoruz.
-                 */
-
-                scheduleRealtimeReload();
-
-            }
-        )
-        .subscribe(
-            status => {
-
-                console.log(
-                    "REALTIME STATUS:",
-                    status
-                );
-
-
-                if (
-                    status ===
-                    "SUBSCRIBED"
-                ) {
-
-                    console.log(
-                        "🐾 LIVE COUNTER CONNECTED"
-                    );
-
-                }
-
-
-                if (
-                    status ===
-                    "CHANNEL_ERROR"
-                ) {
-
-                    console.error(
-                        "REALTIME CHANNEL ERROR"
-                    );
-
-                }
-
-
-                if (
-                    status ===
-                    "TIMED_OUT"
-                ) {
-
-                    console.error(
-                        "REALTIME CONNECTION TIMED OUT"
-                    );
-
-                }
-            }
-        );
 }
 
 
@@ -1208,6 +1133,7 @@ function openFilters() {
     if (!filterPanel) {
         return;
     }
+
 
     filterPanel.classList.add(
         "open"
@@ -1229,6 +1155,7 @@ function closeFiltersPanel() {
     if (!filterPanel) {
         return;
     }
+
 
     filterPanel.classList.remove(
         "open"
@@ -1355,7 +1282,6 @@ function populateCountryFilter() {
 
             option.value =
                 country;
-
 
             option.textContent =
                 country;
@@ -1484,7 +1410,6 @@ function populateCityFilter() {
             option.value =
                 city;
 
-
             option.textContent =
                 city;
 
@@ -1601,7 +1526,9 @@ function getFilteredSightings() {
     return allSightings.filter(
         sighting => {
 
-            /* COUNTRY */
+            /*
+             * COUNTRY
+             */
 
             if (
                 selectedCountry &&
@@ -1617,7 +1544,9 @@ function getFilteredSightings() {
             }
 
 
-            /* CITY */
+            /*
+             * CITY
+             */
 
             if (
                 selectedCity &&
@@ -1633,7 +1562,9 @@ function getFilteredSightings() {
             }
 
 
-            /* DATE */
+            /*
+             * DATE
+             */
 
             if (
                 !matchesSelectedMonth(
@@ -1773,18 +1704,21 @@ if (clearFilters) {
         () => {
 
             if (countryFilter) {
+
                 countryFilter.value =
                     "";
             }
 
 
             if (cityFilter) {
+
                 cityFilter.value =
                     "";
             }
 
 
             if (dateFilter) {
+
                 dateFilter.value =
                     "";
             }
@@ -2752,6 +2686,124 @@ if (reportCatForm) {
 
 
 /* =========================================================
+   SUPABASE REALTIME
+   ========================================================= */
+
+let realtimeReloadTimer =
+    null;
+
+
+function scheduleRealtimeReload() {
+
+    /*
+     * Several database events can arrive
+     * almost simultaneously.
+     *
+     * Wait a little and reload only once.
+     */
+
+    if (realtimeReloadTimer) {
+
+        clearTimeout(
+            realtimeReloadTimer
+        );
+    }
+
+
+    realtimeReloadTimer =
+        setTimeout(
+            () => {
+
+                realtimeReloadTimer =
+                    null;
+
+                loadCatSightings();
+
+            },
+            400
+        );
+}
+
+
+const realtimeChannel =
+    supabaseClient
+        .channel(
+            "cat-sightings-live"
+        )
+        .on(
+            "postgres_changes",
+            {
+                event: "INSERT",
+                schema: "public",
+                table: "cat_sightings"
+            },
+            payload => {
+
+                console.log(
+                    "LIVE CAT INSERT:",
+                    payload
+                );
+
+                scheduleRealtimeReload();
+            }
+        )
+        .on(
+            "postgres_changes",
+            {
+                event: "UPDATE",
+                schema: "public",
+                table: "cat_sightings"
+            },
+            payload => {
+
+                console.log(
+                    "LIVE CAT UPDATE:",
+                    payload
+                );
+
+                /*
+                 * Important:
+                 *
+                 * A pending sighting can become
+                 * approved here.
+                 *
+                 * We reload public_cat_sightings
+                 * so only approved/public data
+                 * affects the counter.
+                 */
+
+                scheduleRealtimeReload();
+            }
+        )
+        .on(
+            "postgres_changes",
+            {
+                event: "DELETE",
+                schema: "public",
+                table: "cat_sightings"
+            },
+            payload => {
+
+                console.log(
+                    "LIVE CAT DELETE:",
+                    payload
+                );
+
+                scheduleRealtimeReload();
+            }
+        )
+        .subscribe(
+            status => {
+
+                console.log(
+                    "REALTIME STATUS:",
+                    status
+                );
+            }
+        );
+
+
+/* =========================================================
    START
    ========================================================= */
 
@@ -2780,6 +2832,14 @@ console.log(
 );
 
 console.log(
+    "Live counter: ENABLED"
+);
+
+console.log(
+    "Supabase Realtime: ENABLED"
+);
+
+console.log(
     "Public storage: ENABLED"
 );
 
@@ -2788,23 +2848,8 @@ console.log(
 );
 
 console.log(
-    "Live counter: ENABLED"
-);
-
-console.log(
     "================================"
 );
 
 
-/* =========================================================
-   INITIAL LOAD
-   ========================================================= */
-
 loadCatSightings();
-
-
-/* =========================================================
-   START LIVE COUNTER
-   ========================================================= */
-
-startRealtime();
