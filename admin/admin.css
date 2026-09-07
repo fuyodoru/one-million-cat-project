@@ -1,4 +1,769 @@
-/*
+:root {
+    --bg-deep: #071521;
+    --bg-main: #0a1d2b;
+    --bg-panel: #0d2637;
+    --blue-light: #318aaa;
+    --cyan: #72c5d9;
+    --text: #c9dce1;
+    --text-dim: #7193a0;
+    --yellow: #d7c477;
+    --green: #79bd9a;
+    --red: #d97979;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    margin: 0;
+    min-height: 100%;
+}
+
+body {
+    min-height: 100vh;
+    background:
+        radial-gradient(
+            circle at 50% 0%,
+            #123247 0%,
+            var(--bg-main) 35%,
+            var(--bg-deep) 100%
+        );
+    color: var(--text);
+    font-family: "Silkscreen", monospace;
+    image-rendering: pixelated;
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.035;
+    background-image:
+        linear-gradient(
+            rgba(255,255,255,.5) 1px,
+            transparent 1px
+        ),
+        linear-gradient(
+            90deg,
+            rgba(255,255,255,.5) 1px,
+            transparent 1px
+        );
+    background-size: 8px 8px;
+}
+
+button,
+input {
+    font-family: "Silkscreen", monospace;
+}
+
+button {
+    cursor: pointer;
+}
+
+button:disabled {
+    cursor: wait;
+    opacity: .55;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0,0,0,0);
+    white-space: nowrap;
+    border: 0;
+}
+
+
+/* =========================================================
+   LOGIN
+========================================================= */
+
+.login-screen {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 30px;
+}
+
+.login-box {
+    position: relative;
+    width: min(440px, 100%);
+    padding: 42px 38px 38px;
+    text-align: center;
+    background: #0b2435;
+    border: 3px solid var(--blue-light);
+    border-radius: 22px;
+    box-shadow:
+        0 0 0 5px #06131f,
+        0 8px 0 #05101a,
+        0 0 35px rgba(35,112,140,.18);
+}
+
+.login-box::before {
+    content: "";
+    position: absolute;
+    inset: 7px;
+    border: 1px solid #285d72;
+    border-radius: 16px;
+    pointer-events: none;
+}
+
+.login-logo {
+    position: relative;
+    width: 82px;
+    height: 82px;
+    margin: 0 auto 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #d5e1e2;
+    border: 3px solid #071722;
+    border-radius: 14px;
+    box-shadow: 0 0 0 3px #377e96;
+}
+
+.login-logo img {
+    width: 58px;
+    height: 58px;
+    object-fit: contain;
+    image-rendering: pixelated;
+}
+
+.admin-kicker {
+    color: var(--cyan);
+    font-size: 8px;
+    letter-spacing: 2px;
+    line-height: 1.8;
+}
+
+.login-box h1 {
+    margin: 12px 0 10px;
+    color: #d8e8eb;
+    font-size: clamp(22px, 5vw, 30px);
+    letter-spacing: 2px;
+    text-shadow: 3px 3px 0 #06141e;
+}
+
+.login-description {
+    margin: 0 0 28px;
+    color: var(--text-dim);
+    font-size: 8px;
+    line-height: 1.8;
+}
+
+#loginForm {
+    display: grid;
+    gap: 10px;
+    text-align: left;
+}
+
+#loginForm label {
+    margin-top: 8px;
+    color: var(--cyan);
+    font-size: 7px;
+    letter-spacing: 1.5px;
+}
+
+#loginForm input {
+    width: 100%;
+    padding: 13px 14px;
+    color: var(--text);
+    background: #061825;
+    border: 2px solid #20566d;
+    border-radius: 9px;
+    outline: none;
+    font-size: 9px;
+}
+
+#loginForm input::placeholder {
+    color: #456673;
+}
+
+#loginForm input:focus {
+    border-color: var(--cyan);
+    box-shadow: 0 0 0 2px rgba(114,197,217,.12);
+}
+
+.login-button {
+    margin-top: 16px;
+    padding: 14px;
+    color: #dcebef;
+    background: #17475d;
+    border: 2px solid var(--blue-light);
+    border-radius: 9px;
+    font-size: 9px;
+    letter-spacing: 1px;
+    box-shadow: 0 4px 0 #06131d;
+}
+
+.login-button:hover {
+    background: #205e78;
+}
+
+.login-button:active {
+    transform: translateY(3px);
+    box-shadow: 0 1px 0 #06131d;
+}
+
+.forgot-link {
+    display: inline-block;
+    margin-top: 18px;
+    color: var(--text-dim);
+    font-size: 7px;
+    text-decoration: none;
+}
+
+.forgot-link:hover {
+    color: var(--cyan);
+}
+
+.login-message {
+    min-height: 18px;
+    margin-top: 18px;
+    color: var(--yellow);
+    font-size: 7px;
+    line-height: 1.7;
+}
+
+.login-message.error {
+    color: var(--red);
+}
+
+
+/* =========================================================
+   ADMIN PAGE
+========================================================= */
+
+.admin-page {
+    width: min(1200px, calc(100% - 32px));
+    margin: 30px auto 50px;
+}
+
+.admin-header {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 25px;
+    padding: 25px 28px;
+    background: #0c293a;
+    border: 3px solid var(--blue-light);
+    border-radius: 20px;
+    box-shadow:
+        0 0 0 5px #06131f,
+        0 7px 0 #05111a;
+}
+
+.admin-header h1 {
+    margin: 8px 0 6px;
+    color: #dbe9ec;
+    font-size: clamp(20px, 4vw, 32px);
+    letter-spacing: 2px;
+    text-shadow: 3px 3px 0 #06141e;
+}
+
+.admin-header p {
+    margin: 0;
+    color: var(--text-dim);
+    font-size: 8px;
+}
+
+.admin-user {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-shrink: 0;
+}
+
+#adminUsername {
+    max-width: 220px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding: 9px 12px;
+    color: var(--cyan);
+    background: #071a27;
+    border: 2px solid #20566d;
+    border-radius: 8px;
+    font-size: 8px;
+}
+
+#logoutButton,
+#refreshButton {
+    padding: 10px 13px;
+    color: #d4e4e8;
+    background: #183e50;
+    border: 2px solid #2a718a;
+    border-radius: 8px;
+    font-size: 7px;
+}
+
+#logoutButton:hover,
+#refreshButton:hover {
+    background: #23566b;
+}
+
+
+/* =========================================================
+   STATS
+========================================================= */
+
+.admin-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin: 24px 0;
+}
+
+.stat-card {
+    padding: 20px;
+    background: #0c2637;
+    border: 2px solid #205c73;
+    border-radius: 15px;
+    box-shadow: 0 4px 0 #06141f;
+}
+
+.stat-card span {
+    display: block;
+    color: var(--text-dim);
+    font-size: 7px;
+    letter-spacing: 1.5px;
+}
+
+.stat-card strong {
+    display: block;
+    margin-top: 8px;
+    color: #dcecef;
+    font-size: 25px;
+}
+
+.pending-stat {
+    border-color: #8d7d43;
+}
+
+.pending-stat strong {
+    color: var(--yellow);
+}
+
+.approved-stat {
+    border-color: #39795e;
+}
+
+.approved-stat strong {
+    color: var(--green);
+}
+
+.rejected-stat {
+    border-color: #854f57;
+}
+
+.rejected-stat strong {
+    color: var(--red);
+}
+
+
+/* =========================================================
+   SIGHTINGS
+========================================================= */
+
+.sightings-section {
+    padding: 25px;
+    background: #0a2232;
+    border: 3px solid #205e76;
+    border-radius: 20px;
+    box-shadow: 0 6px 0 #05121b;
+}
+
+.section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.section-header h2 {
+    margin: 0;
+    color: #cfe2e6;
+    font-size: 14px;
+    letter-spacing: 1px;
+}
+
+.section-header p {
+    margin: 8px 0 0;
+    color: var(--text-dim);
+    font-size: 7px;
+}
+
+.toolbar {
+    display: flex;
+    gap: 12px;
+    align-items: stretch;
+    margin-bottom: 14px;
+}
+
+.tabs {
+    display: flex;
+    gap: 5px;
+    padding: 5px;
+    background: #071a27;
+    border: 2px solid #234f61;
+    border-radius: 10px;
+}
+
+.tab-button {
+    padding: 9px 11px;
+    color: var(--text-dim);
+    background: transparent;
+    border: 2px solid transparent;
+    border-radius: 6px;
+    font-size: 7px;
+}
+
+.tab-button:hover {
+    color: var(--text);
+}
+
+.tab-button.active {
+    color: var(--cyan);
+    background: #143b4d;
+    border-color: #2c7088;
+}
+
+.search-wrap {
+    flex: 1;
+}
+
+#searchInput {
+    width: 100%;
+    height: 100%;
+    min-height: 43px;
+    padding: 10px 12px;
+    color: var(--text);
+    background: #071a27;
+    border: 2px solid #234f61;
+    border-radius: 10px;
+    outline: none;
+    font-size: 7px;
+}
+
+#searchInput:focus {
+    border-color: var(--cyan);
+}
+
+#searchInput::placeholder {
+    color: #456673;
+}
+
+.status-message {
+    min-height: 0;
+    padding: 0;
+    color: var(--text-dim);
+    text-align: center;
+    font-size: 8px;
+    line-height: 1.7;
+}
+
+.status-message:not(:empty) {
+    padding: 16px;
+    background: #071a27;
+    border: 2px dashed #234f61;
+    border-radius: 10px;
+}
+
+.status-message.error {
+    color: var(--red);
+    border-color: #854f57;
+}
+
+.sightings-list {
+    display: grid;
+    gap: 12px;
+    margin-top: 14px;
+}
+
+
+/* =========================================================
+   CARDS
+========================================================= */
+
+.sighting-card {
+    padding: 16px;
+    background: #0d293a;
+    border: 2px solid #205d74;
+    border-radius: 13px;
+    box-shadow: 0 3px 0 #06151f;
+}
+
+.sighting-card:hover {
+    border-color: #3b8299;
+}
+
+.sighting-content {
+    display: grid;
+    grid-template-columns: 130px 1fr;
+    gap: 17px;
+    align-items: stretch;
+}
+
+.sighting-photo {
+    min-height: 130px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #071a27;
+    border: 2px solid #234f61;
+    border-radius: 9px;
+}
+
+.sighting-photo img {
+    width: 100%;
+    height: 100%;
+    min-height: 130px;
+    object-fit: cover;
+}
+
+.sighting-photo.no-photo {
+    color: var(--text-dim);
+    font-size: 6px;
+}
+
+.sighting-main {
+    min-width: 0;
+}
+
+.sighting-topline {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 14px;
+}
+
+.status-badge {
+    padding: 6px 8px;
+    border: 2px solid;
+    border-radius: 6px;
+    font-size: 6px;
+}
+
+.status-pending {
+    color: var(--yellow);
+    border-color: #8d7d43;
+}
+
+.status-approved {
+    color: var(--green);
+    border-color: #39795e;
+}
+
+.status-rejected {
+    color: var(--red);
+    border-color: #854f57;
+}
+
+.sighting-count {
+    color: #d7e8eb;
+    font-size: 9px;
+}
+
+.sighting-location {
+    margin-bottom: 8px;
+    color: #d7e8eb;
+    font-size: 8px;
+    line-height: 1.8;
+}
+
+.sighting-meta {
+    color: var(--text-dim);
+    font-size: 7px;
+    line-height: 1.8;
+}
+
+.sighting-id {
+    margin-top: 10px;
+    color: #527985;
+    font-size: 6px;
+    line-height: 1.7;
+    word-break: break-all;
+}
+
+.sighting-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    margin-top: 14px;
+}
+
+.sighting-actions button {
+    padding: 9px 12px;
+    border: 2px solid;
+    border-radius: 7px;
+    background: #143d50;
+    font-size: 7px;
+}
+
+.approve-button {
+    color: #9ed0b5;
+    border-color: #4e9671 !important;
+}
+
+.approve-button:hover {
+    background: #1a4e3b;
+}
+
+.reject-button {
+    color: #d9959c;
+    border-color: #985860 !important;
+}
+
+.reject-button:hover {
+    background: #4a2930;
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 700px) {
+
+    .login-screen {
+        padding: 16px;
+    }
+
+    .login-box {
+        padding: 32px 22px 26px;
+    }
+
+    .admin-page {
+        width: calc(100% - 18px);
+        margin: 18px auto 30px;
+    }
+
+    .admin-header {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 20px;
+    }
+
+    .admin-user {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    #adminUsername {
+        max-width: calc(100% - 105px);
+    }
+
+    .admin-stats {
+        grid-template-columns: 1fr;
+        gap: 10px;
+        margin: 18px 0;
+    }
+
+    .stat-card {
+        padding: 16px;
+    }
+
+    .sightings-section {
+        padding: 17px;
+    }
+
+    .section-header {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    #refreshButton {
+        width: 100%;
+    }
+
+    .toolbar {
+        flex-direction: column;
+    }
+
+    .tabs {
+        width: 100%;
+        overflow-x: auto;
+    }
+
+    .tab-button {
+        flex: 1;
+        white-space: nowrap;
+    }
+
+    #searchInput {
+        min-height: 44px;
+    }
+
+    .sighting-content {
+        grid-template-columns: 1fr;
+    }
+
+    .sighting-photo {
+        min-height: 180px;
+        max-height: 240px;
+    }
+
+    .sighting-photo img {
+        min-height: 180px;
+        max-height: 240px;
+    }
+
+    .sighting-topline {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .sighting-actions {
+        flex-direction: column;
+    }
+
+    .sighting-actions button {
+        width: 100%;
+        min-height: 42px;
+    }
+
+}
+
+@media (max-width: 420px) {
+
+    .admin-header h1 {
+        font-size: 20px;
+    }
+
+    .admin-kicker {
+        font-size: 7px;
+    }
+
+    .login-box h1 {
+        font-size: 22px;
+    }
+
+    .tabs {
+        gap: 2px;
+        padding: 3px;
+    }
+
+    .tab-button {
+        padding: 8px 7px;
+        font-size: 6px;
+    }
+
+}/*
 =========================================================
 ONE MILLION CAT PROJECT
 ADMIN PANEL
