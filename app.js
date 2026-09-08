@@ -1782,7 +1782,7 @@ function updateTickerButton() {
     soundButton.textContent =
         tickerPaused
             ? "▶"
-            : "Ⅱ";
+            : "⏹";
 
     soundButton.setAttribute(
         "aria-label",
