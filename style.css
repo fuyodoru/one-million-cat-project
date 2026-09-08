@@ -6705,3 +6705,178 @@ textarea {
         width: 38px !important;
     }
 }
+
+/* =========================================================
+   FINAL MOBILE MAP FIX
+   ONE MILLION CAT PROJECT
+   ========================================================= */
+
+@media (max-width: 600px) {
+
+    /* -----------------------------------------------------
+       MAP — REMOVE THE EXTRA MOBILE GAP
+       ----------------------------------------------------- */
+
+    .map-wrapper {
+        position: absolute !important;
+
+        top: 112px !important;
+        left: 10px !important;
+        right: 10px !important;
+        bottom: 72px !important;
+
+        width: auto !important;
+        height: auto !important;
+
+        margin: 0 !important;
+
+        border: 3px solid #16445b !important;
+        border-radius: 9px !important;
+
+        overflow: hidden !important;
+    }
+
+    #map {
+        position: absolute !important;
+
+        top: 0 !important;
+        left: 0 !important;
+
+        width: 100% !important;
+        height: 100% !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    /* -----------------------------------------------------
+       FILTER BUTTON
+       ----------------------------------------------------- */
+
+    .filter-toggle {
+        position: absolute !important;
+
+        top: 115px !important;
+        left: 10px !important;
+
+        width: 38px !important;
+        height: 38px !important;
+
+        z-index: 7000 !important;
+    }
+
+    /* -----------------------------------------------------
+       FILTER PANEL
+       ----------------------------------------------------- */
+
+    .filter-panel {
+        position: absolute !important;
+
+        top: 160px !important;
+        left: 10px !important;
+
+        width: min(190px, calc(100vw - 20px)) !important;
+        max-width: none !important;
+
+        z-index: 8000 !important;
+    }
+
+    /* -----------------------------------------------------
+       STATS
+       ----------------------------------------------------- */
+
+    .map-stats {
+        left: 7px !important;
+        right: 7px !important;
+        bottom: 8px !important;
+
+        width: auto !important;
+
+        display: flex !important;
+        flex-direction: row !important;
+        flex-wrap: nowrap !important;
+
+        gap: 3px !important;
+
+        z-index: 3000 !important;
+    }
+
+    .stat-card {
+        flex: 1 1 0 !important;
+        min-width: 0 !important;
+        width: auto !important;
+
+        padding: 5px 2px !important;
+
+        text-align: center !important;
+        white-space: nowrap !important;
+
+        overflow: hidden !important;
+    }
+
+    .stat-label {
+        font-size: 4px !important;
+        letter-spacing: 0.25px !important;
+
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+    }
+
+    .stat-value {
+        font-size: 7px !important;
+
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+    }
+
+    /* -----------------------------------------------------
+       MASCOT
+       ----------------------------------------------------- */
+
+    .mascot {
+        left: 4px !important;
+        bottom: 39px !important;
+
+        width: 64px !important;
+
+        z-index: 4000 !important;
+    }
+
+    .mascot img {
+        width: 64px !important;
+        height: auto !important;
+    }
+}
+
+
+/* =========================================================
+   VERY SMALL PHONES
+   ========================================================= */
+
+@media (max-width: 380px) {
+
+    .map-wrapper {
+        top: 106px !important;
+        bottom: 72px !important;
+
+        height: auto !important;
+
+        margin: 0 !important;
+    }
+
+    .filter-toggle {
+        top: 109px !important;
+    }
+
+    .filter-panel {
+        top: 154px !important;
+    }
+
+    .stat-label {
+        font-size: 3.5px !important;
+    }
+
+    .stat-value {
+        font-size: 6px !important;
+    }
+}
