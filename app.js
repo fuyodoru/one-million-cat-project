@@ -512,119 +512,90 @@ function updateStatistics(
     );
 }
 
-
 /* =========================================================
-   LIVE COUNTER
+   COUNTER ANIMATION
    ========================================================= */
 
 let displayedCounterValue = 0;
-
 let counterAnimationFrame = null;
-
 
 function animateCounter(targetValue) {
 
-    targetValue =
-        Number(targetValue) || 0;
+    targetValue = Number(targetValue) || 0;
 
-
-    if (
-        counterAnimationFrame
-    ) {
-
-        cancelAnimationFrame(
-            counterAnimationFrame
-        );
-
-        counterAnimationFrame =
-            null;
+    if (counterAnimationFrame) {
+        cancelAnimationFrame(counterAnimationFrame);
+        counterAnimationFrame = null;
     }
 
+    const startValue = displayedCounterValue;
 
-    const startValue =
-        displayedCounterValue;
-
-
-    const difference =
-        targetValue -
-        startValue;
-
-
-    if (
-        difference === 0
-    ) {
-
+    if (startValue === targetValue) {
         return;
     }
 
+    /*
+     * Short stepped animation instead of counting
+     * through every single number.
+     *
+     * Example:
+     * 0 → 4 → 5 → 6
+     *
+     * For larger values the same idea is preserved:
+     * 0 → ~60% → ~80% → target
+     */
 
-    const duration =
-        900;
+    const values = [
+        startValue,
+        Math.round(
+            startValue +
+            (targetValue - startValue) * 0.60
+        ),
+        Math.round(
+            startValue +
+            (targetValue - startValue) * 0.80
+        ),
+        targetValue
+    ];
 
+    const uniqueValues = [
+        ...new Set(values)
+    ];
 
-    const startTime =
-        performance.now();
+    let step = 0;
 
+    const element =
+        document.getElementById(
+            "trackerCount"
+        );
 
-    function update(timestamp) {
+    function showNextValue() {
 
-        const elapsed =
-            timestamp -
-            startTime;
-
-
-        const progress =
-            Math.min(
-                elapsed /
-                duration,
-                1
-            );
-
-
-        /*
-         * Ease-out animation.
-         */
-
-        const easedProgress =
-            1 -
-            Math.pow(
-                1 - progress,
-                3
-            );
-
-
-        const currentValue =
-            Math.round(
-                startValue +
-                difference *
-                easedProgress
-            );
-
-
-        displayedCounterValue =
-            currentValue;
-
-
-        const element =
-            document.getElementById(
-                "trackerCount"
-            );
-
-
-        if (element) {
-
-            element.textContent =
-                `${currentValue.toLocaleString()} CATS LOGGED`;
+        if (!element) {
+            counterAnimationFrame = null;
+            return;
         }
 
+        const value =
+            uniqueValues[step];
+
+        displayedCounterValue =
+            value;
+
+        element.textContent =
+            `${value.toLocaleString()} CATS LOGGED`;
+
+        step++;
 
         if (
-            progress < 1
+            step <
+            uniqueValues.length
         ) {
 
             counterAnimationFrame =
-                requestAnimationFrame(
-                    update
+                setTimeout(
+                    showNextValue,
+                    120
                 );
 
         } else {
@@ -637,24 +608,14 @@ function animateCounter(targetValue) {
         }
     }
 
-
-    counterAnimationFrame =
-        requestAnimationFrame(
-            update
-        );
+    showNextValue();
 }
 
 
-function updateCounter(
-    totalCats
-) {
+function updateCounter(totalCats) {
 
-    animateCounter(
-        totalCats
-    );
+    animateCounter(totalCats);
 }
-
-
 /* =========================================================
    PHOTO URL
    ========================================================= */
@@ -1801,31 +1762,57 @@ if (mapControlButton) {
 
 
 /* =========================================================
-   SOUND
+   TICKER CONTROL
    ========================================================= */
 
-let soundEnabled =
-    true;
+const tickerTrack =
+    document.querySelector(
+        ".ticker-track"
+    );
+
+let tickerPaused = false;
 
 
-if (soundButton) {
+function updateTickerButton() {
+
+    if (!soundButton) {
+        return;
+    }
+
+    soundButton.textContent =
+        tickerPaused
+            ? "▶"
+            : "Ⅱ";
+
+    soundButton.setAttribute(
+        "aria-label",
+        tickerPaused
+            ? "Resume ticker"
+            : "Pause ticker"
+    );
+}
+
+
+if (soundButton && tickerTrack) {
 
     soundButton.addEventListener(
         "click",
         () => {
 
-            soundEnabled =
-                !soundEnabled;
+            tickerPaused =
+                !tickerPaused;
 
+            tickerTrack.style.animationPlayState =
+                tickerPaused
+                    ? "paused"
+                    : "running";
 
-            soundButton.textContent =
-                soundEnabled
-                    ? "◀"
-                    : "■";
+            updateTickerButton();
         }
     );
-}
 
+    updateTickerButton();
+}
 
 /* =========================================================
    CAT ANIMATIONS
