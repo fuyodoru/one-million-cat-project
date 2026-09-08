@@ -1,0 +1,23 @@
+{
+    "name": "One Million Cat Project",
+    "short_name": "1M Cats",
+    "description": "A community project to count the cats of the world.",
+    "start_url": "/",
+    "scope": "/",
+    "display": "standalone",
+    "background_color": "#07151d",
+    "theme_color": "#07151d",
+    "orientation": "portrait-primary",
+    "icons": [
+        {
+            "src": "/assets/icons/icon-192.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "/assets/icons/icon-512.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ]
+}
