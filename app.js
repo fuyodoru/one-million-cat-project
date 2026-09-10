@@ -512,6 +512,7 @@ function updateStatistics(
     );
 }
 
+
 /* =========================================================
    COUNTER ANIMATION
    ========================================================= */
@@ -519,73 +520,104 @@ function updateStatistics(
 let displayedCounterValue = 0;
 let counterAnimationFrame = null;
 
+
 function animateCounter(targetValue) {
 
-    targetValue = Number(targetValue) || 0;
+    targetValue =
+        Number(targetValue) || 0;
+
 
     if (counterAnimationFrame) {
-        cancelAnimationFrame(counterAnimationFrame);
-        counterAnimationFrame = null;
+
+        cancelAnimationFrame(
+            counterAnimationFrame
+        );
+
+        counterAnimationFrame =
+            null;
     }
 
-    const startValue = displayedCounterValue;
 
-    if (startValue === targetValue) {
+    const startValue =
+        displayedCounterValue;
+
+
+    if (
+        startValue ===
+        targetValue
+    ) {
         return;
     }
 
+
     /*
-     * Short stepped animation instead of counting
-     * through every single number.
-     *
-     * Example:
-     * 0 → 4 → 5 → 6
-     *
-     * For larger values the same idea is preserved:
-     * 0 → ~60% → ~80% → target
+     * Short stepped animation instead
+     * of counting through every number.
      */
 
     const values = [
+
         startValue,
+
         Math.round(
             startValue +
-            (targetValue - startValue) * 0.60
+            (
+                targetValue -
+                startValue
+            ) * 0.60
         ),
+
         Math.round(
             startValue +
-            (targetValue - startValue) * 0.80
+            (
+                targetValue -
+                startValue
+            ) * 0.80
         ),
+
         targetValue
     ];
+
 
     const uniqueValues = [
         ...new Set(values)
     ];
 
+
     let step = 0;
+
 
     const element =
         document.getElementById(
             "trackerCount"
         );
 
+
     function showNextValue() {
 
         if (!element) {
-            counterAnimationFrame = null;
+
+            counterAnimationFrame =
+                null;
+
             return;
         }
+
 
         const value =
             uniqueValues[step];
 
+
         displayedCounterValue =
             value;
+
 
         element.textContent =
             `${value.toLocaleString()} CATS LOGGED`;
 
+
         step++;
+
 
         if (
             step <
@@ -608,14 +640,21 @@ function animateCounter(targetValue) {
         }
     }
 
+
     showNextValue();
 }
 
 
-function updateCounter(totalCats) {
+function updateCounter(
+    totalCats
+) {
 
-    animateCounter(totalCats);
+    animateCounter(
+        totalCats
+    );
 }
+
+
 /* =========================================================
    PHOTO URL
    ========================================================= */
@@ -964,6 +1003,7 @@ function addCatMarker(
             const popupElement =
                 event.popup.getElement();
 
+
             if (!popupElement) {
                 return;
             }
@@ -980,7 +1020,9 @@ function addCatMarker(
                 closeButton.addEventListener(
                     "click",
                     () => {
+
                         marker.closePopup();
+
                     }
                 );
             }
@@ -997,10 +1039,6 @@ let loadingSightings = false;
 
 
 async function loadCatSightings() {
-
-    /*
-     * Prevent simultaneous loads.
-     */
 
     if (loadingSightings) {
         return;
@@ -1156,6 +1194,7 @@ if (filterToggle) {
             } else {
 
                 openFilters();
+
             }
         }
     );
@@ -1171,6 +1210,7 @@ if (closeFilters) {
             event.preventDefault();
 
             closeFiltersPanel();
+
         }
     );
 }
@@ -1487,10 +1527,6 @@ function getFilteredSightings() {
     return allSightings.filter(
         sighting => {
 
-            /*
-             * COUNTRY
-             */
-
             if (
                 selectedCountry &&
                 normalizeFilterText(
@@ -1505,10 +1541,6 @@ function getFilteredSightings() {
             }
 
 
-            /*
-             * CITY
-             */
-
             if (
                 selectedCity &&
                 normalizeFilterText(
@@ -1522,10 +1554,6 @@ function getFilteredSightings() {
                 return false;
             }
 
-
-            /*
-             * DATE
-             */
 
             if (
                 !matchesSelectedMonth(
@@ -1629,6 +1657,7 @@ if (countryFilter) {
             populateCityFilter();
 
             applyFilters();
+
         }
     );
 }
@@ -1641,6 +1670,7 @@ if (cityFilter) {
         () => {
 
             applyFilters();
+
         }
     );
 }
@@ -1653,6 +1683,7 @@ if (dateFilter) {
         () => {
 
             applyFilters();
+
         }
     );
 }
@@ -1668,6 +1699,7 @@ if (clearFilters) {
 
                 countryFilter.value =
                     "";
+
             }
 
 
@@ -1675,6 +1707,7 @@ if (clearFilters) {
 
                 cityFilter.value =
                     "";
+
             }
 
 
@@ -1682,6 +1715,7 @@ if (clearFilters) {
 
                 dateFilter.value =
                     "";
+
             }
 
 
@@ -1690,6 +1724,7 @@ if (clearFilters) {
             populateCityFilter();
 
             applyFilters();
+
         }
     );
 }
@@ -1716,6 +1751,7 @@ if (
             navigationPanel.classList.toggle(
                 "open"
             );
+
         }
     );
 }
@@ -1730,6 +1766,7 @@ map.on(
             navigationPanel.classList.remove(
                 "open"
             );
+
         }
     }
 );
@@ -1756,6 +1793,7 @@ if (mapControlButton) {
                         true
                 }
             );
+
         }
     );
 }
@@ -1779,10 +1817,12 @@ function updateTickerButton() {
         return;
     }
 
+
     soundButton.textContent =
         tickerPaused
             ? "▶"
             : "⏹";
+
 
     soundButton.setAttribute(
         "aria-label",
@@ -1793,7 +1833,10 @@ function updateTickerButton() {
 }
 
 
-if (soundButton && tickerTrack) {
+if (
+    soundButton &&
+    tickerTrack
+) {
 
     soundButton.addEventListener(
         "click",
@@ -1802,17 +1845,22 @@ if (soundButton && tickerTrack) {
             tickerPaused =
                 !tickerPaused;
 
+
             tickerTrack.style.animationPlayState =
                 tickerPaused
                     ? "paused"
                     : "running";
 
+
             updateTickerButton();
+
         }
     );
 
+
     updateTickerButton();
 }
+
 
 /* =========================================================
    CAT ANIMATIONS
@@ -1879,6 +1927,7 @@ function animateLogoCat() {
             logoFrames[
                 logoFrame
             ];
+
     }
 
 
@@ -1888,6 +1937,7 @@ function animateLogoCat() {
             logoFrames[
                 logoFrame
             ];
+
     }
 }
 
@@ -1907,6 +1957,7 @@ function animateMascot() {
             mascotFrames[
                 mascotFrame
             ];
+
     }
 }
 
@@ -1938,6 +1989,7 @@ setInterval(
 
         image.src =
             src;
+
     }
 );
 
@@ -1983,6 +2035,7 @@ if (reportCatButton) {
             event.stopPropagation();
 
             openReportModal();
+
         }
     );
 }
@@ -2018,6 +2071,7 @@ if (reportCatModal) {
             ) {
 
                 closeReportModalFunction();
+
             }
         }
     );
@@ -2038,6 +2092,7 @@ if (catPhotoInput) {
 
                 photoMessage.textContent =
                     "";
+
             }
 
 
@@ -2074,6 +2129,7 @@ if (catPhotoInput) {
 
                     photoMessage.textContent =
                         "PLEASE USE JPG, PNG OR WEBP.";
+
                 }
 
                 return;
@@ -2093,6 +2149,7 @@ if (catPhotoInput) {
 
                     photoMessage.textContent =
                         "PHOTO MUST BE 1 MB OR SMALLER.";
+
                 }
 
                 return;
@@ -2103,6 +2160,7 @@ if (catPhotoInput) {
 
                 photoMessage.textContent =
                     "PHOTO READY.";
+
             }
         }
     );
@@ -2203,6 +2261,7 @@ async function geocodeCity(
 
             addressdetails:
                 "1"
+
         });
 
 
@@ -2277,6 +2336,7 @@ async function geocodeCity(
 
         longitude:
             longitude
+
     };
 }
 
@@ -2305,6 +2365,7 @@ async function uploadCatPhoto(
 
         "image/webp":
             "webp"
+
     };
 
 
@@ -2347,6 +2408,7 @@ async function uploadCatPhoto(
 
                     contentType:
                         file.type
+
                 }
             );
 
@@ -2445,7 +2507,8 @@ async function submitCatSighting() {
     if (reportLocationMessage) {
 
         reportLocationMessage.textContent =
-            "FINDING CITY LOCATION...";
+            "FINDING CITY LOCATION.";
+
     }
 
 
@@ -2460,6 +2523,7 @@ async function submitCatSighting() {
 
         reportLocationMessage.textContent =
             "CITY LOCATION FOUND.";
+
     }
 
 
@@ -2472,7 +2536,8 @@ async function submitCatSighting() {
         if (photoMessage) {
 
             photoMessage.textContent =
-                "UPLOADING PHOTO...";
+                "UPLOADING PHOTO.";
+
         }
 
 
@@ -2487,6 +2552,7 @@ async function submitCatSighting() {
 
             photoMessage.textContent =
                 "PHOTO UPLOADED.";
+
         }
     }
 
@@ -2529,6 +2595,7 @@ async function submitCatSighting() {
 
                 status:
                     "pending"
+
             });
 
 
@@ -2568,7 +2635,8 @@ if (reportCatForm) {
             if (reportMessage) {
 
                 reportMessage.textContent =
-                    "SUBMITTING...";
+                    "SUBMITTING.";
+
             }
 
 
@@ -2584,7 +2652,8 @@ if (reportCatForm) {
                     true;
 
                 submitButton.textContent =
-                    "SUBMITTING...";
+                    "SUBMITTING.";
+
             }
 
 
@@ -2597,6 +2666,7 @@ if (reportCatForm) {
 
                     reportMessage.textContent =
                         "CAT SIGHTING SUBMITTED FOR REVIEW.";
+
                 }
 
 
@@ -2607,6 +2677,7 @@ if (reportCatForm) {
 
                     catCountInput.value =
                         "1";
+
                 }
 
 
@@ -2614,6 +2685,7 @@ if (reportCatForm) {
 
                     photoMessage.textContent =
                         "";
+
                 }
 
 
@@ -2621,6 +2693,7 @@ if (reportCatForm) {
 
                     reportLocationMessage.textContent =
                         "LOCATION WILL BE DETERMINED FROM CITY AND COUNTRY";
+
                 }
 
 
@@ -2634,7 +2707,9 @@ if (reportCatForm) {
 
                             reportMessage.textContent =
                                 "";
+
                         }
+
                     },
                     1400
                 );
@@ -2653,6 +2728,7 @@ if (reportCatForm) {
                     reportMessage.textContent =
                         error?.message ||
                         "SUBMISSION FAILED.";
+
                 }
 
 
@@ -2665,6 +2741,7 @@ if (reportCatForm) {
 
                     submitButton.textContent =
                         "SUBMIT";
+
                 }
             }
         }
@@ -2720,9 +2797,15 @@ const realtimeChannel =
         .on(
             "postgres_changes",
             {
-                event: "INSERT",
-                schema: "public",
-                table: "cat_sightings"
+                event:
+                    "INSERT",
+
+                schema:
+                    "public",
+
+                table:
+                    "cat_sightings"
+
             },
             payload => {
 
@@ -2732,14 +2815,21 @@ const realtimeChannel =
                 );
 
                 scheduleRealtimeReload();
+
             }
         )
         .on(
             "postgres_changes",
             {
-                event: "UPDATE",
-                schema: "public",
-                table: "cat_sightings"
+                event:
+                    "UPDATE",
+
+                schema:
+                    "public",
+
+                table:
+                    "cat_sightings"
+
             },
             payload => {
 
@@ -2749,25 +2839,30 @@ const realtimeChannel =
                 );
 
                 /*
-                 * Important:
-                 *
                  * A pending sighting can become
                  * approved here.
                  *
-                 * We reload public_cat_sightings
+                 * Reload public_cat_sightings
                  * so only approved/public data
                  * affects the counter.
                  */
 
                 scheduleRealtimeReload();
+
             }
         )
         .on(
             "postgres_changes",
             {
-                event: "DELETE",
-                schema: "public",
-                table: "cat_sightings"
+                event:
+                    "DELETE",
+
+                schema:
+                    "public",
+
+                table:
+                    "cat_sightings"
+
             },
             payload => {
 
@@ -2777,6 +2872,7 @@ const realtimeChannel =
                 );
 
                 scheduleRealtimeReload();
+
             }
         )
         .subscribe(
@@ -2786,6 +2882,7 @@ const realtimeChannel =
                     "REALTIME STATUS:",
                     status
                 );
+
             }
         );
 
