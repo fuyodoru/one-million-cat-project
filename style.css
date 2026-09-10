@@ -7369,3 +7369,538 @@ textarea {
         font-size: 5px !important;
     }
 }
+
+/* =========================================================
+   FINAL UI FIX
+   CAT TRACKER
+   ========================================================= */
+
+/* ---------------------------------------------------------
+   NAVIGATION
+   --------------------------------------------------------- */
+
+.navigation-panel {
+    z-index: 9800 !important;
+}
+
+
+/* ---------------------------------------------------------
+   DESKTOP REPORT BUTTON
+   --------------------------------------------------------- */
+
+#reportCatButton {
+    width: 175px !important;
+    min-width: 175px !important;
+    height: 48px !important;
+    min-height: 48px !important;
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 600px) {
+
+    /* -----------------------------------------------------
+       HEADER
+       ----------------------------------------------------- */
+
+    .tracker-logo {
+
+        width:
+            min(
+                188px,
+                calc(100% - 124px)
+            ) !important;
+
+        max-width: 188px !important;
+
+        height: 34px !important;
+        min-height: 34px !important;
+
+        padding:
+            2px 7px !important;
+
+        gap: 4px !important;
+
+        border-width:
+            2px !important;
+
+        border-radius:
+            7px !important;
+
+        font-size:
+            clamp(
+                6px,
+                1.8vw,
+                8px
+            ) !important;
+
+        letter-spacing:
+            .35px !important;
+
+        line-height:
+            1 !important;
+    }
+
+
+    .tracker-logo .logo-mini-cat {
+
+        width:
+            17px !important;
+
+        height:
+            17px !important;
+
+        flex:
+            0 0 17px !important;
+    }
+
+
+    .tracker-logo .logo-subtitle {
+
+        bottom:
+            -13px !important;
+
+        font-size:
+            4px !important;
+
+        letter-spacing:
+            1px !important;
+    }
+
+
+    /* -----------------------------------------------------
+       NAVIGATION
+       ----------------------------------------------------- */
+
+    .navigation-panel {
+
+        top:
+            64px !important;
+
+        left:
+            8px !important;
+
+        width:
+            150px !important;
+
+        max-width:
+            calc(100vw - 32px) !important;
+
+        padding:
+            7px !important;
+
+        z-index:
+            9800 !important;
+
+        border-width:
+            2px !important;
+
+        border-radius:
+            7px !important;
+
+        box-shadow:
+            3px 3px 0 #07131d !important;
+    }
+
+
+    .navigation-title {
+
+        padding:
+            5px !important;
+
+        margin-bottom:
+            4px !important;
+
+        font-size:
+            7px !important;
+
+        letter-spacing:
+            1.2px !important;
+    }
+
+
+    .navigation-item {
+
+        padding:
+            8px 6px !important;
+
+        margin:
+            2px 0 !important;
+
+        font-size:
+            7px !important;
+    }
+
+
+    /* -----------------------------------------------------
+       REPORT CAT
+       ----------------------------------------------------- */
+
+    #reportCatButton {
+
+        top:
+            146px !important;
+
+        left:
+            8px !important;
+
+        width:
+            62px !important;
+
+        min-width:
+            62px !important;
+
+        height:
+            44px !important;
+
+        min-height:
+            44px !important;
+
+        padding:
+            4px 3px !important;
+
+        display:
+            flex !important;
+
+        flex-direction:
+            column !important;
+
+        justify-content:
+            center !important;
+
+        align-items:
+            center !important;
+
+        gap:
+            1px !important;
+
+        border-width:
+            2px !important;
+
+        border-radius:
+            7px !important;
+
+        box-shadow:
+            2px 2px 0 #07111b !important;
+
+        font-size:
+            5px !important;
+
+        letter-spacing:
+            .2px !important;
+
+        line-height:
+            1.1 !important;
+
+        z-index:
+            9701 !important;
+    }
+
+
+    #reportCatButton span {
+
+        display:
+            block !important;
+
+        font-size:
+            13px !important;
+
+        line-height:
+            10px !important;
+    }
+
+
+    /*
+       Filter kapalıyken Report Cat,
+       paw'ın hemen altında.
+    */
+
+    .tracker-frame:not(.filters-open)
+    #reportCatButton {
+
+        top:
+            146px !important;
+    }
+
+
+    /*
+       Filter açıldığında Report Cat,
+       filter panelinin altında.
+    */
+
+    .tracker-frame.filters-open
+    #reportCatButton {
+
+        top:
+            min(
+                360px,
+                calc(100dvh - 112px)
+            ) !important;
+    }
+
+
+    /* -----------------------------------------------------
+       NAVIGATION OVER MAP
+       ----------------------------------------------------- */
+
+    .tracker-frame
+    .navigation-panel.open {
+
+        z-index:
+            9800 !important;
+    }
+
+
+    /*
+       Leaflet'in kendi pane'leri navigation'ın
+       üstüne çıkmasın.
+    */
+
+    .leaflet-pane,
+    .leaflet-control {
+
+        z-index:
+            400 !important;
+    }
+
+
+    .navigation-panel {
+
+        z-index:
+            9800 !important;
+    }
+
+
+    /* -----------------------------------------------------
+       FILTER
+       ----------------------------------------------------- */
+
+    .filter-toggle {
+
+        z-index:
+            9700 !important;
+    }
+
+
+    .filter-panel {
+
+        z-index:
+            9700 !important;
+    }
+
+
+    /* -----------------------------------------------------
+       MAP POPUP
+       ----------------------------------------------------- */
+
+    .leaflet-popup {
+
+        z-index:
+            9000 !important;
+    }
+
+
+    .leaflet-popup-content-wrapper {
+
+        padding:
+            0 !important;
+
+        background:
+            transparent !important;
+
+        border:
+            0 !important;
+
+        box-shadow:
+            none !important;
+    }
+
+
+    .leaflet-popup-content {
+
+        margin:
+            0 !important;
+
+        padding:
+            0 !important;
+    }
+
+
+    .cat-card-popup {
+
+        background:
+            transparent !important;
+
+        border:
+            0 !important;
+
+        box-shadow:
+            none !important;
+    }
+
+
+    .cat-card-popup .leaflet-popup-tip {
+
+        background:
+            #07151d !important;
+
+        box-shadow:
+            none !important;
+    }
+
+
+    /* -----------------------------------------------------
+       CAT CARD
+       ----------------------------------------------------- */
+
+    .cat-card {
+
+        width:
+            min(
+                280px,
+                calc(100vw - 80px)
+            ) !important;
+
+        max-width:
+            280px !important;
+
+        box-sizing:
+            border-box !important;
+    }
+
+
+    .cat-card-photo {
+
+        width:
+            100% !important;
+
+        aspect-ratio:
+            1.45 / 1 !important;
+    }
+
+
+    .cat-card-content {
+
+        box-sizing:
+            border-box !important;
+    }
+
+
+    /* -----------------------------------------------------
+       STATS
+       ----------------------------------------------------- */
+
+    .stats-container,
+    .stats-bar {
+
+        max-width:
+            calc(100vw - 20px) !important;
+
+        overflow:
+            hidden !important;
+    }
+
+
+    .stat-card {
+
+        min-width:
+            0 !important;
+
+        flex:
+            1 1 0 !important;
+    }
+
+
+    /* -----------------------------------------------------
+       TICKER
+       ----------------------------------------------------- */
+
+    .ticker,
+    .ticker-bar,
+    .ticker-container {
+
+        max-width:
+            100% !important;
+
+        overflow:
+            hidden !important;
+    }
+
+
+    .ticker-content,
+    .ticker-track {
+
+        max-width:
+            100% !important;
+
+        overflow:
+            hidden !important;
+    }
+}
+
+
+/* =========================================================
+   VERY SMALL PHONES
+   ========================================================= */
+
+@media (max-width: 380px) {
+
+    .tracker-logo {
+
+        width:
+            min(
+                170px,
+                calc(100% - 116px)
+            ) !important;
+
+        height:
+            32px !important;
+
+        min-height:
+            32px !important;
+
+        font-size:
+            5.8px !important;
+
+        gap:
+            3px !important;
+    }
+
+
+    .tracker-logo .logo-mini-cat {
+
+        width:
+            15px !important;
+
+        height:
+            15px !important;
+
+        flex-basis:
+            15px !important;
+    }
+
+
+    #reportCatButton {
+
+        top:
+            142px !important;
+
+        width:
+            58px !important;
+
+        min-width:
+            58px !important;
+
+        height:
+            41px !important;
+
+        min-height:
+            41px !important;
+
+        font-size:
+            4.5px !important;
+    }
+}
