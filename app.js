@@ -1127,6 +1127,75 @@ async function loadCatSightings() {
    FILTER PANEL
    ========================================================= */
 
+function positionReportButton() {
+
+    if (
+        !trackerFrame ||
+        !filterPanel ||
+        !reportCatButton
+    ) {
+        return;
+    }
+
+
+    /*
+     * Filter closed:
+     * report sits directly under the paw.
+     */
+
+    if (
+        !filterPanel.classList.contains(
+            "open"
+        )
+    ) {
+
+        reportCatButton.style.top =
+            "";
+
+        trackerFrame.classList.remove(
+            "filters-open"
+        );
+
+        return;
+    }
+
+
+    /*
+     * Filter open:
+     *
+     * Read the REAL height of the panel.
+     * This means it will work even if the
+     * panel becomes taller/shorter later.
+     */
+
+    const panelTop =
+        filterPanel.offsetTop;
+
+
+    const panelHeight =
+        filterPanel.offsetHeight;
+
+
+    const gap =
+        6;
+
+
+    const reportTop =
+        panelTop +
+        panelHeight +
+        gap;
+
+
+    reportCatButton.style.top =
+        `${reportTop}px`;
+
+
+    trackerFrame.classList.add(
+        "filters-open"
+    );
+}
+
+
 function openFilters() {
 
     if (!filterPanel) {
@@ -1146,6 +1215,20 @@ function openFilters() {
             "true"
         );
     }
+
+
+    /*
+     * Wait one frame so the browser
+     * has calculated the panel's real height.
+     */
+
+    requestAnimationFrame(
+        () => {
+
+            positionReportButton();
+
+        }
+    );
 }
 
 
@@ -1168,53 +1251,23 @@ function closeFiltersPanel() {
             "false"
         );
     }
+
+
+    if (trackerFrame) {
+
+        trackerFrame.classList.remove(
+            "filters-open"
+        );
+    }
+
+
+    if (reportCatButton) {
+
+        reportCatButton.style.top =
+            "";
+
+    }
 }
-
-
-if (filterToggle) {
-
-    filterToggle.addEventListener(
-        "click",
-        event => {
-
-            event.preventDefault();
-
-            event.stopPropagation();
-
-
-            if (
-                filterPanel &&
-                filterPanel.classList.contains(
-                    "open"
-                )
-            ) {
-
-                closeFiltersPanel();
-
-            } else {
-
-                openFilters();
-
-            }
-        }
-    );
-}
-
-
-if (closeFilters) {
-
-    closeFilters.addEventListener(
-        "click",
-        event => {
-
-            event.preventDefault();
-
-            closeFiltersPanel();
-
-        }
-    );
-}
-
 
 /* =========================================================
    COUNTRY FILTER
