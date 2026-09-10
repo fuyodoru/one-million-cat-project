@@ -6880,3 +6880,492 @@ textarea {
         font-size: 6px !important;
     }
 }
+
+/* =========================================================
+   CAT TRACKER — RESPONSIVE V2 FINAL LAYOUT
+   ========================================================= */
+
+/* --- Popup: one frame only. Leaflet's own wrapper must not
+       create a second rectangle behind the cat card. --- */
+.cat-card-popup .leaflet-popup-content-wrapper,
+.cat-card-popup .leaflet-popup-content,
+.cat-card-popup .leaflet-popup-tip-container {
+    background: transparent !important;
+    border: 0 !important;
+    box-shadow: none !important;
+}
+
+.cat-card-popup .leaflet-popup-content-wrapper {
+    padding: 0 !important;
+    border-radius: 0 !important;
+}
+
+.cat-card-popup .leaflet-popup-content {
+    margin: 0 !important;
+    width: auto !important;
+}
+
+.cat-card-popup .leaflet-popup-tip {
+    background: #0b1d29 !important;
+    border: 0 !important;
+    box-shadow: none !important;
+}
+
+/* --- Header --- */
+.tracker-logo {
+    min-width: 0 !important;
+    width: min(450px, calc(100% - 190px)) !important;
+    justify-content: center !important;
+}
+
+/* --- Report button: desktop sits directly under the filter area --- */
+#reportCatButton {
+    position: absolute !important;
+    top: 365px !important;
+    left: 18px !important;
+    right: auto !important;
+    width: 190px !important;
+    min-height: 54px !important;
+    padding: 10px 12px !important;
+    z-index: 7001 !important;
+    border: 3px solid #287d98 !important;
+    border-radius: 9px !important;
+    background: #102f40 !important;
+    box-shadow: 3px 3px 0 #07111b !important;
+}
+
+#reportCatButton:hover {
+    background: #17475b !important;
+}
+
+/* --- Filter: desktop attached-looking control + panel --- */
+.filter-toggle {
+    top: 105px !important;
+    left: 18px !important;
+    width: 56px !important;
+    height: 56px !important;
+    padding: 8px !important;
+    border: 3px solid #152b38 !important;
+    border-radius: 10px !important;
+    background: #0b2635 !important;
+    z-index: 7002 !important;
+}
+
+.filter-toggle img {
+    width: 31px !important;
+    height: 31px !important;
+}
+
+.filter-panel {
+    top: 105px !important;
+    left: 18px !important;
+    width: 220px !important;
+    padding: 58px 12px 12px !important;
+    border: 3px solid #287d98 !important;
+    border-radius: 10px !important;
+    z-index: 7000 !important;
+}
+
+/* When the filter is open, the report button remains below it rather
+   than floating through its contents. */
+.filter-panel.open ~ #reportCatButton {
+    top: 365px !important;
+}
+
+/* =========================================================
+   MOBILE — TRUE ONE-SCREEN APP SHELL
+   ========================================================= */
+@media (max-width: 600px) {
+    html,
+    body {
+        width: 100% !important;
+        height: 100% !important;
+        min-height: 100% !important;
+        overflow: hidden !important;
+        overscroll-behavior: none !important;
+    }
+
+    body {
+        background: #061525 !important;
+    }
+
+    .tracker-frame {
+        position: relative !important;
+        width: calc(100vw - 12px) !important;
+        height: calc(100dvh - 12px) !important;
+        min-height: 0 !important;
+        max-height: calc(100dvh - 12px) !important;
+        margin: 6px auto !important;
+        border-width: 4px !important;
+        border-radius: 18px 18px 12px 12px !important;
+        overflow: hidden !important;
+    }
+
+    /* Header controls */
+    .cat-menu-button,
+    .top-right-button {
+        top: 9px !important;
+        width: 48px !important;
+        height: 48px !important;
+        border-width: 3px !important;
+        border-radius: 9px !important;
+        z-index: 9000 !important;
+    }
+
+    .cat-menu-button {
+        left: 9px !important;
+    }
+
+    .top-right-button {
+        right: 9px !important;
+    }
+
+    .cat-menu-button img {
+        width: 100% !important;
+        height: 100% !important;
+        object-fit: contain !important;
+    }
+
+    .top-right-button img {
+        width: 28px !important;
+        height: 28px !important;
+    }
+
+    .tracker-logo {
+        top: 10px !important;
+        left: 50% !important;
+        width: calc(100% - 120px) !important;
+        max-width: 235px !important;
+        height: 42px !important;
+        padding: 4px 6px !important;
+        gap: 6px !important;
+        border-width: 3px !important;
+        border-radius: 9px !important;
+        font-size: clamp(7px, 2.2vw, 9px) !important;
+        letter-spacing: .6px !important;
+        overflow: visible !important;
+        z-index: 8500 !important;
+    }
+
+    .tracker-logo .logo-mini-cat {
+        width: 19px !important;
+        height: 19px !important;
+    }
+
+    .logo-subtitle {
+        bottom: -14px !important;
+        font-size: 4.5px !important;
+        letter-spacing: 1.2px !important;
+        white-space: nowrap !important;
+    }
+
+    /* Map occupies all remaining vertical space between header and ticker. */
+    .map-wrapper {
+        position: absolute !important;
+        top: 92px !important;
+        left: 8px !important;
+        right: 8px !important;
+        bottom: 58px !important;
+        width: auto !important;
+        height: auto !important;
+        margin: 0 !important;
+        border: 3px solid #16445b !important;
+        border-radius: 9px !important;
+        overflow: hidden !important;
+    }
+
+    #map {
+        position: absolute !important;
+        inset: 0 !important;
+        width: 100% !important;
+        height: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    /* Filter + report stack on the left, like the reference. */
+    .filter-toggle {
+        top: 102px !important;
+        left: 8px !important;
+        width: 40px !important;
+        height: 40px !important;
+        padding: 6px !important;
+        border-width: 2px !important;
+        border-radius: 7px !important;
+        z-index: 9100 !important;
+    }
+
+    .filter-toggle img {
+        width: 22px !important;
+        height: 22px !important;
+    }
+
+    .filter-panel {
+        top: 102px !important;
+        left: 8px !important;
+        width: min(190px, calc(100vw - 24px)) !important;
+        max-width: calc(100vw - 24px) !important;
+        max-height: calc(100dvh - 185px) !important;
+        padding: 48px 10px 10px !important;
+        border-width: 2px !important;
+        border-radius: 8px !important;
+        overflow-y: auto !important;
+        overscroll-behavior: contain !important;
+        z-index: 9000 !important;
+    }
+
+    #reportCatButton {
+        top: 147px !important;
+        left: 8px !important;
+        right: auto !important;
+        width: 78px !important;
+        min-width: 78px !important;
+        min-height: 38px !important;
+        height: 38px !important;
+        padding: 5px 6px !important;
+        gap: 4px !important;
+        border: 2px solid #287d98 !important;
+        border-radius: 7px !important;
+        background: #102f40 !important;
+        box-shadow: 2px 2px 0 #07111b !important;
+        font-size: 5px !important;
+        letter-spacing: .3px !important;
+        z-index: 9101 !important;
+    }
+
+    #reportCatButton span {
+        font-size: 10px !important;
+    }
+
+    /* If filters are open, move Report below the panel. */
+    .filter-panel.open ~ #reportCatButton {
+        top: min(390px, calc(100dvh - 125px)) !important;
+    }
+
+    /* Stats: five cards always fit on one row, no horizontal scroll. */
+    .map-stats {
+        position: absolute !important;
+        left: 6px !important;
+        right: 6px !important;
+        bottom: 6px !important;
+        width: auto !important;
+        max-width: none !important;
+        display: flex !important;
+        flex-direction: row !important;
+        flex-wrap: nowrap !important;
+        gap: 2px !important;
+        overflow: hidden !important;
+        z-index: 5000 !important;
+        pointer-events: none !important;
+    }
+
+    .stat-card,
+    .progress-card {
+        flex: 1 1 0 !important;
+        min-width: 0 !important;
+        width: auto !important;
+        max-width: none !important;
+        padding: 5px 2px !important;
+        border-width: 2px !important;
+        border-radius: 6px !important;
+        gap: 2px !important;
+        overflow: hidden !important;
+        text-align: center !important;
+        white-space: nowrap !important;
+    }
+
+    .stat-label {
+        display: block !important;
+        min-width: 0 !important;
+        font-size: clamp(3.5px, 1.25vw, 5px) !important;
+        letter-spacing: .15px !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+        white-space: nowrap !important;
+    }
+
+    .stat-value {
+        display: block !important;
+        min-width: 0 !important;
+        font-size: clamp(6px, 1.8vw, 8px) !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+        white-space: nowrap !important;
+    }
+
+    /* Mascot lives above the ticker without pushing the layout. */
+    .mascot {
+        position: absolute !important;
+        left: 4px !important;
+        bottom: 39px !important;
+        width: 62px !important;
+        z-index: 6500 !important;
+        pointer-events: none !important;
+    }
+
+    .mascot img {
+        width: 62px !important;
+        height: auto !important;
+    }
+
+    /* Ticker: the message is a bounded viewport; track itself may be wide. */
+    .tracker-bar {
+        left: 0 !important;
+        right: 0 !important;
+        bottom: 0 !important;
+        height: 58px !important;
+        padding: 0 7px !important;
+        display: flex !important;
+        gap: 6px !important;
+        overflow: hidden !important;
+        z-index: 7000 !important;
+    }
+
+    .tracker-message {
+        flex: 1 1 auto !important;
+        min-width: 0 !important;
+        width: auto !important;
+        height: 34px !important;
+        padding: 0 7px !important;
+        overflow: hidden !important;
+        border-width: 2px !important;
+        border-radius: 6px !important;
+        font-size: 5.5px !important;
+        letter-spacing: .25px !important;
+    }
+
+    .ticker-track {
+        display: flex !important;
+        align-items: center !important;
+        flex-shrink: 0 !important;
+        height: 100% !important;
+        max-width: none !important;
+        overflow: visible !important;
+    }
+
+    .ticker-content {
+        display: flex !important;
+        flex-shrink: 0 !important;
+        align-items: center !important;
+        gap: 7px !important;
+        padding-right: 20px !important;
+        white-space: nowrap !important;
+        font-size: 5.5px !important;
+        letter-spacing: .25px !important;
+    }
+
+    .sound-button {
+        flex: 0 0 38px !important;
+        width: 38px !important;
+        height: 34px !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        border-width: 2px !important;
+        border-radius: 6px !important;
+        font-size: 8px !important;
+        z-index: 7001 !important;
+    }
+
+    /* Popup: responsive single card, centered within the screen. */
+    .leaflet-popup {
+        max-width: min(205px, calc(100vw - 34px)) !important;
+    }
+
+    .cat-card-popup .leaflet-popup-content-wrapper {
+        max-width: none !important;
+    }
+
+    .cat-card {
+        width: min(205px, calc(100vw - 34px)) !important;
+        border-width: 2px !important;
+        border-radius: 9px !important;
+        box-shadow: 0 0 0 2px #07131c, 0 6px 14px rgba(0,0,0,.45) !important;
+    }
+
+    .cat-card-photo {
+        height: 126px !important;
+        border-bottom-width: 2px !important;
+    }
+
+    .cat-card-content {
+        padding: 9px !important;
+    }
+
+    .cat-card-label {
+        font-size: 6px !important;
+    }
+
+    .cat-card-title {
+        font-size: 11px !important;
+    }
+
+    .cat-card-row {
+        font-size: 8px !important;
+    }
+
+    /* The tracker page is intentionally self-contained on mobile. */
+    .credits-area {
+        display: none !important;
+    }
+}
+
+@media (max-width: 380px) {
+    .tracker-logo {
+        width: calc(100% - 112px) !important;
+        height: 40px !important;
+        font-size: 6.5px !important;
+    }
+
+    .tracker-logo .logo-mini-cat {
+        width: 17px !important;
+        height: 17px !important;
+    }
+
+    .cat-menu-button,
+    .top-right-button {
+        width: 46px !important;
+        height: 46px !important;
+    }
+
+    .map-wrapper {
+        top: 88px !important;
+        bottom: 56px !important;
+    }
+
+    .filter-toggle {
+        top: 98px !important;
+    }
+
+    .filter-panel {
+        top: 98px !important;
+    }
+
+    #reportCatButton {
+        top: 142px !important;
+        width: 74px !important;
+        min-width: 74px !important;
+        font-size: 4.5px !important;
+    }
+
+    .filter-panel.open ~ #reportCatButton {
+        top: min(370px, calc(100dvh - 118px)) !important;
+    }
+
+    .mascot,
+    .mascot img {
+        width: 56px !important;
+    }
+
+    .stat-label {
+        font-size: 3.3px !important;
+    }
+
+    .stat-value {
+        font-size: 5.8px !important;
+    }
+
+    .ticker-content,
+    .tracker-message {
+        font-size: 5px !important;
+    }
+}
