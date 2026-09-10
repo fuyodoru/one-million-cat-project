@@ -7904,3 +7904,323 @@ textarea {
             4.5px !important;
     }
 }
+
+/* =========================================================
+   FINAL — FILTER / REPORT / NAVIGATION
+   ========================================================= */
+
+/* Navigation must always be above the map */
+.navigation-panel {
+    z-index: 20000 !important;
+}
+
+.navigation-panel.open {
+    z-index: 20000 !important;
+}
+
+
+/* =========================================================
+   REPORT BUTTON
+   ========================================================= */
+
+#reportCatButton {
+
+    position: absolute !important;
+
+    display: flex !important;
+
+    align-items: center !important;
+    justify-content: center !important;
+
+    box-sizing: border-box !important;
+
+    padding: 0 !important;
+
+    width: 48px !important;
+    min-width: 48px !important;
+
+    height: 48px !important;
+    min-height: 48px !important;
+
+    font-family:
+        "Silkscreen",
+        monospace !important;
+
+    font-size: 22px !important;
+
+    line-height: 1 !important;
+
+    color: #07151d !important;
+
+    background: #d7dfe0 !important;
+
+    border:
+        3px solid
+        #152b38 !important;
+
+    border-radius:
+        9px !important;
+
+    box-shadow:
+        4px 4px 0
+        #07131d !important;
+
+    z-index:
+        15000 !important;
+
+    cursor: pointer !important;
+}
+
+
+#reportCatButton:hover {
+
+    background:
+        #f0d8dc !important;
+
+    transform:
+        translateY(-1px) !important;
+}
+
+
+#reportCatButton:active {
+
+    transform:
+        translate(
+            2px,
+            2px
+        ) !important;
+
+    box-shadow:
+        2px 2px 0
+        #07131d !important;
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 600px) {
+
+    /*
+     * Filter paw
+     */
+
+    #filterToggle {
+
+        top:
+            102px !important;
+
+        left:
+            8px !important;
+
+        width:
+            40px !important;
+
+        height:
+            40px !important;
+
+        z-index:
+            15000 !important;
+    }
+
+
+    /*
+     * Filter panel
+     */
+
+    #filterPanel {
+
+        top:
+            102px !important;
+
+        left:
+            8px !important;
+
+        z-index:
+            14900 !important;
+    }
+
+
+    /*
+     * Plus button.
+     *
+     * JS will place this immediately below
+     * the actual filter panel when it is open.
+     */
+
+    #reportCatButton {
+
+        left:
+            8px !important;
+
+        width:
+            40px !important;
+
+        min-width:
+            40px !important;
+
+        height:
+            40px !important;
+
+        min-height:
+            40px !important;
+
+        border-width:
+            2px !important;
+
+        border-radius:
+            7px !important;
+
+        font-size:
+            18px !important;
+
+        z-index:
+            15000 !important;
+    }
+
+
+    /*
+     * When filter is closed:
+     *
+     * paw = 102px
+     * paw height = 40px
+     * gap = 6px
+     *
+     * report = 148px
+     */
+
+    .tracker-frame:not(.filters-open)
+    #reportCatButton {
+
+        top:
+            148px !important;
+    }
+
+
+    /*
+     * IMPORTANT:
+     * Do NOT use a fixed "360px" position
+     * when the filter is open.
+     *
+     * JS calculates the exact position.
+     */
+
+    .tracker-frame.filters-open
+    #reportCatButton {
+
+        top:
+            var(
+                --report-button-top,
+                148px
+            ) !important;
+    }
+
+
+    /*
+     * Navigation
+     */
+
+    .navigation-panel {
+
+        top:
+            64px !important;
+
+        left:
+            8px !important;
+
+        width:
+            150px !important;
+
+        max-width:
+            calc(100vw - 32px) !important;
+
+        z-index:
+            20000 !important;
+    }
+
+
+    .navigation-panel.open {
+
+        z-index:
+            20000 !important;
+    }
+
+
+    /*
+     * Leaflet should stay below our UI.
+     */
+
+    .leaflet-container,
+    .leaflet-pane,
+    .leaflet-control {
+
+        z-index:
+            400 !important;
+    }
+
+
+    /*
+     * But popup itself may appear above the map.
+     */
+
+    .leaflet-popup {
+
+        z-index:
+            9000 !important;
+    }
+}
+
+
+/* =========================================================
+   VERY SMALL PHONES
+   ========================================================= */
+
+@media (max-width: 380px) {
+
+    #filterToggle {
+
+        top:
+            98px !important;
+
+        left:
+            7px !important;
+    }
+
+
+    #filterPanel {
+
+        top:
+            98px !important;
+
+        left:
+            7px !important;
+    }
+
+
+    #reportCatButton {
+
+        width:
+            38px !important;
+
+        min-width:
+            38px !important;
+
+        height:
+            38px !important;
+
+        min-height:
+            38px !important;
+
+        font-size:
+            17px !important;
+    }
+
+
+    .tracker-frame:not(.filters-open)
+    #reportCatButton {
+
+        top:
+            142px !important;
+    }
+}
