@@ -156,6 +156,12 @@ const clearFilters =
     );
 
 
+const trackerFrame =
+    document.querySelector(
+        ".tracker-frame"
+    );
+
+
 /* =========================================================
    DOM — NAVIGATION
    ========================================================= */
@@ -1129,72 +1135,21 @@ async function loadCatSightings() {
 
 function positionReportButton() {
 
-    if (
-        !trackerFrame ||
-        !filterPanel ||
-        !reportCatButton
-    ) {
+    if (!trackerFrame || !reportCatButton) {
         return;
     }
 
-
     /*
-     * Filter closed:
-     * report sits directly under the paw.
+     * The + button NEVER moves when the filter opens.
+     * It stays directly below the filter paw and is painted
+     * above the filter panel, like the navigation overlay.
      */
-
-    if (
-        !filterPanel.classList.contains(
-            "open"
-        )
-    ) {
-
-        reportCatButton.style.top =
-            "";
-
-        trackerFrame.classList.remove(
-            "filters-open"
-        );
-
-        return;
-    }
-
-
-    /*
-     * Filter open:
-     *
-     * Read the REAL height of the panel.
-     * This means it will work even if the
-     * panel becomes taller/shorter later.
-     */
-
-    const panelTop =
-        filterPanel.offsetTop;
-
-
-    const panelHeight =
-        filterPanel.offsetHeight;
-
-
-    const gap =
-        6;
-
-
-    const reportTop =
-        panelTop +
-        panelHeight +
-        gap;
-
-
-    reportCatButton.style.top =
-        `${reportTop}px`;
-
-
-    trackerFrame.classList.add(
-        "filters-open"
+    trackerFrame.style.setProperty("--report-button-top", "147px");
+    trackerFrame.classList.toggle(
+        "filters-open",
+        !!filterPanel && filterPanel.classList.contains("open")
     );
 }
-
 
 function openFilters() {
 
@@ -1203,10 +1158,30 @@ function openFilters() {
     }
 
 
-    filterPanel.classList.add(
-        "open"
-    );
+    /*
+     * Only one large overlay menu should be open
+     * at a time. This prevents navigation from
+     * covering the filter controls.
+     */
 
+    if (navigationPanel) {
+
+        navigationPanel.classList.remove(
+            "open"
+        );
+
+    }
+
+    if (trackerFrame) {
+
+        trackerFrame.classList.remove(
+            "navigation-open"
+        );
+
+    }
+
+
+    filterPanel.classList.add("open");
 
     if (filterToggle) {
 
@@ -1214,21 +1189,11 @@ function openFilters() {
             "aria-expanded",
             "true"
         );
+
     }
 
 
-    /*
-     * Wait one frame so the browser
-     * has calculated the panel's real height.
-     */
-
-    requestAnimationFrame(
-        () => {
-
-            positionReportButton();
-
-        }
-    );
+    positionReportButton();
 }
 
 
@@ -1238,11 +1203,7 @@ function closeFiltersPanel() {
         return;
     }
 
-
-    filterPanel.classList.remove(
-        "open"
-    );
-
+    filterPanel.classList.remove("open");
 
     if (filterToggle) {
 
@@ -1250,25 +1211,50 @@ function closeFiltersPanel() {
             "aria-expanded",
             "false"
         );
-    }
-
-
-    if (trackerFrame) {
-
-        trackerFrame.classList.remove(
-            "filters-open"
-        );
-    }
-
-
-    if (reportCatButton) {
-
-        reportCatButton.style.top =
-            "";
 
     }
+
+    positionReportButton();
 }
 
+
+if (filterToggle) {
+
+    filterToggle.addEventListener(
+        "click",
+        function (event) {
+
+            event.preventDefault();
+            event.stopPropagation();
+
+            if (
+                filterPanel &&
+                filterPanel.classList.contains("open")
+            ) {
+                closeFiltersPanel();
+            } else {
+                openFilters();
+            }
+
+        }
+    );
+}
+
+
+if (closeFilters) {
+
+    closeFilters.addEventListener(
+        "click",
+        function (event) {
+
+            event.preventDefault();
+            event.stopPropagation();
+
+            closeFiltersPanel();
+
+        }
+    );
+}
 /* =========================================================
    COUNTRY FILTER
    ========================================================= */
@@ -1801,9 +1787,49 @@ if (
             event.stopPropagation();
 
 
-            navigationPanel.classList.toggle(
-                "open"
-            );
+            const willOpen =
+                !navigationPanel.classList.contains(
+                    "open"
+                );
+
+
+            /*
+             * Navigation and Filters are mutually
+             * exclusive so neither panel can cover
+             * the other's controls.
+             */
+
+            if (willOpen) {
+
+                closeFiltersPanel();
+
+                navigationPanel.classList.add(
+                    "open"
+                );
+
+                if (trackerFrame) {
+
+                    trackerFrame.classList.add(
+                        "navigation-open"
+                    );
+
+                }
+
+            } else {
+
+                navigationPanel.classList.remove(
+                    "open"
+                );
+
+                if (trackerFrame) {
+
+                    trackerFrame.classList.remove(
+                        "navigation-open"
+                    );
+
+                }
+
+            }
 
         }
     );
@@ -1821,6 +1847,15 @@ map.on(
             );
 
         }
+
+        if (trackerFrame) {
+
+            trackerFrame.classList.remove(
+                "navigation-open"
+            );
+
+        }
+
     }
 );
 
@@ -2990,3 +3025,186 @@ console.log(
 
 
 loadCatSightings();
+
+/* =========================================================
+   FIRST-LAUNCH TUTORIAL
+   ========================================================= */
+
+
+
+/* =========================================================
+   HOW IT WORKS — REOPEN TUTORIAL FROM NAVIGATION
+   ========================================================= */
+
+const howItWorksNav = document.getElementById("howItWorksNav");
+
+if (howItWorksNav) {
+    howItWorksNav.addEventListener("click", event => {
+        event.preventDefault();
+
+        if (navigationPanel) {
+            navigationPanel.classList.remove("open");
+        }
+
+        if (trackerFrame) {
+            trackerFrame.classList.remove("navigation-open");
+        }
+
+        // The tutorial initializer is defined later in this file.
+        if (typeof window.openCatTrackerTutorial === "function") {
+            window.openCatTrackerTutorial();
+        }
+    });
+}
+
+(function initFirstLaunchTutorial() {
+    const overlay = document.getElementById("tutorialOverlay");
+    const spotlight = document.getElementById("tutorialSpotlight");
+    const card = document.getElementById("tutorialCard");
+    const stepLabel = document.getElementById("tutorialStepLabel");
+    const title = document.getElementById("tutorialTitle");
+    const text = document.getElementById("tutorialText");
+    const nextButton = document.getElementById("tutorialNext");
+    const reportMedia = document.getElementById("tutorialReportMedia");
+    const reportVideo = document.getElementById("tutorialReportVideo");
+
+    if (!overlay || !spotlight || !card || !nextButton) return;
+
+    const steps = [
+        {
+            target: ".map-wrapper",
+            title: "EXPLORE",
+            text: "Explore cat sightings from around the world."
+        },
+        {
+            target: "#filterToggle",
+            title: "FILTER SIGHTINGS",
+            text: "Use filters to find sightings by country, city, or date."
+        },
+        {
+            target: "#reportCatButton",
+            title: "SPOT A CAT?",
+            text: "Tap + to report a new cat sighting.",
+            reportVideo: false
+        },
+        {
+            target: ".map-wrapper",
+            title: "EVERY CAT COUNTS",
+            text: "Every sighting brings us closer to one million cats."
+        }
+    ];
+
+    let currentStep = 0;
+    let resizeObserver = null;
+
+    function positionSpotlight() {
+        const target = document.querySelector(steps[currentStep].target);
+        if (!target) return;
+
+        const rect = target.getBoundingClientRect();
+        const pad = currentStep === 0 || currentStep === 3 ? 5 : 7;
+
+        spotlight.style.left = `${Math.max(2, rect.left - pad)}px`;
+        spotlight.style.top = `${Math.max(2, rect.top - pad)}px`;
+        spotlight.style.width = `${rect.width + pad * 2}px`;
+        spotlight.style.height = `${rect.height + pad * 2}px`;
+    }
+
+    function updateCardPosition() {
+        // Keep the card out of the way of the compact mobile controls.
+        // It remains a fixed bottom panel so the actual app stays visible.
+        card.style.left = "50%";
+        card.style.transform = "translateX(-50%)";
+    }
+
+    function showStep(index) {
+        currentStep = index;
+        const step = steps[index];
+
+        stepLabel.textContent = `0${index + 1} / 04`;
+        title.textContent = step.title;
+        text.textContent = step.text;
+        nextButton.textContent = index === steps.length - 1 ? "START EXPLORING" : "NEXT";
+
+        if (reportMedia) reportMedia.hidden = true;
+        if (reportVideo) {
+            reportVideo.pause();
+            reportVideo.removeAttribute("src");
+            reportVideo.load();
+        }
+
+        // Optional report animation:
+        // Put tutorial-report.mp4 beside index.html, then set reportVideo.src below.
+        if (index === 2 && step.reportVideo) {
+            reportMedia.hidden = false;
+            reportVideo.src = "tutorial-report.mp4";
+            reportVideo.play().catch(() => {});
+        }
+
+        requestAnimationFrame(() => {
+            positionSpotlight();
+            updateCardPosition();
+        });
+    }
+
+    function openTutorial() {
+        window.openCatTrackerTutorial = openTutorial;
+        overlay.classList.add("open");
+        overlay.setAttribute("aria-hidden", "false");
+        document.body.classList.add("tutorial-active");
+        showStep(0);
+
+        if (typeof ResizeObserver !== "undefined") {
+            resizeObserver = new ResizeObserver(positionSpotlight);
+            const target = document.querySelector(steps[0].target);
+            if (target) resizeObserver.observe(target);
+        }
+
+        window.addEventListener("resize", positionSpotlight);
+        window.addEventListener("orientationchange", positionSpotlight);
+    }
+
+    // Expose the same tutorial for the NAVIGATION > HOW IT WORKS entry.
+    window.openCatTrackerTutorial = openTutorial;
+
+    function closeTutorial() {
+        overlay.classList.remove("open");
+        overlay.setAttribute("aria-hidden", "true");
+        document.body.classList.remove("tutorial-active");
+        localStorage.setItem("catTrackerTutorialCompleted", "true");
+
+        if (reportVideo) {
+            reportVideo.pause();
+            reportVideo.removeAttribute("src");
+            reportVideo.load();
+        }
+
+        if (resizeObserver) {
+            resizeObserver.disconnect();
+            resizeObserver = null;
+        }
+
+        window.removeEventListener("resize", positionSpotlight);
+        window.removeEventListener("orientationchange", positionSpotlight);
+    }
+
+    nextButton.addEventListener("click", () => {
+        if (currentStep >= steps.length - 1) {
+            closeTutorial();
+        } else {
+            showStep(currentStep + 1);
+        }
+    });
+
+    // Don't close when the user taps outside: the tutorial is meant to be completed.
+    overlay.addEventListener("click", event => {
+        if (event.target === overlay) event.preventDefault();
+    });
+
+    // Show only once on first launch.
+    if (localStorage.getItem("catTrackerTutorialCompleted") !== "true") {
+        window.addEventListener("load", () => {
+            setTimeout(openTutorial, 450);
+        }, { once: true });
+    }
+})();
