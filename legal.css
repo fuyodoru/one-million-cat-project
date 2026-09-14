@@ -1,0 +1,147 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&display=swap');
+
+* { box-sizing: border-box; }
+
+html, body {
+    margin: 0;
+    padding: 0;
+    min-height: 100%;
+    background: #07151d;
+    color: #d8e8eb;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+    font-size: 15px;
+    line-height: 1.7;
+}
+
+.legal-page {
+    width: min(100%, 720px);
+    min-height: 100vh;
+    margin: 0 auto;
+    background: #071a27;
+}
+
+.legal-back {
+    display: block;
+    padding: 14px 12px 11px;
+    color: #d8e8eb;
+    text-decoration: none;
+    font-family: "Silkscreen", monospace;
+    font-size: 9px;
+    letter-spacing: 1px;
+}
+
+.legal-back:hover {
+    text-decoration: underline;
+}
+
+.legal-content {
+    padding: 22px 12px 36px;
+    border-top: 2px solid #07111a;
+    border-bottom: 2px solid #18343f;
+}
+
+.legal-kicker {
+    margin: 0 0 5px;
+    color: #5e9da9;
+    font-family: "Silkscreen", monospace;
+    font-size: 8px;
+    letter-spacing: 1.5px;
+}
+
+h1 {
+    margin: 0 0 5px;
+    color: #061018;
+    background: #dbe7e8;
+    display: inline-block;
+    padding: 5px 7px;
+    font-family: "Silkscreen", monospace;
+    font-size: 16px;
+    line-height: 1.3;
+    letter-spacing: 1px;
+}
+
+.legal-subtitle {
+    margin: 0 0 25px;
+    color: #6f9ba2;
+    font-family: "Silkscreen", monospace;
+    font-size: 8px;
+    letter-spacing: 1px;
+}
+
+h2 {
+    margin: 23px 0 8px;
+    color: #8bbcc3;
+    font-family: "Silkscreen", monospace;
+    font-size: 10px;
+    letter-spacing: 1.3px;
+}
+
+p, li {
+    color: #b4c8cb;
+    font-size: 13px;
+}
+
+p {
+    margin: 0 0 13px;
+}
+
+ul {
+    margin: 6px 0 15px 19px;
+    padding: 0;
+}
+
+a {
+    color: #8bcbd3;
+}
+
+.legal-footer {
+    padding: 11px 8px;
+    text-align: center;
+    color: #91aeb2;
+    background: #f2f3f0;
+    font-family: "Silkscreen", monospace;
+    font-size: 7px;
+    letter-spacing: .7px;
+}
+
+@media (max-width: 600px) {
+    .legal-back {
+        padding: 13px 10px 10px;
+        font-size: 8px;
+    }
+
+    .legal-content {
+        padding: 20px 10px 30px;
+    }
+
+    .legal-kicker {
+        font-size: 7px;
+    }
+
+    h1 {
+        font-size: 14px;
+    }
+
+    .legal-subtitle {
+        font-size: 7px;
+        margin-bottom: 23px;
+    }
+
+    h2 {
+        font-size: 8px;
+        margin-top: 21px;
+    }
+
+    p, li {
+        font-size: 12px;
+        line-height: 1.65;
+    }
+
+    .legal-footer {
+        font-size: 6px;
+    }
+}
