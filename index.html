@@ -6,8 +6,8 @@
     <meta charset="UTF-8">
 
     <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
+            name="viewport"
+            content="width=device-width, initial-scale=1.0"
     >
 
     <title>One Million Cat Project</title>
@@ -18,19 +18,19 @@
     ================================================== -->
 
     <link
-        rel="preconnect"
-        href="https://fonts.googleapis.com"
+            rel="preconnect"
+            href="https://fonts.googleapis.com"
     >
 
     <link
-        rel="preconnect"
-        href="https://fonts.gstatic.com"
-        crossorigin
+            rel="preconnect"
+            href="https://fonts.gstatic.com"
+            crossorigin
     >
 
     <link
-        href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&display=swap"
-        rel="stylesheet"
+            href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&display=swap"
+            rel="stylesheet"
     >
 
 
@@ -39,8 +39,8 @@
     ================================================== -->
 
     <link
-        rel="stylesheet"
-        href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+            rel="stylesheet"
+            href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
     >
 
 
@@ -49,683 +49,710 @@
     ================================================== -->
 
     <link
-        rel="stylesheet"
-        href="style.css"
+            rel="stylesheet"
+            href="style.css"
     >
-<link rel="manifest" href="/manifest.json">
+    <link rel="manifest" href="/manifest.json">
 
-<meta name="theme-color" content="#07151d">
+    <meta name="theme-color" content="#07151d">
 
-<meta name="mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
 
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="1M Cats">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="1M Cats">
 
-<link rel="apple-touch-icon" href="/icons/icon-192.png">
+    <link rel="apple-touch-icon" href="/icons/icon-192.png">
 </head>
 
 
 <body>
 
 
+<!-- =================================================
+     MAIN TRACKER FRAME
+================================================== -->
+
+<div class="tracker-frame">
+
+
     <!-- =================================================
-         MAIN TRACKER FRAME
+         TOP LEFT — CAT MENU BUTTON
     ================================================== -->
 
-    <div class="tracker-frame">
-
-
-        <!-- =================================================
-             TOP LEFT — CAT MENU BUTTON
-        ================================================== -->
-
-        <button
+    <button
             id="catMenuButton"
             class="cat-menu-button"
             aria-label="Open navigation"
-        >
+    >
 
-            <img
+        <img
                 src="assets/cats/logo-face-1.png"
                 id="menuCat"
                 alt=""
-            >
+        >
 
-        </button>
+    </button>
 
 
-        <!-- =================================================
-             CENTER LOGO
-        ================================================== -->
+    <!-- =================================================
+         CENTER LOGO
+    ================================================== -->
 
-        <div class="tracker-logo">
+    <div class="tracker-logo">
 
             <span>
                 CAT
             </span>
 
-            <img
+        <img
                 src="assets/cats/logo-face-1.png"
                 id="logoCat"
                 class="logo-mini-cat"
                 alt=""
-            >
+        >
 
-            <span>
+        <span>
                 TRACKER
             </span>
 
-            <div class="logo-subtitle">
-                EVERY CAT COUNTS
-            </div>
-
+        <div class="logo-subtitle">
+            EVERY CAT COUNTS
         </div>
 
+    </div>
 
-        <!-- =================================================
-             TOP RIGHT — MAP CONTROL
-        ================================================== -->
 
-        <button
+    <!-- =================================================
+         TOP RIGHT — MAP CONTROL
+    ================================================== -->
+
+    <button
             class="top-right-button"
             id="mapControlButton"
             aria-label="Center map"
-        >
+    >
 
-            <img
+        <img
                 src="assets/cats/paw-marker.png"
                 alt=""
-            >
+        >
 
-        </button>
+    </button>
 
 
 
-        <!-- =================================================
-             CAT FILTER TOGGLE
-             
-             IMPORTANT:
-             There is NO "FILTERS" text anymore.
-             The paw itself is the filter button.
-        ================================================== -->
+    <!-- =================================================
+         CAT FILTER TOGGLE
 
-        <button
+         IMPORTANT:
+         There is NO "FILTERS" text anymore.
+         The paw itself is the filter button.
+    ================================================== -->
+
+    <button
             id="filterToggle"
             class="filter-toggle"
             type="button"
             aria-label="Open map filters"
             aria-expanded="false"
-        >
+    >
 
-            <img
+        <img
                 src="assets/cats/paw-marker.png"
                 alt=""
-            >
-
-        </button>
-
-
-        <!-- =================================================
-             FILTER PANEL
-        ================================================== -->
-
-        <div
-            id="filterPanel"
-            class="filter-panel"
         >
 
-            <!-- Small top area for the paw + close button -->
-            <div class="filter-panel-header">
+    </button>
 
-                <button
+
+    <!-- =================================================
+         FILTER PANEL
+    ================================================== -->
+
+    <div
+            id="filterPanel"
+            class="filter-panel"
+    >
+
+        <!-- Small top area for the paw + close button -->
+        <div class="filter-panel-header">
+
+            <button
                     id="closeFilters"
                     class="filter-close"
                     type="button"
                     aria-label="Close filters"
-                >
-                    ×
-                </button>
-
-            </div>
-
-
-            <!-- COUNTRY -->
-
-            <div class="filter-group">
-
-                <label for="countryFilter">
-                    COUNTRY
-                </label>
-
-                <select id="countryFilter">
-
-                    <option value="">
-                        ALL COUNTRIES
-                    </option>
-
-                </select>
-
-            </div>
-
-
-            <!-- CITY -->
-
-            <div class="filter-group">
-
-                <label for="cityFilter">
-                    CITY
-                </label>
-
-                <select id="cityFilter">
-
-                    <option value="">
-                        ALL CITIES
-                    </option>
-
-                </select>
-
-            </div>
-
-
-            <!-- DATE -->
-
-            <div class="filter-group">
-
-                <label for="dateFilter">
-                    DATE
-                </label>
-
-                <input
-                    id="dateFilter"
-                    type="month"
-                >
-
-            </div>
-
-
-            <!-- CLEAR -->
-
-            <button
-                id="clearFilters"
-                class="clear-filters-button"
-                type="button"
             >
-                CLEAR FILTERS
+                ×
             </button>
 
         </div>
 
-        <!-- =================================================
-             REPORT CAT
-        ================================================== -->
 
- <button
-    class="report-cat-button"
-    id="reportCatButton"
-    type="button"
-    aria-label="Report a cat"
->
-    +
-</button>
+        <!-- COUNTRY -->
+
+        <div class="filter-group">
+
+            <label for="countryFilter">
+                COUNTRY
+            </label>
+
+            <select id="countryFilter">
+
+                <option value="">
+                    ALL COUNTRIES
+                </option>
+
+            </select>
+
+        </div>
 
 
-        <!-- =================================================
-             REPORT CAT MODAL
-        ================================================== -->
+        <!-- CITY -->
 
-        <div
+        <div class="filter-group">
+
+            <label for="cityFilter">
+                CITY
+            </label>
+
+            <select id="cityFilter">
+
+                <option value="">
+                    ALL CITIES
+                </option>
+
+            </select>
+
+        </div>
+
+
+        <!-- DATE -->
+
+        <div class="filter-group">
+
+            <label for="dateFilter">
+                DATE
+            </label>
+
+            <input
+                    id="dateFilter"
+                    type="month"
+            >
+
+        </div>
+
+
+        <!-- CLEAR -->
+
+        <button
+                id="clearFilters"
+                class="clear-filters-button"
+                type="button"
+        >
+            CLEAR FILTERS
+        </button>
+
+    </div>
+
+    <!-- =================================================
+         REPORT CAT
+    ================================================== -->
+
+    <button
+            class="report-cat-button"
+            id="reportCatButton"
+            type="button"
+            aria-label="Report a cat"
+    >
+        <span class="report-cat-plus">+</span>
+    </button>
+
+
+    <!-- =================================================
+         REPORT CAT MODAL
+    ================================================== -->
+
+    <div
             id="reportCatModal"
             class="report-modal hidden"
-        >
+    >
 
-            <div class="report-modal-box">
+        <div class="report-modal-box">
 
-                <button
+            <button
                     id="closeReportModal"
                     class="report-modal-close"
                     type="button"
-                >
-                    ×
-                </button>
+            >
+                ×
+            </button>
 
-                <div class="report-modal-title">
-                    REPORT A CAT
-                </div>
+            <div class="report-modal-title">
+                REPORT A CAT
+            </div>
 
-                <div class="report-modal-subtitle">
-                    ADD A NEW CAT SIGHTING
-                </div>
+            <div class="report-modal-subtitle">
+                ADD A NEW CAT SIGHTING
+            </div>
 
 
-                <form id="reportCatForm">
+            <form id="reportCatForm">
 
-                    <label for="catCount">
-                        HOW MANY CATS?
-                    </label>
+                <label for="catCount">
+                    HOW MANY CATS?
+                </label>
 
-                    <input
+                <input
                         id="catCount"
                         type="number"
                         min="1"
                         max="50"
                         value="1"
                         required
-                    >
+                >
 
 
-                    <label for="reportCity">
-                        CITY
-                    </label>
+                <label for="reportCity">
+                    CITY
+                </label>
 
-                    <input
+                <input
                         id="reportCity"
                         type="text"
                         placeholder="e.g. Milan"
                         maxlength="100"
-                    >
+                >
 
 
-                    <label for="reportCountry">
-                        COUNTRY
-                    </label>
+                <label for="reportCountry">
+                    COUNTRY
+                </label>
 
-                    <input
+                <input
                         id="reportCountry"
                         type="text"
                         placeholder="e.g. Italy"
                         maxlength="100"
-                    >
+                >
 
 
-                    <label for="catPhoto">
-                        PHOTO <span>(OPTIONAL)</span>
-                    </label>
+                <label for="catPhoto">
+                    PHOTO <span>(OPTIONAL)</span>
+                </label>
 
-                    <input
+                <input
                         id="catPhoto"
                         type="file"
                         accept="image/jpeg,image/png,image/webp"
-                    >
+                >
 
-                    <div
+                <div
                         id="photoMessage"
                         class="photo-message"
-                    ></div>
+                ></div>
 
 
-                    <div
+                <div
                         id="reportLocationMessage"
                         class="report-location-message"
-                    >
-                        LOCATION WILL BE DETERMINED FROM CITY AND COUNTRY
-                    </div>
+                >
+                    LOCATION WILL BE DETERMINED FROM CITY AND COUNTRY
+                </div>
 
 
-                    <div
+                <div
                         id="reportMessage"
                         class="report-message"
-                    ></div>
+                ></div>
 
 
-                    <div class="report-modal-actions">
+                <div class="report-modal-actions">
 
-                        <button
+                    <button
                             id="cancelReport"
                             type="button"
                             class="report-cancel-button"
-                        >
-                            CANCEL
-                        </button>
+                    >
+                        CANCEL
+                    </button>
 
-                        <button
+                    <button
                             type="submit"
                             class="report-submit-button"
-                        >
-                            SUBMIT
-                        </button>
+                    >
+                        SUBMIT
+                    </button>
 
-                    </div>
+                </div>
 
-                </form>
-
-            </div>
+            </form>
 
         </div>
-
-
-        <!-- =================================================
-             NAVIGATION
-        ================================================== -->
-
-        <nav
-            id="navigationPanel"
-            class="navigation-panel"
-        >
-
-            <div class="navigation-title">
-                NAVIGATION
-            </div>
-
-
-            <button
-                class="navigation-item active"
-            >
-                CAT TRACKER
-            </button>
-
-
-
-
-
-<a
-    href="about.html"
-    class="navigation-item"
->
-    ABOUT
-</a>
-
-        </nav>
-
-
-        <!-- =================================================
-             MAP
-        ================================================== -->
-
-        <main class="map-wrapper">
-
-            <div id="map"></div>
-
-
-            <!-- =================================================
-                 LIVE STATISTICS
-            ================================================== -->
-
-            <div class="map-stats">
-
-                <div class="stat-card">
-
-                    <span class="stat-label">
-                        CATS
-                    </span>
-
-                    <strong
-                        id="statCats"
-                        class="stat-value"
-                    >
-                        0
-                    </strong>
-
-                </div>
-
-
-                <div class="stat-card">
-
-                    <span class="stat-label">
-                        SIGHTINGS
-                    </span>
-
-                    <strong
-                        id="statSightings"
-                        class="stat-value"
-                    >
-                        0
-                    </strong>
-
-                </div>
-
-
-                <div class="stat-card">
-
-                    <span class="stat-label">
-                        COUNTRIES
-                    </span>
-
-                    <strong
-                        id="statCountries"
-                        class="stat-value"
-                    >
-                        0
-                    </strong>
-
-                </div>
-
-
-                <div class="stat-card">
-
-                    <span class="stat-label">
-                        TODAY
-                    </span>
-
-                    <strong
-                        id="statToday"
-                        class="stat-value"
-                    >
-                        0
-                    </strong>
-
-                </div>
-
-
-                <div class="stat-card progress-card">
-
-                    <span class="stat-label">
-                        MISSION
-                    </span>
-
-                    <strong
-                        id="statProgress"
-                        class="stat-value"
-                    >
-                        0.000%
-                    </strong>
-
-                </div>
-
-            </div>
-
-        </main>
-
-
-        <!-- =================================================
-             FULL BODY MASCOT
-        ================================================== -->
-
-        <div class="mascot">
-
-            <img
-                src="assets/cats/mascot-full-1.png"
-                id="mascotCat"
-                alt=""
-            >
-
-        </div>
-
-
-        <!-- =================================================
-             BOTTOM TRACKER BAR
-        ================================================== -->
-
-        <div class="tracker-bar">
-
-            <div class="tracker-message">
-
-                <div class="ticker-track">
-
-                    <div class="ticker-content">
-
-                        <span
-                            class="message-text"
-                            id="trackerCount"
-                        >
-                            13 CATS LOGGED
-                        </span>
-
-                        <span class="separator">
-                            •
-                        </span>
-
-                        <span>
-                            HELP US REACH ONE MILLION
-                        </span>
-
-                        <span class="separator">
-                            •
-                        </span>
-
-                        <span>
-                            EVERY CAT COUNTS
-                        </span>
-
-                        <span class="separator">
-                            •
-                        </span>
-
-                    </div>
-
-
-                    <!-- DUPLICATE FOR SEAMLESS LOOP -->
-
-                    <div class="ticker-content">
-
-                        <span class="message-text">
-                            13 CATS LOGGED
-                        </span>
-
-                        <span class="separator">
-                            •
-                        </span>
-
-                        <span>
-                            HELP US REACH ONE MILLION
-                        </span>
-
-                        <span class="separator">
-                            •
-                        </span>
-
-                        <span>
-                            EVERY CAT COUNTS
-                        </span>
-
-                        <span class="separator">
-                            •
-                        </span>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            <button
-                class="sound-button"
-                id="soundButton"
-                aria-label="Toggle sound"
-            >
-                ◀
-            </button>
-
-        </div>
-
 
     </div>
 
 
     <!-- =================================================
-         CREDITS / FOOTER
+         NAVIGATION
     ================================================== -->
 
-    <section class="credits-area">
+    <nav
+            id="navigationPanel"
+            class="navigation-panel"
+    >
 
-        <div class="project-name">
-            ONE MILLION CAT PROJECT
+        <div class="navigation-title">
+            NAVIGATION
         </div>
 
-        <div class="project-description">
-            A community project to count the cats of the world.
-        </div>
 
-        <div class="credits-links">
+        <a
+                href="index.html"
+                class="navigation-item active"
+        >
+            CAT TRACKER
+        </a>
 
-            <a href="#">
-                PRIVACY POLICY
-            </a>
+        <button
+                type="button"
+                class="navigation-item"
+                id="howItWorksNav"
+        >
+            HOW IT WORKS
+        </button>
 
-            <span>•</span>
+        <a
+                href="about.html"
+                class="navigation-item"
+        >
+            ABOUT
+        </a>
 
-            <a href="#">
-                TERMS OF USE
-            </a>
-
-            <span>•</span>
-
-            <a href="#">
-                COOKIE PREFERENCES
-            </a>
-
-            <span>•</span>
-
-            <a href="about.html#credits">
-                CREDITS
-            </a>
-
-        </div>
-
-        <div class="copyright">
-            © 2026 ONE MILLION CAT PROJECT
-        </div>
-
-    </section>
+    </nav>
 
 
     <!-- =================================================
-         LEAFLET
+         MAP
     ================================================== -->
 
-    <script
+    <main class="map-wrapper">
+
+        <div id="map"></div>
+
+
+        <!-- =================================================
+             LIVE STATISTICS
+        ================================================== -->
+
+        <div class="map-stats">
+
+            <div class="stat-card">
+
+                    <span class="stat-label">
+                        CATS
+                    </span>
+
+                <strong
+                        id="statCats"
+                        class="stat-value"
+                >
+                    0
+                </strong>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                    <span class="stat-label">
+                        SIGHTINGS
+                    </span>
+
+                <strong
+                        id="statSightings"
+                        class="stat-value"
+                >
+                    0
+                </strong>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                    <span class="stat-label">
+                        COUNTRIES
+                    </span>
+
+                <strong
+                        id="statCountries"
+                        class="stat-value"
+                >
+                    0
+                </strong>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                    <span class="stat-label">
+                        TODAY
+                    </span>
+
+                <strong
+                        id="statToday"
+                        class="stat-value"
+                >
+                    0
+                </strong>
+
+            </div>
+
+
+            <div class="stat-card progress-card">
+
+                    <span class="stat-label">
+                        MISSION
+                    </span>
+
+                <strong
+                        id="statProgress"
+                        class="stat-value"
+                >
+                    0.000%
+                </strong>
+
+            </div>
+
+        </div>
+
+    </main>
+
+
+    <!-- =================================================
+         FULL BODY MASCOT
+    ================================================== -->
+
+    <div class="mascot">
+
+        <img
+                src="assets/cats/mascot-full-1.png"
+                id="mascotCat"
+                alt=""
+        >
+
+    </div>
+
+
+    <!-- =================================================
+         BOTTOM TRACKER BAR
+    ================================================== -->
+
+    <div class="tracker-bar">
+
+        <div class="tracker-message">
+
+            <div class="ticker-track">
+
+                <div class="ticker-content">
+
+                        <span
+                                class="message-text"
+                                id="trackerCount"
+                        >
+                            13 CATS LOGGED
+                        </span>
+
+                    <span class="separator">
+                            •
+                        </span>
+
+                    <span>
+                            HELP US REACH ONE MILLION
+                        </span>
+
+                    <span class="separator">
+                            •
+                        </span>
+
+                    <span>
+                            EVERY CAT COUNTS
+                        </span>
+
+                    <span class="separator">
+                            •
+                        </span>
+
+                </div>
+
+
+                <!-- DUPLICATE FOR SEAMLESS LOOP -->
+
+                <div class="ticker-content">
+
+                        <span class="message-text">
+                            13 CATS LOGGED
+                        </span>
+
+                    <span class="separator">
+                            •
+                        </span>
+
+                    <span>
+                            HELP US REACH ONE MILLION
+                        </span>
+
+                    <span class="separator">
+                            •
+                        </span>
+
+                    <span>
+                            EVERY CAT COUNTS
+                        </span>
+
+                    <span class="separator">
+                            •
+                        </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <button
+                class="sound-button"
+                id="soundButton"
+                aria-label="Toggle sound"
+        >
+            ◀
+        </button>
+
+    </div>
+
+
+</div>
+
+
+<!-- =================================================
+     CREDITS / FOOTER
+================================================== -->
+
+<section class="credits-area">
+
+    <div class="project-name">
+        ONE MILLION CAT PROJECT
+    </div>
+
+    <div class="project-description">
+        A community project to count the cats of the world.
+    </div>
+
+    <div class="credits-links">
+
+        <a href="privacy.html">
+            PRIVACY POLICY
+        </a>
+
+        <span>•</span>
+
+        <a href="terms.html">
+            TERMS OF USE
+        </a>
+
+        <span>•</span>
+
+        <a href="cookies.html">
+            COOKIE PREFERENCES
+        </a>
+
+        <span>•</span>
+
+        <a href="about.html#credits">
+            CREDITS
+        </a>
+
+    </div>
+
+    <div class="copyright">
+        © 2026 ONE MILLION CAT PROJECT
+    </div>
+
+</section>
+
+
+<!-- =================================================
+     LEAFLET
+================================================== -->
+
+<script
         src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-    ></script>
+></script>
 
 
-    <!-- =================================================
-         SUPABASE
-    ================================================== -->
+<!-- =================================================
+     SUPABASE
+================================================== -->
 
-    <script
+<script
         src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
-    ></script>
+></script>
 
 
-    <!-- =================================================
-         OUR JAVASCRIPT
-    ================================================== -->
+<!-- =================================================
+     OUR JAVASCRIPT
+================================================== -->
 
-    <script src="app.js"></script>
+
+<!-- =================================================
+     FIRST-LAUNCH TUTORIAL
+     ================================================== -->
+<div id="tutorialOverlay" class="tutorial-overlay" aria-hidden="true">
+    <div id="tutorialSpotlight" class="tutorial-spotlight" aria-hidden="true"></div>
+
+    <section id="tutorialCard" class="tutorial-card" role="dialog" aria-modal="true" aria-labelledby="tutorialTitle">
+        <div class="tutorial-step" id="tutorialStepLabel">01 / 04</div>
+        <div class="tutorial-title" id="tutorialTitle">EXPLORE</div>
+        <div class="tutorial-text" id="tutorialText">Explore cat sightings from around the world.</div>
+
+        <div id="tutorialReportMedia" class="tutorial-report-media" hidden>
+            <video id="tutorialReportVideo" class="tutorial-report-video" muted playsinline loop preload="metadata"></video>
+        </div>
+
+        <div class="tutorial-actions">
+            <button id="tutorialNext" class="tutorial-next-button" type="button">NEXT</button>
+        </div>
+    </section>
+</div>
+
+<script src="app.js"></script>
 
 <script>
-if ("serviceWorker" in navigator) {
-    window.addEventListener("load", () => {
+    if ("serviceWorker" in navigator) {
+        window.addEventListener("load", () => {
 
-        navigator.serviceWorker.register("/sw.js", {
-            scope: "/"
-        })
-        .then(registration => {
-            console.log(
-                "Service Worker registered:",
-                registration.scope
-            );
-        })
-        .catch(error => {
-            console.error(
-                "Service Worker registration failed:",
-                error
-            );
+            navigator.serviceWorker.register("/sw.js", {
+                scope: "/"
+            })
+            .then(registration => {
+                console.log(
+                    "Service Worker registered:",
+                    registration.scope
+                );
+            })
+            .catch(error => {
+                console.error(
+                    "Service Worker registration failed:",
+                    error
+                );
+            });
+
         });
-
-    });
-}
+    }
 </script>
 </body>
 
