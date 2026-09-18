@@ -33,7 +33,7 @@ const map = L.map(
     {
         zoomControl: false,
         minZoom: 2,
-        maxZoom: 13,
+        maxZoom: 18,
         worldCopyJump: true
     }
 ).setView(
@@ -387,16 +387,158 @@ function getPrivacyOffset(id) {
 
         latitude:
             (
-                (hash % 2001) -
-                1000
+                (hash % 3001) -
+                1500
             ) / 100000,
 
         longitude:
             (
-                ((hash >>> 11) % 2001) -
-                1000
+                ((hash >>> 11) % 3001) -
+                1500
             ) / 100000
     };
+}
+
+
+/* =========================================================
+   MARKER COLLISION LAYOUT
+   ========================================================= */
+
+const markerPositions =
+    new Map();
+
+const MARKER_COLLISION_RADIUS =
+    0.00065;
+
+const MARKER_SPACING =
+    0.00090;
+
+function distanceSquared(a, b) {
+
+    const latitudeDifference =
+        a.latitude - b.latitude;
+
+    const longitudeDifference =
+        a.longitude - b.longitude;
+
+    return (
+        latitudeDifference * latitudeDifference +
+        longitudeDifference * longitudeDifference
+    );
+}
+
+function getMarkerPosition(
+    sighting,
+    occupiedPositions
+) {
+
+    const baseOffset =
+        getPrivacyOffset(
+            sighting.id
+        );
+
+    const basePosition = {
+
+        latitude:
+            Number(sighting.public_latitude) +
+            baseOffset.latitude,
+
+        longitude:
+            Number(sighting.public_longitude) +
+            baseOffset.longitude
+    };
+
+    if (!occupiedPositions.length) {
+        return basePosition;
+    }
+
+    const collisionRadiusSquared =
+        MARKER_COLLISION_RADIUS *
+        MARKER_COLLISION_RADIUS;
+
+    const isFree = position =>
+        occupiedPositions.every(
+            occupied =>
+                distanceSquared(
+                    position,
+                    occupied
+                ) > collisionRadiusSquared
+        );
+
+    if (isFree(basePosition)) {
+        return basePosition;
+    }
+
+    /*
+     * Existing sightings can share exactly the same
+     * public coordinates. Spread colliding markers in
+     * deterministic rings so their positions stay stable
+     * between page loads.
+     */
+    for (let ring = 1; ring <= 12; ring++) {
+
+        const pointsInRing =
+            ring * 8;
+
+        for (
+            let point = 0;
+            point < pointsInRing;
+            point++
+        ) {
+
+            const angle =
+                (
+                    2 * Math.PI * point
+                ) / pointsInRing;
+
+            const radius =
+                ring * MARKER_SPACING;
+
+            const candidate = {
+
+                latitude:
+                    basePosition.latitude +
+                    Math.sin(angle) * radius,
+
+                longitude:
+                    basePosition.longitude +
+                    Math.cos(angle) * radius
+            };
+
+            if (isFree(candidate)) {
+                return candidate;
+            }
+        }
+    }
+
+    return basePosition;
+}
+
+function prepareMarkerPositions(sightings) {
+
+    markerPositions.clear();
+
+    const occupiedPositions = [];
+
+    sightings.forEach(
+        sighting => {
+
+            const position =
+                getMarkerPosition(
+                    sighting,
+                    occupiedPositions
+                );
+
+            markerPositions.set(
+                sighting.id,
+                position
+            );
+
+            occupiedPositions.push(
+                position
+            );
+        }
+    );
 }
 
 
@@ -905,20 +1047,18 @@ function addCatMarker(
     }
 
 
-    const offset =
-        getPrivacyOffset(
+    const preparedPosition =
+        markerPositions.get(
             sighting.id
         );
 
-
     const markerLatitude =
-        latitude +
-        offset.latitude;
-
+        preparedPosition?.latitude ??
+        (latitude + getPrivacyOffset(sighting.id).latitude);
 
     const markerLongitude =
-        longitude +
-        offset.longitude;
+        preparedPosition?.longitude ??
+        (longitude + getPrivacyOffset(sighting.id).longitude);
 
 
     let marker;
@@ -1621,6 +1761,9 @@ function renderFilteredSightings(
 
     markerLayer.clearLayers();
 
+    prepareMarkerPositions(
+        sightings
+    );
 
     sightings.forEach(
         sighting => {
@@ -2224,30 +2367,12 @@ if (catPhotoInput) {
             }
 
 
-            if (
-                file.size >
-                1 * 1024 * 1024
-            ) {
-
-                catPhotoInput.value =
-                    "";
-
-
-                if (photoMessage) {
-
-                    photoMessage.textContent =
-                        "PHOTO MUST BE 1 MB OR SMALLER.";
-
-                }
-
-                return;
-            }
-
-
             if (photoMessage) {
 
                 photoMessage.textContent =
-                    "PHOTO READY.";
+                    file.size > 1 * 1024 * 1024
+                        ? "LARGE PHOTO — WILL BE COMPRESSED AUTOMATICALLY."
+                        : "PHOTO READY.";
 
             }
         }
@@ -2430,6 +2555,157 @@ async function geocodeCity(
 
 
 /* =========================================================
+   PHOTO COMPRESSION
+   ========================================================= */
+
+const MAX_PHOTO_SIZE =
+    1 * 1024 * 1024;
+
+const MAX_PHOTO_DIMENSION =
+    1600;
+
+function loadImageFromFile(file) {
+
+    return new Promise(
+        (resolve, reject) => {
+
+            const image =
+                new Image();
+
+            const objectURL =
+                URL.createObjectURL(file);
+
+            image.onload = () => {
+
+                URL.revokeObjectURL(
+                    objectURL
+                );
+
+                resolve(image);
+            };
+
+            image.onerror = () => {
+
+                URL.revokeObjectURL(
+                    objectURL
+                );
+
+                reject(
+                    new Error(
+                        "COULD NOT READ PHOTO."
+                    )
+                );
+            };
+
+            image.src = objectURL;
+        }
+    );
+}
+
+async function compressPhotoIfNeeded(file) {
+
+    if (file.size <= MAX_PHOTO_SIZE) {
+        return file;
+    }
+
+    if (photoMessage) {
+        photoMessage.textContent =
+            "COMPRESSING PHOTO.";
+    }
+
+    const image =
+        await loadImageFromFile(file);
+
+    const scale =
+        Math.min(
+            1,
+            MAX_PHOTO_DIMENSION /
+            Math.max(
+                image.naturalWidth,
+                image.naturalHeight
+            )
+        );
+
+    const canvas =
+        document.createElement("canvas");
+
+    canvas.width =
+        Math.max(1, Math.round(image.naturalWidth * scale));
+
+    canvas.height =
+        Math.max(1, Math.round(image.naturalHeight * scale));
+
+    const context =
+        canvas.getContext("2d");
+
+    if (!context) {
+        throw new Error(
+            "COULD NOT PREPARE PHOTO FOR UPLOAD."
+        );
+    }
+
+    context.drawImage(
+        image,
+        0,
+        0,
+        canvas.width,
+        canvas.height
+    );
+
+    let quality = 0.82;
+    let blob =
+        await new Promise(resolve =>
+            canvas.toBlob(
+                resolve,
+                "image/jpeg",
+                quality
+            )
+        );
+
+    while (
+        blob &&
+        blob.size > MAX_PHOTO_SIZE &&
+        quality > 0.45
+    ) {
+
+        quality -= 0.07;
+
+        blob =
+            await new Promise(resolve =>
+                canvas.toBlob(
+                    resolve,
+                    "image/jpeg",
+                    quality
+                )
+            );
+    }
+
+    if (!blob || blob.size > MAX_PHOTO_SIZE) {
+        throw new Error(
+            "PHOTO IS TOO LARGE TO COMPRESS. PLEASE CHOOSE A SMALLER PHOTO."
+        );
+    }
+
+    const compressedFile =
+        new File(
+            [blob],
+            "cat-photo.jpg",
+            {
+                type: "image/jpeg",
+                lastModified: Date.now()
+            }
+        );
+
+    if (photoMessage) {
+        photoMessage.textContent =
+            `PHOTO COMPRESSED TO ${Math.round(compressedFile.size / 1024)} KB.`;
+    }
+
+    return compressedFile;
+}
+
+
+/* =========================================================
    PHOTO UPLOAD
    ========================================================= */
 
@@ -2576,18 +2852,6 @@ async function submitCatSighting() {
     }
 
 
-    if (
-        photoFile &&
-        photoFile.size >
-        1 * 1024 * 1024
-    ) {
-
-        throw new Error(
-            "PHOTO MUST BE 1 MB OR SMALLER."
-        );
-    }
-
-
     const user =
         await getAuthenticatedUser();
 
@@ -2621,6 +2885,11 @@ async function submitCatSighting() {
 
     if (photoFile) {
 
+        const uploadFile =
+            await compressPhotoIfNeeded(
+                photoFile
+            );
+
         if (photoMessage) {
 
             photoMessage.textContent =
@@ -2631,7 +2900,7 @@ async function submitCatSighting() {
 
         photoPath =
             await uploadCatPhoto(
-                photoFile,
+                uploadFile,
                 user.id
             );
 
