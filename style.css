@@ -658,7 +658,112 @@ textarea {
         120px;
 
     pointer-events:
+        auto;
+
+    cursor:
+        pointer;
+
+    user-select:
         none;
+
+    -webkit-tap-highlight-color:
+        transparent;
+
+}
+
+
+.mascot.petting {
+
+    animation:
+        mascotPet 0.42s ease;
+
+}
+
+
+.mascot:focus-visible {
+
+    outline:
+        3px solid #8fd7e4;
+
+    outline-offset:
+        3px;
+
+}
+
+
+@keyframes mascotPet {
+
+    0% {
+        transform: translateY(0) rotate(0deg) scale(1);
+    }
+
+    25% {
+        transform: translateY(-5px) rotate(-3deg) scale(1.04);
+    }
+
+    50% {
+        transform: translateY(0) rotate(3deg) scale(1.02);
+    }
+
+    75% {
+        transform: translateY(-3px) rotate(-2deg) scale(1.03);
+    }
+
+    100% {
+        transform: translateY(0) rotate(0deg) scale(1);
+    }
+
+}
+
+
+.mascot-pet-feedback {
+
+    position: absolute;
+    left: 50%;
+    top: -22px;
+    transform: translateX(-50%);
+
+    padding: 4px 7px;
+
+    background: #d7dfe0;
+    color: #294c5a;
+
+    border: 2px solid #152b38;
+    border-radius: 5px;
+    box-shadow: 2px 2px 0 #07131d;
+
+    font-family: "Silkscreen", monospace;
+    font-size: 7px;
+    letter-spacing: 1px;
+    white-space: nowrap;
+
+    pointer-events: none;
+    z-index: 2;
+
+    animation: petFeedback 0.8s ease forwards;
+}
+
+
+@keyframes petFeedback {
+
+    0% {
+        opacity: 0;
+        transform: translate(-50%, 5px) scale(0.85);
+    }
+
+    20% {
+        opacity: 1;
+        transform: translate(-50%, 0) scale(1);
+    }
+
+    75% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+        transform: translate(-50%, -10px) scale(0.95);
+    }
 
 }
 
