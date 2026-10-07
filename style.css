@@ -658,112 +658,7 @@ textarea {
         120px;
 
     pointer-events:
-        auto;
-
-    cursor:
-        pointer;
-
-    user-select:
         none;
-
-    -webkit-tap-highlight-color:
-        transparent;
-
-}
-
-
-.mascot.petting {
-
-    animation:
-        mascotPet 0.42s ease;
-
-}
-
-
-.mascot:focus-visible {
-
-    outline:
-        3px solid #8fd7e4;
-
-    outline-offset:
-        3px;
-
-}
-
-
-@keyframes mascotPet {
-
-    0% {
-        transform: translateY(0) rotate(0deg) scale(1);
-    }
-
-    25% {
-        transform: translateY(-5px) rotate(-3deg) scale(1.04);
-    }
-
-    50% {
-        transform: translateY(0) rotate(3deg) scale(1.02);
-    }
-
-    75% {
-        transform: translateY(-3px) rotate(-2deg) scale(1.03);
-    }
-
-    100% {
-        transform: translateY(0) rotate(0deg) scale(1);
-    }
-
-}
-
-
-.mascot-pet-feedback {
-
-    position: absolute;
-    left: 50%;
-    top: -22px;
-    transform: translateX(-50%);
-
-    padding: 4px 7px;
-
-    background: #d7dfe0;
-    color: #294c5a;
-
-    border: 2px solid #152b38;
-    border-radius: 5px;
-    box-shadow: 2px 2px 0 #07131d;
-
-    font-family: "Silkscreen", monospace;
-    font-size: 7px;
-    letter-spacing: 1px;
-    white-space: nowrap;
-
-    pointer-events: none;
-    z-index: 2;
-
-    animation: petFeedback 0.8s ease forwards;
-}
-
-
-@keyframes petFeedback {
-
-    0% {
-        opacity: 0;
-        transform: translate(-50%, 5px) scale(0.85);
-    }
-
-    20% {
-        opacity: 1;
-        transform: translate(-50%, 0) scale(1);
-    }
-
-    75% {
-        opacity: 1;
-    }
-
-    100% {
-        opacity: 0;
-        transform: translate(-50%, -10px) scale(0.95);
-    }
 
 }
 
@@ -1879,7 +1774,8 @@ textarea {
 }
 
 
-#reportCatForm input {
+#reportCatForm input,
+#reportCatForm select {
     width: 100%;
 
     box-sizing: border-box;
@@ -1905,7 +1801,8 @@ textarea {
 }
 
 
-#reportCatForm input:focus {
+#reportCatForm input:focus,
+#reportCatForm select:focus {
     border-color: #3b8ca7;
 }
 
@@ -2122,7 +2019,8 @@ textarea {
 }
 
 
-#reportCatForm input {
+#reportCatForm input,
+#reportCatForm select {
 
     box-sizing: border-box;
 
@@ -2666,7 +2564,8 @@ textarea {
         font-size: 6px !important;
     }
 
-    #reportCatForm input {
+    #reportCatForm input,
+#reportCatForm select {
         width: 100% !important;
 
         box-sizing: border-box !important;
@@ -3294,7 +3193,8 @@ textarea {
         font-size: 7px !important;
     }
 
-    #reportCatForm input {
+    #reportCatForm input,
+#reportCatForm select {
         min-height: 42px !important;
 
         padding: 10px !important;
@@ -3757,7 +3657,8 @@ textarea {
     }
 
 
-    #reportCatForm input {
+    #reportCatForm input,
+#reportCatForm select {
         padding: 10px !important;
 
         font-size: 8px !important;
@@ -6746,7 +6647,8 @@ textarea {
         line-height: 1.5 !important;
     }
 
-    #reportCatForm input {
+    #reportCatForm input,
+#reportCatForm select {
         min-height: 40px !important;
         font-size: 8px !important;
     }
@@ -8424,4 +8326,24 @@ body.about-page .about-content {
         margin-left: auto !important;
         margin-right: auto !important;
     }
+}
+
+
+/* =========================================================
+   MASCOT IN FRONT OF THE BOTTOM TRACKER BAR
+   (tracker bar is 7000 on mobile; menus/panels are 9000+)
+   ========================================================= */
+
+.mascot {
+    z-index: 7100 !important;
+    left: -4px !important;
+}
+
+#reportCatForm select {
+    cursor: pointer;
+}
+
+#reportCatForm select option {
+    background: #071827;
+    color: #d2e5ea;
 }
